@@ -14,7 +14,7 @@ export class CardService {
     ){}
 
     async findAll(){
-        this.cardRepository.find({ relations: ['deck'] });
+        return this.cardRepository.find({ relations: ['deck'] });
     }
 
     async create(dto: CreateCardDTO){
