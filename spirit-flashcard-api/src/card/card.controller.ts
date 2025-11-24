@@ -1,24 +1,38 @@
-import { Controller, Delete, Get, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { CardService } from './card.service';
+import { CreateCardDTO } from './dto/create-card.dto';
+import { UpdateCardDTO } from './dto/update-card.dto';
 
 @Controller('card')
 export class CardController {
+    constructor(private readonly cardService: CardService){}
     @Get()
     async getAllCards(){
-        return "This is a card";
+        return this.cardService.findAll();
+    }
+
+    @Get(":id")
+    findOne(@Param('id') id: number){
+        return this.cardService.findOne(id);
+    }
+
+    @Get("/deck/:deckId")
+    findDeck(@Param('deckId') deckId: number){
+        return this.cardService.findDeck(deckId);
     }
 
     @Post()
-    addCard(){
-        return "Card has been added";
+    async create(@Body() dto: CreateCardDTO){
+        return this.cardService.create(dto);
     }
 
-    @Put()
-    updateCard(){
-        return "Card has been updated";
+    @Put(":id")
+    update(@Param() id: number, @Body() dto: UpdateCardDTO){
+        return this.cardService.update(id, dto)
     }
 
-    @Delete()
-    deleteCard(){
-        return "Card has been deleted";
+    @Delete(":id")
+    deleteCard(@Param() id: number){
+        return this.cardService.delete(id);
     }
 }
