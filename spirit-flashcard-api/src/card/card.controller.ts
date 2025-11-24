@@ -12,12 +12,12 @@ export class CardController {
     }
 
     @Get(":id")
-    findOne(@Param('id') id: number){
+    async findOne(@Param('id') id: number){
         return this.cardService.findOne(id);
     }
 
     @Get("/deck/:deckId")
-    findDeck(@Param('deckId') deckId: number){
+    async findDeck(@Param('deckId') deckId: number){
         return this.cardService.findDeck(deckId);
     }
 
@@ -27,12 +27,12 @@ export class CardController {
     }
 
     @Put(":id")
-    update(@Param() id: number, @Body() dto: UpdateCardDTO){
+    async update(@Param('id') id: number, @Body() dto: UpdateCardDTO){
         return this.cardService.update(id, dto)
     }
 
     @Delete(":id")
-    deleteCard(@Param() id: number){
+    async deleteCard(@Param('id') id: number){
         return this.cardService.delete(id);
     }
 }
