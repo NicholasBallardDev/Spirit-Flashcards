@@ -16,6 +16,13 @@ export class FlashcardDeckService {
         return this.deckRepository.find()
     }
 
+    async getCards(id: number){
+        return this.deckRepository.findOne({
+            where: { id },
+            relations: ['cards']
+        })
+    }
+
     async create(dto: CreateDeckDTO){
         const deck = this.deckRepository.create({
             name: dto.name,
