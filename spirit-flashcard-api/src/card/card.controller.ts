@@ -3,7 +3,7 @@ import { Controller, Delete, Get, Post, Put } from '@nestjs/common';
 @Controller('card')
 export class CardController {
     @Get()
-    getCard(){
+    async getAllCards(){
         return "This is a card";
     }
 

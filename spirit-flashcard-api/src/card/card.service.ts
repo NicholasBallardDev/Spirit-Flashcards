@@ -17,6 +17,16 @@ export class CardService {
         return this.cardRepository.find({ relations: ['deck'] });
     }
 
+    async findOne(id: number){
+        return this.cardRepository.findOne({where: { id }});
+    }
+
+    async findDeck(deckId: number){
+        this.cardRepository.find({
+            where: { deck: { id: deckId } }, 
+            relations: ['deck'],})
+    }
+
     async create(dto: CreateCardDTO){
         const card = this.cardRepository.create({ 
             question: dto.question, 
