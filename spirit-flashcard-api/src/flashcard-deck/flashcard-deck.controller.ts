@@ -12,6 +12,11 @@ export class FlashcardDeckController {
         return this.deckService.findAll();
     }
 
+    @Get(":id")
+    async findOne(@Param('id') id: number){
+        return this.deckService.findOne(id);
+    }
+
     @Post()
     async create(@Body() dto: CreateDeckDTO){
         return this.deckService.create(dto);

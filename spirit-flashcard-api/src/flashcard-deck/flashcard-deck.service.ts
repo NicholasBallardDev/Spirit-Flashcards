@@ -16,6 +16,10 @@ export class FlashcardDeckService {
         return this.deckRepository.find()
     }
 
+    async findOne(id: number){
+        return this.deckRepository.findOne({ where: { id } })
+    }
+
     async getCards(id: number){
         return this.deckRepository.findOne({
             where: { id },
