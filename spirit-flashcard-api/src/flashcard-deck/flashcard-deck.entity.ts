@@ -6,6 +6,12 @@ export class FlashcardDeck{
     @PrimaryGeneratedColumn()
     id: number
 
+    @Column()
+    name: String
+
+    @Column()
+    description: String
+
     @Column({ type: 'timestamp', default: () => 'CURRENT_DATE'})
     createdAt: Date
 

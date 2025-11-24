@@ -1,12 +1,12 @@
-import { IsInt, IsNotEmpty, IsOptional } from 'class-validator';
+import { IsInt, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class UpdateCardDTO{
     @IsOptional()
-    @IsNotEmpty()
+    @IsString()
     question: string
 
     @IsOptional()
-    @IsNotEmpty()
+    @IsString()
     answer: string
 
     @IsOptional()

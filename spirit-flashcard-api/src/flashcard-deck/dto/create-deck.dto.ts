@@ -1,15 +1,12 @@
 import { IsEmail, IsInt, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
-export class CreateCardDTO{
+export class CreateDeckDTO{
     @IsString()
     @IsNotEmpty()
-    question: string
-
-    @IsString()
-    @IsNotEmpty()
-    answer: string
+    name: string
 
     @IsOptional()
-    @IsInt()
-    deckId?: number
+    @IsString()
+    description: string
+
 }
