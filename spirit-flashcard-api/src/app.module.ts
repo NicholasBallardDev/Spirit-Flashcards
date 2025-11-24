@@ -5,6 +5,7 @@ import { CardModule } from './card/card.module';
 import { FlashcardDeckModule } from './flashcard-deck/flashcard-deck.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
+import { Card } from './card/card.entity';
 
 @Module({
   imports: [CardModule, FlashcardDeckModule, 
@@ -15,7 +16,7 @@ import { ConfigModule } from '@nestjs/config';
     type: "postgres",
     host: process.env.DB_HOST,
     port: process.env.DB_PORT ? parseInt(process.env.DB_PORT) : 5432,
-    entities: [],
+    entities: [Card],
     synchronize: true, //remove in production environment
     username: process.env.DB_USER,
     password: process.env.DB_PASS,
