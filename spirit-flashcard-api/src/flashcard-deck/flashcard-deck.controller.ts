@@ -3,7 +3,7 @@ import { FlashcardDeckService } from './flashcard-deck.service';
 import { CreateDeckDTO } from './dto/create-deck.dto';
 import { UpdateDeckDTO } from './dto/update-deck.dto';
 
-@Controller('flashcard-deck')
+@Controller('decks')
 export class FlashcardDeckController {
     constructor(private readonly deckService: FlashcardDeckService){}
 
@@ -14,7 +14,7 @@ export class FlashcardDeckController {
 
     @Get(":id")
     async findOne(@Param('id') id: number){
-        return this.deckService.findOne(id);
+        return this.deckService.getCards(id);
     }
 
     @Post()
