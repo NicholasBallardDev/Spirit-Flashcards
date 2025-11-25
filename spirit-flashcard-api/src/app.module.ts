@@ -8,6 +8,8 @@ import { ConfigModule } from '@nestjs/config';
 import { Card } from './card/card.entity';
 import { FlashcardDeck } from './flashcard-deck/flashcard-deck.entity';
 
+const DEFAULT_DB_PORT = 5432;
+
 @Module({
   imports: [CardModule, FlashcardDeckModule, 
     ConfigModule.forRoot({
@@ -16,7 +18,7 @@ import { FlashcardDeck } from './flashcard-deck/flashcard-deck.entity';
     TypeOrmModule.forRoot({
     type: "postgres",
     host: process.env.DB_HOST,
-    port: process.env.DB_PORT ? parseInt(process.env.DB_PORT) : 5432,
+    port: process.env.DB_PORT ? parseInt(process.env.DB_PORT) : DEFAULT_DB_PORT,
     entities: [Card, FlashcardDeck],
     synchronize: true, //remove in production environment
     username: process.env.DB_USER,
