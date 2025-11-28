@@ -3,7 +3,7 @@ import { CardService } from './card.service';
 import { CreateCardDTO } from './dto/create-card.dto';
 import { UpdateCardDTO } from './dto/update-card.dto';
 
-@Controller('card')
+@Controller('cards')
 export class CardController {
     constructor(private readonly cardService: CardService){}
     @Get()

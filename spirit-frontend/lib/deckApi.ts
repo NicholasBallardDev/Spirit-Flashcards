@@ -2,7 +2,7 @@ import type { FlashcardDeck } from "@/Types";
 
 const API_URL = 'http://localhost:3000';
 
-export async function getDecks():  Promise<FlashcardDeck> {
+export async function getDecks():  Promise<FlashcardDeck[]> {
   const res = await fetch(`${API_URL}/decks`);
   return res.json();
 }
@@ -12,7 +12,7 @@ export async function getDeck(id: number):  Promise<FlashcardDeck> {
   return res.json();
 }
 
-export async function createDeck(deck: { name: string; description?: string }):  Promise<FlashcardDeck> {
+export async function createDeck(deck: FlashcardDeck):  Promise<FlashcardDeck> {
   const res = await fetch(`${API_URL}/decks`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
