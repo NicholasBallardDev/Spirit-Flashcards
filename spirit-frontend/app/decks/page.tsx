@@ -1,4 +1,4 @@
-import { getDecks } from "@/server/services/deck.service"; // your helper
+import { getDecks } from "@/server/services/deck.service";
 import { DeckCard } from "@/features/deck/components/DeckCard"
 
 export default async function DecksPage() {
@@ -6,12 +6,12 @@ export default async function DecksPage() {
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">All Decks</h1>
-      <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <h1 className="text-2xl font-bold mb-4 text-center">All Decks</h1>
+    <div className="grid gap-4 justify-center grid-cols-[repeat(auto-fit,minmax(250px,1fr))]">
         {decks.map((deck) => (
-          <DeckCard key={deck.id} deck={deck} />
+            <DeckCard key={deck.id} deck={deck} />
         ))}
-      </div>
+    </div>
     </div>
   );
 }
