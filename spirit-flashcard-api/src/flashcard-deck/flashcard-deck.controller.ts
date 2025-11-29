@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put } from '@nestjs/common';
 import { FlashcardDeckService } from './flashcard-deck.service';
 import { CreateDeckDTO } from './dto/create-deck.dto';
 import { UpdateDeckDTO } from './dto/update-deck.dto';
@@ -12,9 +12,14 @@ export class FlashcardDeckController {
         return this.deckService.findAll();
     }
 
-    @Get(":id")
-    async findOne(@Param('id') id: number){
+    @Get(":id/cards")
+    async getCards(@Param('id', ParseIntPipe) id: number){
         return this.deckService.getCards(id);
+    }
+
+    @Get(":id")
+    async findOne(@Param('id', ParseIntPipe) id: number) {
+        return this.deckService.findOne(id); // returns deck info only
     }
 
     @Post()
@@ -23,12 +28,12 @@ export class FlashcardDeckController {
     }
 
     @Put(":id")
-    async update(@Param('id') id: number, @Body() dto: UpdateDeckDTO){
+    async update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateDeckDTO){
         return this.deckService.update(id, dto);
     }
 
     @Delete(":id")
-    async delete(@Param('id') id: number){
+    async delete(@Param('id', ParseIntPipe) id: number){
         return this.deckService.delete(id);
     }
 }
