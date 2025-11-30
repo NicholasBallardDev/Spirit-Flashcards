@@ -25,12 +25,13 @@ export function DeckClient({ initialCards }: DeckClientProps) {
     return (
         <>
             <div className="flex flex-col w-full mb-4 gap-4">
-                {cards.map((card) => (
-                    <CardEdit key={card.id} card={card} onDelete={deleteCard}/>
+                {cards.map((card, index) => (
+                    <CardEdit key={card.id} card={card} cardNo={index+1} onDelete={deleteCard}/>
                 ))}
-                {updatedCards.map(card => (
-                    <CardEdit key={card.id} card={card} onDelete={deleteCard}/>
-                ))}
+                {updatedCards.map((card, index) => {
+                    const cardNo = cards.length + index + 1
+                    return <CardEdit key={card.id} card={card} cardNo={cardNo} onDelete={deleteCard}/>
+                })}
             </div>
             <AddCardButton onClick={addCard} />
             <button
