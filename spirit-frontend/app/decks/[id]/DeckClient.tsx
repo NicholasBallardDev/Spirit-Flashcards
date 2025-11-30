@@ -29,6 +29,11 @@ export function DeckClient({ initialCards }: DeckClientProps) {
                 ))}
             </div>
             <AddCardButton onClick={handleAddCard} />
+            <button
+                className="px-6 py-3 w-full bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition"
+                >
+                Save Changes
+            </button>
         </>
     );
 }
