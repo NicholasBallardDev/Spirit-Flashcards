@@ -1,8 +1,6 @@
 "use client";
-import { useState } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 import type { Card } from "@/Types";
-import { cn } from "@/lib/utils";
 
 interface CardProps {
   card: Card;
@@ -16,7 +14,7 @@ export function CardEdit({ card, onClick }: CardProps) {
   return (
     <div
       className=
-        "px-6 py-6 min-w-24 w-full border rounded-md cursor-pointer hover:bg-gray-50 transition flex gap-4 items-start"
+        "px-6 py-6 min-w-24 w-full border rounded-md cursor-pointer flex gap-4 items-start"
       onClick={() => onClick?.(card.id)}
     >
       <TextareaAutosize
