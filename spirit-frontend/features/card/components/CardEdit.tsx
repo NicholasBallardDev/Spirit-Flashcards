@@ -15,9 +15,8 @@ export function CardEdit({ card, onClick }: CardProps) {
 
   return (
     <div
-      className={cn(
+      className=
         "px-6 py-6 min-w-24 w-full border rounded-md cursor-pointer hover:bg-gray-50 transition flex gap-4 items-start"
-      )}
       onClick={() => onClick?.(card.id)}
     >
       <TextareaAutosize
