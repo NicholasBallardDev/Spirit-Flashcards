@@ -9,26 +9,30 @@ interface DeckClientProps {
 }
 
 export function DeckClient({ initialCards }: DeckClientProps) {
-    const cards = initialCards;
-    const [newCardCount, setNewCardCount] = useState(0);
+    const [cards, setCards] = useState<Card[]>(initialCards);
+    const [updatedCards, setUpdatedCards] = useState<Card[]>([]);
 
-    const handleAddCard = () => {
-        setNewCardCount(newCardCount + 1);
+    const addCard = () => {
+        const tempId = Date.now()
+        setUpdatedCards((prev) => [...prev, {id: tempId, question: "", answer: ""}]);
+    };
+    
+    const deleteCard = (id: Number) => {
+        setCards(prev => prev.filter(card => card.id !== id))
+        setUpdatedCards(prev => prev.filter(card => card.id !== id))
     };
 
     return (
         <>
             <div className="flex flex-col w-full mb-4 gap-4">
                 {cards.map((card) => (
-                    <CardEdit key={card.id} card={card} />
+                    <CardEdit key={card.id} card={card} onDelete={deleteCard}/>
                 ))}
-                {Array.from({ length: newCardCount }).map((_, index) => (
-                    <CardEdit 
-                        key={`new-${index}`}
-                    />
+                {updatedCards.map(card => (
+                    <CardEdit key={card.id} card={card} onDelete={deleteCard}/>
                 ))}
             </div>
-            <AddCardButton onClick={handleAddCard} />
+            <AddCardButton onClick={addCard} />
             <button
                 className="px-6 py-3 w-full bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition"
                 >

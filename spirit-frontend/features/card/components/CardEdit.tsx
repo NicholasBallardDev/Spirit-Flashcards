@@ -5,12 +5,19 @@ import type { Card } from "@/Types";
 
 interface CardProps {
   card?: Card;
+  onDelete?: (id: number) => void;
   onClick?: (id: number) => void;
 }
 
-export function CardEdit({ card, onClick }: CardProps) {
+export function CardEdit({ card, onDelete, onClick }: CardProps) {
   const question = card ? card.question : "";
   const answer = card ? card.answer : "";
+
+  const handleDelete = () => {
+    if (card?.id) {
+      onDelete?.(card.id);
+    }
+  };
 
   return (
     <div
@@ -20,7 +27,7 @@ export function CardEdit({ card, onClick }: CardProps) {
       <div className='flex justify-between mb-1 mx-1'>
         Card
         <button
-          className="group p-2 rounded hover:bg-red-500 transition rounded-full">
+          className="group p-2 rounded hover:bg-red-500 transition rounded-full cursor-pointer" onClick={handleDelete}>
           <Trash2 size={20} className="text-gray-700 group-hover:text-white"/>
         </button>
       </div>
