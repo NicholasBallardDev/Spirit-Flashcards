@@ -13,6 +13,7 @@ export function DeckClient({ initialCards }: DeckClientProps) {
     const [cards, setCards] = useState<Card[]>(initialCards);
     const [updatedCards, setUpdatedCards] = useState<Card[]>([]);
     const [tempId, setTempId] = useState(-1)
+    const cardIsSaved = (id: number) => id > 0
 
 
     const addCard = () => {
@@ -21,7 +22,7 @@ export function DeckClient({ initialCards }: DeckClientProps) {
     };
     
     const deleteCardEdit = (id: number) => {
-        if (id > 0){
+        if (cardIsSaved(id)){
             setCards(prev => prev.filter(card => card.id !== id))
             deleteCard(id)
         } else{
