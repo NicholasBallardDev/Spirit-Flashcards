@@ -48,9 +48,9 @@ export function DeckClient({ initialCards, deckId }: DeckClientProps) {
 
     const updateEdit = (updated: Card) => {
         if (updated.id > 0) {
-            setCards(prev => prev.map(c => c.id === updated.id ? updated : c));
+            setCards(prev => prev.map(card => card.id === updated.id ? updated : card));
         } else {
-            setUpdatedCards(prev => prev.map(c => c.id === updated.id ? updated : c));
+            setUpdatedCards(prev => prev.map(card => card.id === updated.id ? updated : card));
         }
     };
 
