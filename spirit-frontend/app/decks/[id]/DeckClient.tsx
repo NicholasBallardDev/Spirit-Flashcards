@@ -44,6 +44,7 @@ export function DeckClient({ initialCards, deckId }: DeckClientProps) {
         } catch (err) {
             console.error("Error saving cards:", err);
         }
+        window.location.reload();
     };
 
     const updateEdit = (updated: Card) => {
@@ -69,7 +70,7 @@ export function DeckClient({ initialCards, deckId }: DeckClientProps) {
             </div>
             <AddCardButton onClick={addCard} />
             <button
-                className="px-6 py-3 w-full bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition"
+                className="px-6 py-3 w-full bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition cursor-pointer"
                 onClick={triggerCardChanges}
                 >
                 Save Changes
