@@ -3,6 +3,7 @@ import { useState } from "react";
 import { CardEdit } from "@/features/card/components/CardEdit";
 import { AddCardButton } from "@/features/card/components/AddCardButton";
 import type { Card } from "@/Types";
+import { deleteCard } from "@/server/services/card.service";
 
 interface DeckClientProps {
     initialCards: Card[];
@@ -11,26 +12,33 @@ interface DeckClientProps {
 export function DeckClient({ initialCards }: DeckClientProps) {
     const [cards, setCards] = useState<Card[]>(initialCards);
     const [updatedCards, setUpdatedCards] = useState<Card[]>([]);
+    const [tempId, setTempId] = useState(-1)
+
 
     const addCard = () => {
-        const tempId = Date.now()
         setUpdatedCards((prev) => [...prev, {id: tempId, question: "", answer: ""}]);
+        setTempId(tempId - 1)
     };
     
-    const deleteCard = (id: Number) => {
-        setCards(prev => prev.filter(card => card.id !== id))
-        setUpdatedCards(prev => prev.filter(card => card.id !== id))
+    const deleteCardEdit = (id: number) => {
+        if (id > 0){
+            setCards(prev => prev.filter(card => card.id !== id))
+            deleteCard(id)
+        } else{
+            setUpdatedCards(prev => prev.filter(card => card.id !== id))
+        }
+        
     };
 
     return (
         <>
             <div className="flex flex-col w-full mb-4 gap-4">
                 {cards.map((card, index) => (
-                    <CardEdit key={card.id} card={card} cardNo={index+1} onDelete={deleteCard}/>
+                    <CardEdit key={card.id} card={card} cardNo={index+1} onDelete={deleteCardEdit}/>
                 ))}
                 {updatedCards.map((card, index) => {
                     const cardNo = cards.length + index + 1
-                    return <CardEdit key={card.id} card={card} cardNo={cardNo} onDelete={deleteCard}/>
+                    return <CardEdit key={card.id} card={card} cardNo={cardNo} onDelete={deleteCardEdit}/>
                 })}
             </div>
             <AddCardButton onClick={addCard} />
