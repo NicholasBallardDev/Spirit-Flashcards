@@ -44,13 +44,13 @@ export function CardEdit({ card, cardNo, onDelete, onChange }: CardProps) {
       <div className='flex gap-4'>
         <TextareaAutosize
           value={question}
-          onChange={handleQuestionChange}
+          onChange={(e) => onChange?.({ ...card, question: e.target.value })}
           className="w-1/2 border p-2 rounded resize-none"
           minRows={1}
         />
         <TextareaAutosize
-          defaultValue={answer}
-          onChange={handleAnswerChange}
+          value={answer}
+          onChange={(e) => onChange?.({ ...card, answer: e.target.value })}
           className="w-1/2 border p-2 rounded resize-none"
           minRows={1}
         />

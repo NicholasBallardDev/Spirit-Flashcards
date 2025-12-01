@@ -14,7 +14,7 @@ export default async function DeckPage({ params }: {
                 <p className="text-gray-600 mb-6">{deck.description}</p>
             </div>
             <h2 className="text-xl font-semibold mb-2">Cards</h2>
-            <DeckClient initialCards={deck.cards} />
+            <DeckClient initialCards={deck.cards} deckId={deckId} />
         </div>
     );
 }

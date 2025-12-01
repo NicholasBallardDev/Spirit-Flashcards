@@ -33,7 +33,8 @@ export class CardService {
             answer: dto.answer,
             deck: dto.deckId ? {id: dto.deckId} as FlashcardDeck : undefined,
         });
-        await this.cardRepository.save(card);
+        const saved = await this.cardRepository.save(card);
+        return saved;
     }
 
     async update(id: number, dto: UpdateCardDTO){

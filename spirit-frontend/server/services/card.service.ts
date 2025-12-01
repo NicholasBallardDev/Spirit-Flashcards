@@ -17,11 +17,11 @@ export async function findDeck(deckId: number):  Promise<FlashcardDeck> {
   return res.json();
 }
 
-export async function createCard(card: Card):  Promise<Card> {
+export async function createCard(card: Card, deckId: number):  Promise<Card> {
   const res = await fetch(`${API_URL}/cards`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(card),
+    body: JSON.stringify({question: card.question, answer: card.answer, deckId: deckId}),
   });
   return res.json();
 }
@@ -30,7 +30,7 @@ export async function updateCard(id: number, card: Card):  Promise<Card> {
   const res = await fetch(`${API_URL}/cards/${id}`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(card),
+    body: JSON.stringify({question: card.question, answer: card.answer}),
   });
 
   if (!res.ok){
