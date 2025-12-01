@@ -2,6 +2,18 @@
 import { Trash2 } from 'lucide-react';
 import TextareaAutosize from "react-textarea-autosize";
 import type { Card } from "@/Types";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+
 
 interface CardProps {
   card: Card;
@@ -35,10 +47,26 @@ export function CardEdit({ card, cardNo, onDelete, onChange }: CardProps) {
     >
       <div className='flex justify-between mb-1 mx-1'>
         {cardNo}
-        <button
-          className="group p-2 rounded hover:bg-red-500 transition rounded-full cursor-pointer" onClick={handleDelete}>
-          <Trash2 size={20} className="text-gray-700 group-hover:text-white"/>
-        </button>
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <button
+              className="group p-2 rounded hover:bg-red-500 transition rounded-full cursor-pointer">
+              <Trash2 size={20} className="text-gray-700 group-hover:text-white"/>
+            </button>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+              <AlertDialogDescription>
+                Once you delete this card, it cannot be recovered. 
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction onClick={handleDelete} className="bg-red-600 text-white hover:bg-red-700 focus:ring-red-500">Delete</AlertDialogAction>
+            </AlertDialogFooter>
+        </AlertDialogContent>
+        </AlertDialog>
       </div>
 
       <div className='flex gap-4'>
