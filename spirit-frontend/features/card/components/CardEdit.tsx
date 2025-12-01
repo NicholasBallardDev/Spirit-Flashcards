@@ -4,13 +4,13 @@ import TextareaAutosize from "react-textarea-autosize";
 import type { Card } from "@/Types";
 
 interface CardProps {
-  card?: Card;
+  card: Card;
   cardNo: number;
+  onChange?: (card: Card) => void;
   onDelete?: (id: number) => void;
-  onClick?: (id: number) => void;
 }
 
-export function CardEdit({ card, cardNo: index, onDelete, onClick }: CardProps) {
+export function CardEdit({ card, cardNo, onDelete, onChange }: CardProps) {
   const question = card ? card.question : "";
   const answer = card ? card.answer : "";
 
@@ -20,13 +20,21 @@ export function CardEdit({ card, cardNo: index, onDelete, onClick }: CardProps) 
     }
   };
 
+  const handleQuestionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    onChange?.({ ...card, question: e.target.value });
+  };
+
+  const handleAnswerChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    onChange?.({ ...card, answer: e.target.value });
+  };
+
   return (
     <div
       className=
         "px-6 py-6 min-w-24 w-full border rounded-md cursor-pointer flex-col gap-4 items-start"
     >
       <div className='flex justify-between mb-1 mx-1'>
-        {index}
+        {cardNo}
         <button
           className="group p-2 rounded hover:bg-red-500 transition rounded-full cursor-pointer" onClick={handleDelete}>
           <Trash2 size={20} className="text-gray-700 group-hover:text-white"/>
@@ -35,12 +43,14 @@ export function CardEdit({ card, cardNo: index, onDelete, onClick }: CardProps) 
 
       <div className='flex gap-4'>
         <TextareaAutosize
-          defaultValue={question}
+          value={question}
+          onChange={handleQuestionChange}
           className="w-1/2 border p-2 rounded resize-none"
           minRows={1}
         />
         <TextareaAutosize
           defaultValue={answer}
+          onChange={handleAnswerChange}
           className="w-1/2 border p-2 rounded resize-none"
           minRows={1}
         />
