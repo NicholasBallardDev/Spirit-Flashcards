@@ -20,7 +20,7 @@ export function DeckClient({ initialCards, deckId }: DeckClientProps) {
     useEffect(() => {
         if (localStorage.getItem("showToast") === "true") {
             toast.success("Changes have been saved");
-            localStorage.removeItem("showToast"); // clear flag
+            localStorage.removeItem("showToast");
         }
     }, []);
 
