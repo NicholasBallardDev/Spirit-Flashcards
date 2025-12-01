@@ -1,9 +1,10 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CardEdit } from "@/features/card/components/CardEdit";
 import { AddCardButton } from "@/features/card/components/AddCardButton";
 import type { Card } from "@/Types";
 import { createCard, deleteCard, updateCard } from "@/server/services/card.service";
+import { toast, Toaster } from "sonner"
 
 interface DeckClientProps {
     initialCards: Card[];
@@ -15,6 +16,13 @@ export function DeckClient({ initialCards, deckId }: DeckClientProps) {
     const [updatedCards, setUpdatedCards] = useState<Card[]>([]);
     const [tempId, setTempId] = useState(-1)
     const cardIsSaved = (id: number) => id > 0
+
+    useEffect(() => {
+        if (localStorage.getItem("showToast") === "true") {
+            toast.success("Changes have been saved");
+            localStorage.removeItem("showToast"); // clear flag
+        }
+    }, []);
 
 
     const addCard = () => {
@@ -44,6 +52,8 @@ export function DeckClient({ initialCards, deckId }: DeckClientProps) {
         } catch (err) {
             console.error("Error saving cards:", err);
         }
+        
+        localStorage.setItem("showToast", "true");
         window.location.reload();
     };
 
@@ -75,6 +85,7 @@ export function DeckClient({ initialCards, deckId }: DeckClientProps) {
                 >
                 Save Changes
             </button>
+            <Toaster richColors />
         </>
     );
 }
