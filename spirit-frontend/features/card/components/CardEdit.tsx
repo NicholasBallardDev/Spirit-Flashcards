@@ -13,6 +13,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import { useEffect, useState } from 'react';
 
 
 interface CardProps {
@@ -25,6 +26,11 @@ interface CardProps {
 export function CardEdit({ card, cardNo, onDelete, onChange }: CardProps) {
   const question = card ? card.question : "";
   const answer = card ? card.answer : "";
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true)
+  },[])
 
   const handleDelete = () => {
     if (card?.id) {
@@ -47,26 +53,28 @@ export function CardEdit({ card, cardNo, onDelete, onChange }: CardProps) {
     >
       <div className='flex justify-between mb-1 mx-1'>
         {cardNo}
-        <AlertDialog>
-          <AlertDialogTrigger asChild>
-            <button
-              className="group p-2 rounded hover:bg-red-500 transition rounded-full cursor-pointer">
-              <Trash2 size={20} className="text-gray-700 group-hover:text-white"/>
-            </button>
-          </AlertDialogTrigger>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-              <AlertDialogDescription>
-                Once you delete this card, it cannot be recovered. 
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction onClick={handleDelete} className="bg-red-600 text-white hover:bg-red-700 focus:ring-red-500">Delete</AlertDialogAction>
-            </AlertDialogFooter>
-        </AlertDialogContent>
-        </AlertDialog>
+        {mounted && (
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <button
+                className="group p-2 rounded hover:bg-red-500 transition rounded-full cursor-pointer">
+                <Trash2 size={20} className="text-gray-700 group-hover:text-white"/>
+              </button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  Once you delete this card, it cannot be recovered. 
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={handleDelete} className="bg-red-600 text-white hover:bg-red-700 focus:ring-red-500">Delete</AlertDialogAction>
+              </AlertDialogFooter>
+          </AlertDialogContent>
+          </AlertDialog>
+        )}
       </div>
 
       <div className='flex gap-4'>
