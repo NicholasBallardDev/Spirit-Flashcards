@@ -1,4 +1,5 @@
 import type { Card, FlashcardDeck } from "@/Types";
+import { Description } from "@radix-ui/react-dialog";
 
 const API_URL = 'http://localhost:3000';
 
@@ -21,7 +22,7 @@ export async function createDeck(deck: Omit<FlashcardDeck, "id">):  Promise<Flas
   const res = await fetch(`${API_URL}/decks`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(deck),
+    body: JSON.stringify({name: deck.name, description: deck.description}),
   });
   return res.json();
 }
