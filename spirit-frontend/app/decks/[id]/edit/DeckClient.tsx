@@ -5,6 +5,7 @@ import { AddCardButton } from "@/features/card/components/AddCardButton";
 import type { Card } from "@/Types";
 import { createCard, deleteCard, updateCard } from "@/server/services/card.service";
 import { toast, Toaster } from "sonner"
+import { getCards } from "@/server/services/deck.service";
 
 interface DeckClientProps {
     initialCards: Card[];
@@ -13,20 +14,12 @@ interface DeckClientProps {
 
 export function DeckClient({ initialCards, deckId }: DeckClientProps) {
     const [cards, setCards] = useState<Card[]>(initialCards);
-    const [updatedCards, setUpdatedCards] = useState<Card[]>([]);
-    const [tempId, setTempId] = useState(-1)
-    const cardIsSaved = (id: number) => id > 0
-
-    useEffect(() => {
-        if (localStorage.getItem("showToast") === "true") {
-            toast.success("Changes have been saved");
-            localStorage.removeItem("showToast");
-        }
-    }, []);
-
+    const [newCards, setNewCards] = useState<Card[]>([]);
+    const [tempId, setTempId] = useState(-1);
+    const cardIsSaved = (id: number) => id > 0;
 
     const addCard = () => {
-        setUpdatedCards((prev) => [...prev, {id: tempId, question: "", answer: "", deckId: deckId}]);
+        setNewCards((prev) => [...prev, {id: tempId, question: "", answer: "", deckId: deckId}]);
         setTempId(tempId - 1)
     };
     
@@ -35,7 +28,7 @@ export function DeckClient({ initialCards, deckId }: DeckClientProps) {
             setCards(prev => prev.filter(card => card.id !== id))
             deleteCard(id)
         } else{
-            setUpdatedCards(prev => prev.filter(card => card.id !== id))
+            setNewCards(prev => prev.filter(card => card.id !== id))
         }
         
     };
@@ -46,22 +39,24 @@ export function DeckClient({ initialCards, deckId }: DeckClientProps) {
                 card.question && card.answer ? await updateCard(card.id, card) : null; 
             }
 
-            for (const card of updatedCards) {
+            for (const card of newCards) {
                 card.question && card.answer ? await createCard(card, deckId) : null; 
             }
         } catch (err) {
             console.error("Error saving cards:", err);
         }
+        const deckData = await getCards(deckId);
+        setCards(deckData.cards);
+        setNewCards([]);
         
-        localStorage.setItem("showToast", "true");
-        window.location.reload();
+        toast.success("Changes have been saved")
     };
 
     const updateEdit = (updated: Card) => {
         if (updated.id > 0) {
             setCards(prev => prev.map(card => card.id === updated.id ? updated : card));
         } else {
-            setUpdatedCards(prev => prev.map(card => card.id === updated.id ? updated : card));
+            setNewCards(prev => prev.map(card => card.id === updated.id ? updated : card));
         }
     };
 
@@ -73,7 +68,7 @@ export function DeckClient({ initialCards, deckId }: DeckClientProps) {
                 {cards.map((card, index) => (
                     <CardEdit key={card.id} card={card} cardNo={index+1} onDelete={deleteCardEdit} onChange={updateEdit}/>
                 ))}
-                {updatedCards.map((card, index) => {
+                {newCards.map((card, index) => {
                     const cardNo = cards.length + index + 1
                     return <CardEdit key={card.id} card={card} cardNo={cardNo} onDelete={deleteCardEdit} onChange={updateEdit}/>
                 })}
