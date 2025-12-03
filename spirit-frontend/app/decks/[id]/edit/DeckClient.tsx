@@ -35,6 +35,7 @@ export function DeckClient({ initialCards, deckId }: DeckClientProps) {
 
     const triggerCardChanges = async () => {
         try {
+            //TODO: Use promise.all instead of for loops
             for (const card of cards) {
                 card.question && card.answer ? await updateCard(card.id, card) : null; 
             }
