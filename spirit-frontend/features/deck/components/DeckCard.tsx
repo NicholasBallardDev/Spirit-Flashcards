@@ -24,7 +24,7 @@ export function DeckCard({ deck }: DeckCardProps) {
         </div>
       </Link>
       <div className="absolute top-6 right-5">
-        <DeckDropdown trigger={<button><MoreButton /></button>} />
+        <DeckDropdown deckId={deck.id} trigger={<button><MoreButton /></button>} />
       </div>
     </div>
   );
