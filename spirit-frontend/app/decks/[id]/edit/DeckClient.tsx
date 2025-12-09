@@ -5,7 +5,7 @@ import { AddCardButton } from "@/features/card/components/AddCardButton";
 import type { Card } from "@/Types";
 import { createCard, deleteCard, updateCard } from "@/server/services/card.service";
 import { toast, Toaster } from "sonner"
-import { getCards } from "@/server/services/deck.service";
+import { getDeck } from "@/server/services/deck.service";
 
 interface DeckClientProps {
     initialCards: Card[];
@@ -46,7 +46,7 @@ export function DeckClient({ initialCards, deckId }: DeckClientProps) {
         } catch (err) {
             console.error("Error saving cards:", err);
         }
-        const deckData = await getCards(deckId);
+        const deckData = await getDeck(deckId);
         setCards(deckData.cards);
         setNewCards([]);
         

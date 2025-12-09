@@ -8,12 +8,12 @@ export async function getDecks():  Promise<FlashcardDeck[]> {
   return res.json();
 }
 
-export async function getDeck(id: number):  Promise<FlashcardDeck> {
+export async function getDeckDetails(id: number):  Promise<FlashcardDeck> {
   const res = await fetch(`${API_URL}/decks/${id}`);
   return res.json();
 }
 
-export async function getCards(id: number):  Promise<FlashcardDeck> {
+export async function getDeck(id: number):  Promise<FlashcardDeck> {
   const res = await fetch(`${API_URL}/decks/${id}/cards`);
   return res.json();
 }

@@ -1,11 +1,11 @@
-import { getCards } from "@/server/services/deck.service";
+import { getDeck } from "@/server/services/deck.service";
 import { DeckClient } from "./DeckClient";
 
 export default async function DeckPage({ params }: {
     params: Promise<{id: string}>
 }) {
     const deckId = parseInt((await params).id);
-    const deck = await getCards(deckId);
+    const deck = await getDeck(deckId);
     
     return (
         <div className="p-6">
