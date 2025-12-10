@@ -1,5 +1,6 @@
 "use client";
 import { CardStudyView } from "@/features/card/components/CardStudyView";
+import { RatingButtonTray } from "@/features/card/components/RatingButtonTray";
 import { FlashcardDeck } from "@/Types";
 import { useEffect, useState } from "react";
 
@@ -26,6 +27,14 @@ export function StudyClient({ deck }: StudyClientProps) {
     })
 
     return (
-        <CardStudyView question={question} answer={answer}/>
+        <div className="flex-col justify-center items-center h-[50vh]">
+            <CardStudyView question={question} answer={answer}/>
+            <div className="mt-6">
+                <RatingButtonTray onRate={(rating) => {
+                    console.log(`Rated: ${rating}`);
+                    // handle scheduling, progress, next card, etc.
+                }} />
+            </div>
+        </div>
     );
 }
