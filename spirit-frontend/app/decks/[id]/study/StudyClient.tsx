@@ -19,7 +19,7 @@ export function StudyClient({ deck }: StudyClientProps) {
 
     useEffect(() => {
         if(cards.length === 0){
-            setFlashcard("There Are No Cards In This Deck Yet", "")
+            setFlashcard("There Are No Cards In This Deck Yet", "There Are No Cards In This Deck Yet")
         } else{
             setFlashcard(cards[0].question, cards[0].answer)
         }
