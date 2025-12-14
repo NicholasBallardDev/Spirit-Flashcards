@@ -10,6 +10,7 @@ interface StudyClientProps {
 
 export function StudyClient({ deck }: StudyClientProps) {
     const cards = deck.cards
+    const [current, setCurrent] = useState(0)
     const [question, setQuestion] = useState("");
     const [answer, setAnswer] = useState("");
 
@@ -18,23 +19,36 @@ export function StudyClient({ deck }: StudyClientProps) {
         setAnswer(answer);
     }
 
+    function incrementCurrent(){
+        setCurrent(current + 1)
+    }
+
     useEffect(() => {
         if(cards.length === 0){
             setFlashcard("There Are No Cards In This Deck Yet", "There Are No Cards In This Deck Yet")
-        } else{
-            setFlashcard(cards[0].question, cards[0].answer)
         }
-    })
+        else if (current < cards.length){
+            setFlashcard(cards[current].question, cards[current].answer)
+        }
+    }, [cards, current])
 
     return (
-        <div className="flex-col justify-center items-center h-[50vh]">
-            <CardStudyView question={question} answer={answer}/>
-            <div className="mt-6">
-                <RatingButtonTray onRate={(rating) => {
-                    console.log(`Rated: ${rating}`);
-                    // handle scheduling, progress, next card, etc.
-                }} />
-            </div>
-        </div>
+        <>
+            {current >= cards.length ? (
+                <div className="flex justify-center items-center h-[50vh] text-2xl font-bold">
+                    No more cards left
+                </div>
+            ) : (
+                <div className="flex-col justify-center items-center h-[50vh]">
+                    <CardStudyView key={current} question={question} answer={answer}/>
+                    <div className="mt-6">
+                        <RatingButtonTray onRate={(rating) => {
+                            console.log(`Rated: ${rating}`);
+                            incrementCurrent()
+                        }} />
+                    </div>
+                </div>
+            )}
+        </>
     );
 }
