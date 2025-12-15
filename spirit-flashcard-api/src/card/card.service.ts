@@ -1,37 +1,42 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Card } from './card.entity';
-import { Repository } from 'typeorm';
+import { Repository } from 'typeorm'; 
 import { CreateCardDTO } from './dto/create-card.dto';
 import { FlashcardDeck } from '@src/flashcard-deck/flashcard-deck.entity';
 import { UpdateCardDTO } from './dto/update-card.dto';
+import { ScheduleService } from '@src/schedule/schedule.service';
 
 @Injectable()
 export class CardService {
     constructor(
         @InjectRepository(Card)
         private cardRepository: Repository<Card>,
+        private scheduleService: ScheduleService,
     ){}
 
     async findAll(){
-        return this.cardRepository.find({ relations: ['deck'] });
+        return this.cardRepository.find({ relations: ['deck', 'schedule'] });
     }
 
     async findOne(id: number){
-        return this.cardRepository.findOne({where: { id }});
+        return this.cardRepository.findOne({where: { id }, relations: ['deck', 'schedule']});
     }
 
     async findDeck(deckId: number){
-        this.cardRepository.find({
+        return this.cardRepository.find({
             where: { deck: { id: deckId } }, 
-            relations: ['deck'],})
+            relations: ['deck', 'schedule'],})
     }
 
     async create(dto: CreateCardDTO){
+        const schedule = this.scheduleService.create();
+
         const card = this.cardRepository.create({ 
             question: dto.question, 
             answer: dto.answer,
-            deck: dto.deckId ? {id: dto.deckId} as FlashcardDeck : undefined,
+            deck: dto.deckId ? { id: dto.deckId } as FlashcardDeck : undefined,
+            schedule: schedule,
         });
         const saved = await this.cardRepository.save(card);
         return saved;
@@ -43,7 +48,7 @@ export class CardService {
             answer: dto.answer,
             deck: dto.deckId ? {id: dto.deckId} as FlashcardDeck : undefined
          })
-        return this.cardRepository.findOne({ where: { id }, relations: ['deck'] })
+        return this.cardRepository.findOne({ where: { id }, relations: ['deck', 'schedule'] })
     }
     
     async delete(id: number){

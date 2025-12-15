@@ -7,11 +7,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { Card } from './card/card.entity';
 import { FlashcardDeck } from './flashcard-deck/flashcard-deck.entity';
+import { ScheduleModule } from './schedule/schedule.module';
+import { Schedule } from './schedule/card-schedule.entity';
 
 const DEFAULT_DB_PORT = 5432;
 
 @Module({
-  imports: [CardModule, FlashcardDeckModule, 
+  imports: [CardModule, FlashcardDeckModule, ScheduleModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
@@ -19,8 +21,8 @@ const DEFAULT_DB_PORT = 5432;
     type: "postgres",
     host: process.env.DB_HOST,
     port: process.env.DB_PORT ? parseInt(process.env.DB_PORT) : DEFAULT_DB_PORT,
-    entities: [Card, FlashcardDeck],
-    synchronize: true, //remove in production environment
+    entities: [Card, FlashcardDeck, Schedule],
+    synchronize: true, 
     username: process.env.DB_USER,
     password: process.env.DB_PASS,
     database: process.env.DB_NAME,
