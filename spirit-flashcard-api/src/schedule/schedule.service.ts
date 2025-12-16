@@ -15,6 +15,10 @@ export class ScheduleService {
         return this.scheduleRepository.findOne({ where: {id}, relations: ['card'] } )
     }
 
+    findAll(){
+        return this.scheduleRepository.find({ relations: ['card'] })
+    }
+
     create(): Schedule {
         const card = createEmptyCard(new Date());
 
