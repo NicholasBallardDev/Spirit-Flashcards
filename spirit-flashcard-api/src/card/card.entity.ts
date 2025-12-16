@@ -18,7 +18,7 @@ export class Card {
     @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
     createdAt: Date
 
-    @ManyToOne(() => FlashcardDeck, deck => deck.cards)
+    @ManyToOne(() => FlashcardDeck, deck => deck.cards, { onDelete: 'CASCADE' })
     deck: FlashcardDeck
 
     @OneToOne(() => Schedule, schedule => schedule.card, { cascade: true })
