@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Schedule } from './card-schedule.entity';
-import { State } from 'ts-fsrs';
+import { createEmptyCard, State } from 'ts-fsrs';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -12,16 +12,21 @@ export class ScheduleService {
     ) {}
 
     create(): Schedule {
+        const card = createEmptyCard(new Date());
+
         return this.scheduleRepository.create({
-            due: new Date(),
-            stability: 0,
-            difficulty: 0,
-            elapsed_days: 0,
-            scheduled_days: 0,
-            learning_steps: 0,
-            reps: 0,
-            lapses: 0,
-            state: State.New,
+            due: card.due,
+            stability: card.stability,
+            difficulty: card.difficulty,
+            scheduled_days: card.scheduled_days,
+            learning_steps: card.learning_steps,
+            reps: card.reps,
+            lapses: card.lapses,
+            state: card.state,
         });
+    }
+
+    update(): Schedule {
+        return new Schedule()
     }
 }

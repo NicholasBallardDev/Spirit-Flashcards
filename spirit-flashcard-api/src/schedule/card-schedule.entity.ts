@@ -21,9 +21,6 @@ export class Schedule {
     difficulty: number;
 
     @Column()
-    elapsed_days: number;
-
-    @Column()
     scheduled_days: number;
 
     @Column()
