@@ -19,7 +19,7 @@ export class ScheduleController {
 
         @Get("state/:state")
         async getByState(@Param('state', ParseIntPipe) state: State){
-            return this.scheduleService.findOne(state)
+            return this.scheduleService.getByState(state)
         }
     
         @Post()
@@ -27,7 +27,7 @@ export class ScheduleController {
             return this.scheduleService.create()
         }
     
-        @Put(":rating")
+        @Put(":id/:rating")
         async update(@Param('id', ParseIntPipe) id: number, @Param('rating', ParseIntPipe) rating: Rating){
             return this.scheduleService.update(id, rating)
         }

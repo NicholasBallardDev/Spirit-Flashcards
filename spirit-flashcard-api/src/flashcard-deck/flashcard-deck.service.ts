@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { FlashcardDeck } from './flashcard-deck.entity';
@@ -43,7 +43,7 @@ export class FlashcardDeckService {
         })
 
         if (result.affected === 0){
-            throw Error(`Failure: Item with Id ${id} not found`);
+            throw new NotFoundException(`Failure: Item with Id ${id} not found`);
         }
 
         return this.deckRepository.findOne({ where: { id } })
@@ -53,7 +53,7 @@ export class FlashcardDeckService {
         const result = await this.deckRepository.delete(id);
         
         if (result.affected === 0){
-            throw Error(`Failure: Item with Id ${id} not found`);
+            throw new NotFoundException(`Failure: Item with Id ${id} not found`);
         }
 
         return { message: `Delete Successful: Item with Id ${id} was deleted` }

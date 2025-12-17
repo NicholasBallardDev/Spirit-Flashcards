@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Schedule } from './card-schedule.entity';
 import { createEmptyCard, generatorParameters, fsrs, Rating, State  } from 'ts-fsrs';
@@ -24,19 +24,13 @@ export class ScheduleService {
     }
 
     create(): Schedule {
-        const card = createEmptyCard(new Date());
+        const card = createEmptyCard();
 
-        return this.scheduleRepository.create({
-            due: card.due,
-            stability: card.stability,
-            difficulty: card.difficulty,
-            scheduled_days: card.scheduled_days,
-            elapsed_days: card.elapsed_days,
-            learning_steps: card.learning_steps,
-            reps: card.reps,
-            lapses: card.lapses,
-            state: card.state,
+        const result = this.scheduleRepository.create({
+            ...card,
         });
+
+        return result
     }
 
     async update(id: number, rating: Rating) {
@@ -55,7 +49,7 @@ export class ScheduleService {
 
             return result
         } else {
-             throw Error(`Item with the id of ${id} was not found`) 
+             throw new NotFoundException(`Item with the id of ${id} was not found`);
         }
     }
 }

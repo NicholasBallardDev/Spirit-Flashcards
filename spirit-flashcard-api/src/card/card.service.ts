@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Card } from './card.entity';
 import { Repository } from 'typeorm'; 
@@ -54,7 +54,7 @@ export class CardService {
     async delete(id: number){
         const result = await this.cardRepository.delete(id);
         if(result.affected === 0){
-            throw Error(`Item with the id of ${id} was not found`)
+            throw new NotFoundException(`Item with the id of ${id} was not found`)
         }
         return { message: `Deletion Successful: Item with the id of ${id} was deleted`}
     }
