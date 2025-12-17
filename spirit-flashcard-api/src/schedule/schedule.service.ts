@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Schedule } from './card-schedule.entity';
-import { createEmptyCard, FSRS, generatorParameters, State, fsrs  } from 'ts-fsrs';
+import { createEmptyCard, generatorParameters, fsrs, Rating, State  } from 'ts-fsrs';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -17,6 +17,10 @@ export class ScheduleService {
 
     findAll(){
         return this.scheduleRepository.find({ relations: ['card'] })
+    }
+
+    getByState(state: State){
+        return this.scheduleRepository.find({ where: {state}, relations: ['card'] })
     }
 
     create(): Schedule {
@@ -35,7 +39,7 @@ export class ScheduleService {
         });
     }
 
-    async update(id: number, state: State) {
+    async update(id: number, rating: Rating) {
         const params = generatorParameters({});
         const card = await this.findOne(id);
         const f = fsrs(params)
@@ -43,7 +47,7 @@ export class ScheduleService {
 
         if (card){
             const scheduler = f.repeat(card.toSchedulingCard(), now)
-            const scheduledCard = scheduler[state].card
+            const scheduledCard = scheduler[rating].card
             const result = await this.scheduleRepository.update(id, {
                 ...scheduledCard,
                 last_review: now
