@@ -29,10 +29,11 @@ export class ScheduleController {
     return this.scheduleService.getByState(state);
   }
 
-  @Get('deck/:deckId/state/:state')
+  @Get('deck/:deckId')
   async getByStateAndDeck(
-    @Param('state', ParseIntPipe) state: State,
     @Param('deckId', ParseIntPipe) deckId: number,
+    @Query('state', new ParseIntPipe({ errorHttpStatusCode: 400 }))
+    state: State,
   ) {
     return this.scheduleService.getByStateAndDeck(state, deckId);
   }
