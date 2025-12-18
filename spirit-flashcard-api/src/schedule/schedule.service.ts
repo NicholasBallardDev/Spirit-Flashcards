@@ -23,6 +23,16 @@ export class ScheduleService {
         return this.scheduleRepository.find({ where: {state}, relations: ['card'] })
     }
 
+    getByStateAndDeck(state: State, deckId: number) {
+        return this.scheduleRepository.find({
+            where: {
+                state,
+                card: { deck: {id: deckId} }
+            },
+            relations: ['card']
+        })
+    }
+
     create(): Schedule {
         const card = createEmptyCard();
 
@@ -34,13 +44,12 @@ export class ScheduleService {
     }
 
     async update(id: number, rating: Rating) {
-        const params = generatorParameters({});
         const card = await this.findOne(id);
-        const f = fsrs(params)
+        const f = fsrs()
         const now = new Date()
 
         if (card){
-            const scheduler = f.repeat(card.toSchedulingCard(), now)
+            const scheduler = f.repeat(card, now)
             const scheduledCard = scheduler[rating].card
             const result = await this.scheduleRepository.update(id, {
                 ...scheduledCard,

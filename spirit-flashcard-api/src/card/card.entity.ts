@@ -1,26 +1,32 @@
-import { FlashcardDeck } from "@src/flashcard-deck/flashcard-deck.entity"
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToOne } from "typeorm"
-import { Schedule } from "../schedule/card-schedule.entity"
+import { FlashcardDeck } from '@src/flashcard-deck/flashcard-deck.entity';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  OneToOne,
+} from 'typeorm';
+import { Schedule } from '../schedule/card-schedule.entity';
 
 @Entity('cards')
 export class Card {
-    @PrimaryGeneratedColumn()
-    id: number
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    //TODO: ADD USER FIELD
+  //TODO: ADD USER FIELD
 
-    @Column()
-    question: string
+  @Column()
+  question: string;
 
-    @Column()
-    answer: string
+  @Column()
+  answer: string;
 
-    @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-    createdAt: Date
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  createdAt: Date;
 
-    @ManyToOne(() => FlashcardDeck, deck => deck.cards, { onDelete: 'CASCADE' })
-    deck: FlashcardDeck
+  @ManyToOne(() => FlashcardDeck, (deck) => deck.cards, { onDelete: 'CASCADE' })
+  deck: FlashcardDeck;
 
-    @OneToOne(() => Schedule, schedule => schedule.card, { cascade: true })
-    schedule: Schedule;
+  @OneToOne(() => Schedule, (schedule) => schedule.card, { cascade: true })
+  schedule: Schedule;
 }
