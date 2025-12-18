@@ -29,12 +29,20 @@ export class ScheduleController {
     return this.scheduleService.getByState(state);
   }
 
+  @Get('deck/:deckId/state/:state')
+  async getByStateAndDeck(
+    @Param('state', ParseIntPipe) state: State,
+    @Param('deckId', ParseIntPipe) deckId: number,
+  ) {
+    return this.scheduleService.getByStateAndDeck(state, deckId);
+  }
+
   @Post()
   async create() {
     return this.scheduleService.create();
   }
 
-  @Put(':id/:rating')
+  @Put(':id')
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Query('rating', new ParseIntPipe({ errorHttpStatusCode: 400 }))
