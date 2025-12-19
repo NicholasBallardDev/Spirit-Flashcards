@@ -28,6 +28,18 @@ export class ScheduleService {
     return this.scheduleRepository.find({ relations: ['card'] });
   }
 
+  async getSchedulePreview(id: number) {
+    const card = await this.findOne(id);
+    const f = fsrs();
+    const now = new Date();
+
+    if (!card) {
+      throw new NotFoundException('Card not found');
+    }
+
+    return f.repeat(card, now);
+  }
+
   getByState(state: State) {
     return this.scheduleRepository.find({
       where: { state },

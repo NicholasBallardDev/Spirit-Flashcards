@@ -24,6 +24,11 @@ export class ScheduleController {
     return this.scheduleService.findOne(id);
   }
 
+  @Get(':id/preview')
+  async getPreview(@Param('id', ParseIntPipe) id: number) {
+    return this.scheduleService.getSchedulePreview(id);
+  }
+
   @Get('state/:state')
   async getByState(@Param('state', ParseIntPipe) state: State) {
     return this.scheduleService.getByState(state);
