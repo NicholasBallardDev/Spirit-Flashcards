@@ -1,4 +1,5 @@
 import { Schedule, State, Rating } from "@/Types/schedule"
+import { IPreview, RecordLog } from "ts-fsrs"
 
 const API_URL = "http://localhost:3000"
 
@@ -14,6 +15,11 @@ export async function getSchedule(id: number): Promise<Schedule> {
 
 export async function getSchedulesByState(state: State): Promise<Schedule[]> {
   const res = await fetch(`${API_URL}/schedule/state/${state}`)
+  return res.json()
+}
+
+export async function getPreview(id: number): Promise<IPreview> {
+  const res = await fetch(`${API_URL}/schedule/${id}/preview`)
   return res.json()
 }
 

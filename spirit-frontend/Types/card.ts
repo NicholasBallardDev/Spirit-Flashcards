@@ -1,6 +1,9 @@
+import { Schedule } from "./schedule"
+
 export interface Card {
-  id: number;
-  question: string;
-  answer: string;
-  deckId: number;
+  id: number
+  question: string
+  answer: string
+  deckId: number
+  schedule: Schedule
 }

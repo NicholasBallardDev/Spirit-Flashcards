@@ -22,8 +22,7 @@ export async function createCard(card: Card, deckId: number): Promise<Card> {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      question: card.question,
-      answer: card.answer,
+      ...card,
       deckId: deckId,
     }),
   })

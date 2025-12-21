@@ -23,7 +23,7 @@ export class FlashcardDeckService {
   async getCards(id: number) {
     return this.deckRepository.findOne({
       where: { id },
-      relations: ['cards'],
+      relations: ['cards', 'cards.schedule'],
     });
   }
 

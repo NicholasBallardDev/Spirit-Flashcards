@@ -7,6 +7,8 @@ import {
   fsrs,
   Rating,
   State,
+  RecordLog,
+  IPreview,
 } from 'ts-fsrs';
 import { Repository } from 'typeorm';
 
