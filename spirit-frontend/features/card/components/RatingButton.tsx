@@ -25,21 +25,37 @@ export function RatingButton({ text }: RatingButtonProps) {
     loadPreview()
   }, [schedule.id])
 
+  function formatTimeDiff(previews: IPreview) {
+    const a = previews[Rating.Again].card.due
+    const b = previews[Rating.Again].card.last_review!
+
+    const diffMs = new Date(a).getTime() - new Date(b).getTime()
+
+    const minutes = Math.round(diffMs / (1000 * 60))
+    const hours = Math.round(diffMs / (1000 * 60 * 60))
+    const days = Math.round(diffMs / (1000 * 60 * 60 * 24))
+
+    const lessThanHour = Math.abs(diffMs) < 1000 * 60 * 60
+    const lessThanDay = Math.abs(diffMs) < 1000 * 60 * 60 * 24
+
+    if (lessThanHour) {
+      return `${minutes}m`
+    } else if (lessThanDay) {
+      return `${hours}h`
+    }
+
+    return `${days}d`
+  }
+
   if (!schedule) return null
 
   return (
     <>
-      <div>
+      <div className="flex-row text-center">
+        <p>{previews ? formatTimeDiff(previews) : ""}</p>
         <button className={`${btn} basis-36`} onClick={() => onRate("Renew")}>
           {text}
         </button>
-        {previews
-          ? Math.round(
-              (new Date(previews[Rating.Again].card.due).getTime() -
-                new Date(previews[Rating.Again].card.last_review!).getTime()) /
-                (1000 * 60 * 60 * 24)
-            ) + " days"
-          : ""}
       </div>
     </>
   )
