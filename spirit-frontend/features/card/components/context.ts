@@ -1,9 +1,10 @@
 import { Schedule } from "@/Types/schedule"
 import { createContext, useContext } from "react"
+import { Rating } from "ts-fsrs"
 
 type ScheduleContextType = {
   schedule: Schedule
-  onRate: (rating: string) => void
+  onRate: (rating: Rating) => void
 }
 
 export const ScheduleContext = createContext<ScheduleContextType | undefined>(

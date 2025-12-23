@@ -56,7 +56,7 @@ export function RatingButton({ text, rating }: RatingButtonProps) {
         <p>{previews ? formatTimeDiff(previews) : ""}</p>
         <button
           className={`${btn} basis-36 w-24`}
-          onClick={() => onRate("Renew")}
+          onClick={() => onRate(rating)}
         >
           {text}
         </button>
