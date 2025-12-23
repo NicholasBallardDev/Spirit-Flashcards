@@ -6,7 +6,6 @@ export enum State {
 }
 
 export enum Rating {
-  Manual = 0,
   Again = 1,
   Hard = 2,
   Good = 3,

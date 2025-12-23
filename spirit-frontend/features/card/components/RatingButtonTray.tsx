@@ -1,4 +1,4 @@
-import { Schedule } from "@/Types/schedule"
+import { Rating, Schedule } from "@/Types/schedule"
 import { getPreview } from "@/server/services/schedule.service"
 import { useEffect } from "react"
 import { RatingButton } from "./RatingButton"
@@ -6,11 +6,18 @@ import { RatingButton } from "./RatingButton"
 interface RatingButtonTrayProps {}
 
 export function RatingButtonTray() {
-  const btn =
-    "px-4 py-2 rounded-full text-white text-sm font-semibold transition focus:outline-none focus:ring-2 focus:ring-white/40 bg-[#1D4ED8] hover:bg-[#2563EB]"
+  const RATINGS = [Rating.Again, Rating.Hard, Rating.Good, Rating.Easy]
+  const LABELS: Record<number, string> = {
+    [Rating.Again]: "Again",
+    [Rating.Hard]: "Hard",
+    [Rating.Good]: "Good",
+    [Rating.Easy]: "Easy",
+  }
   return (
-    <div className="flex justify-center items-center gap-4 w-full">
-      <RatingButton text="Hello" />
+    <div className="flex justify-center items-center gap-8 w-full">
+      {RATINGS.map((r) => {
+        return <RatingButton text={LABELS[r]} key={r} rating={r} />
+      })}
     </div>
   )
 }

@@ -6,9 +6,10 @@ import { IPreview, RecordLog } from "ts-fsrs"
 
 interface RatingButtonProps {
   text: string
+  rating: Rating
 }
 
-export function RatingButton({ text }: RatingButtonProps) {
+export function RatingButton({ text, rating }: RatingButtonProps) {
   const btn =
     "px-4 py-2 rounded-full text-white text-sm font-semibold transition focus:outline-none focus:ring-2 focus:ring-white/40 bg-[#1D4ED8] hover:bg-[#2563EB]"
 
@@ -26,8 +27,8 @@ export function RatingButton({ text }: RatingButtonProps) {
   }, [schedule.id])
 
   function formatTimeDiff(previews: IPreview) {
-    const a = previews[Rating.Again].card.due
-    const b = previews[Rating.Again].card.last_review!
+    const a = previews[rating].card.due
+    const b = previews[rating].card.last_review!
 
     const diffMs = new Date(a).getTime() - new Date(b).getTime()
 
@@ -39,7 +40,7 @@ export function RatingButton({ text }: RatingButtonProps) {
     const lessThanDay = Math.abs(diffMs) < 1000 * 60 * 60 * 24
 
     if (lessThanHour) {
-      return `${minutes}m`
+      return `<${minutes}m`
     } else if (lessThanDay) {
       return `${hours}h`
     }
@@ -53,7 +54,10 @@ export function RatingButton({ text }: RatingButtonProps) {
     <>
       <div className="flex-row text-center">
         <p>{previews ? formatTimeDiff(previews) : ""}</p>
-        <button className={`${btn} basis-36`} onClick={() => onRate("Renew")}>
+        <button
+          className={`${btn} basis-36 w-24`}
+          onClick={() => onRate("Renew")}
+        >
           {text}
         </button>
       </div>
