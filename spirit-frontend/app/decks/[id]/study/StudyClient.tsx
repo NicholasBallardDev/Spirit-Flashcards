@@ -28,8 +28,8 @@ export function StudyClient({ deck }: StudyClientProps) {
 
   function onRate(rating: Rating) {
     const schedule = cards[current].schedule
-    console.log(schedule)
     updateSchedule(schedule.id, rating)
+    incrementCurrent()
   }
 
   useEffect(() => {
