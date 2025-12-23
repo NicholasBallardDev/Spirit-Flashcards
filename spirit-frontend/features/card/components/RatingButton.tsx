@@ -6,7 +6,7 @@ import { IPreview, RecordLog } from "ts-fsrs"
 
 interface RatingButtonProps {
   text: string
-  rating: Rating
+  rating: Exclude<Rating, Rating.Manual>
 }
 
 export function RatingButton({ text, rating }: RatingButtonProps) {

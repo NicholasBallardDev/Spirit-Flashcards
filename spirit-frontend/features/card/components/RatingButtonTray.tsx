@@ -6,7 +6,7 @@ import { RatingButton } from "./RatingButton"
 interface RatingButtonTrayProps {}
 
 export function RatingButtonTray() {
-  const RATINGS = [Rating.Again, Rating.Hard, Rating.Good, Rating.Easy]
+  const RATINGS = [Rating.Again, Rating.Hard, Rating.Good, Rating.Easy] as const
   const LABELS: Record<number, string> = {
     [Rating.Again]: "Again",
     [Rating.Hard]: "Hard",

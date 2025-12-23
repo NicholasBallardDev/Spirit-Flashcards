@@ -10,6 +10,7 @@ export enum Rating {
   Hard = 2,
   Good = 3,
   Easy = 4,
+  Manual = 0,
 }
 
 export interface Schedule {

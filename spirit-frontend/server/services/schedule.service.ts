@@ -27,11 +27,9 @@ export async function getSchedulesByDeckAndState(
   deckId: number,
   state: State
 ): Promise<Schedule[]> {
-  const urlParams = new URLSearchParams(
-    {
-      state: state,
-    }.toString()
-  )
+  const urlParams = new URLSearchParams({
+    state: String(state),
+  })
   const res = await fetch(`${API_URL}/schedule/deck/${deckId}?` + urlParams)
   return res.json()
 }
@@ -48,11 +46,9 @@ export async function updateSchedule(
   id: number,
   rating: Rating
 ): Promise<Schedule> {
-  const urlParams = new URLSearchParams(
-    {
-      rating: rating,
-    }.toString()
-  )
+  const urlParams = new URLSearchParams({
+    rating: String(rating),
+  })
   const res = await fetch(`${API_URL}/schedule/${id}?` + urlParams, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },

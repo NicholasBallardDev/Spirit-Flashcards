@@ -2,8 +2,10 @@
 import { CardStudyView } from "@/features/card/components/CardStudyView"
 import { ScheduleContext } from "@/features/card/components/context"
 import { RatingButtonTray } from "@/features/card/components/RatingButtonTray"
+import { updateSchedule } from "@/server/services/schedule.service"
 import { FlashcardDeck } from "@/Types"
 import { useEffect, useState } from "react"
+import { Rating } from "ts-fsrs"
 
 interface StudyClientProps {
   deck: FlashcardDeck
@@ -24,8 +26,10 @@ export function StudyClient({ deck }: StudyClientProps) {
     setCurrent(current + 1)
   }
 
-  function onRate() {
-    incrementCurrent()
+  function onRate(rating: Rating) {
+    const schedule = cards[current].schedule
+    console.log(schedule)
+    updateSchedule(schedule.id, rating)
   }
 
   useEffect(() => {
