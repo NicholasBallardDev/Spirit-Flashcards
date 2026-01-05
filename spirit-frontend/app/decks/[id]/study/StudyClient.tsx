@@ -2,6 +2,7 @@
 import { CardStudyView } from "@/features/card/components/CardStudyView"
 import { ScheduleContext } from "@/features/card/components/context"
 import { RatingButtonTray } from "@/features/card/components/RatingButtonTray"
+import { getDeck } from "@/server/services/deck.service"
 import { updateSchedule } from "@/server/services/schedule.service"
 import { FlashcardDeck } from "@/Types"
 import { useEffect, useState } from "react"
@@ -12,8 +13,11 @@ interface StudyClientProps {
 }
 
 export function StudyClient({ deck }: StudyClientProps) {
-  const cards = deck.cards
-  const [current, setCurrent] = useState(0)
+  const [cards, setCards] = useState(() =>
+    deck.cards.filter((c) => new Date(c.schedule.due) < new Date())
+  )
+
+  const current = 0
   const [question, setQuestion] = useState("")
   const [answer, setAnswer] = useState("")
 
@@ -22,14 +26,12 @@ export function StudyClient({ deck }: StudyClientProps) {
     setAnswer(answer)
   }
 
-  function incrementCurrent() {
-    setCurrent(current + 1)
-  }
-
-  function onRate(rating: Rating) {
+  async function onRate(rating: Rating) {
+    console.log(cards)
     const schedule = cards[current].schedule
-    updateSchedule(schedule.id, rating)
-    incrementCurrent()
+    await updateSchedule(schedule.id, rating)
+    const updated = await getDeck(deck.id)
+    setCards(updated.cards.filter((c) => new Date(c.schedule.due) < new Date()))
   }
 
   useEffect(() => {
