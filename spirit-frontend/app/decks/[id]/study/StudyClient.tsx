@@ -31,17 +31,17 @@ export function StudyClient({ deck }: StudyClientProps) {
   }
 
   async function onRate(rating: Rating) {
-    console.log(cards)
-    const schedule = cards[current].schedule
-    await updateSchedule(schedule.id, rating)
+    const card = cards[current]
+    await updateSchedule(card.schedule.id, rating)
     const updated = await getDeck(deck.id)
-    setCards(
-      updated.cards.filter((c) => {
-        const dueDate = new Date(c.schedule.due).getTime()
-        const oneHour = Date.now() + 1000 * 60 * 60
-        return dueDate < oneHour
-      })
-    )
+    const dueCards = updated.cards.filter((c) => {
+      const dueDate = new Date(c.schedule.due).getTime()
+      const oneHour = Date.now() + 1000 * 60 * 60
+      return dueDate < oneHour
+    })
+    const index = dueCards.findIndex((c) => c.id === card.id)
+    if (index !== -1) dueCards.push(dueCards.splice(index, 1)[0])
+    setCards(dueCards)
   }
 
   useEffect(() => {
