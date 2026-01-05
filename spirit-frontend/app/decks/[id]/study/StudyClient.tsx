@@ -14,10 +14,14 @@ interface StudyClientProps {
 
 export function StudyClient({ deck }: StudyClientProps) {
   const [cards, setCards] = useState(() =>
-    deck.cards.filter((c) => new Date(c.schedule.due) < new Date())
+    deck.cards.filter((c) => {
+      const dueDate = new Date(c.schedule.due).getTime()
+      const oneHour = Date.now() + 1000 * 60 * 60
+      return dueDate < oneHour
+    })
   )
 
-  const current = 0
+  const [current, setCurrent] = useState(0)
   const [question, setQuestion] = useState("")
   const [answer, setAnswer] = useState("")
 
@@ -31,7 +35,13 @@ export function StudyClient({ deck }: StudyClientProps) {
     const schedule = cards[current].schedule
     await updateSchedule(schedule.id, rating)
     const updated = await getDeck(deck.id)
-    setCards(updated.cards.filter((c) => new Date(c.schedule.due) < new Date()))
+    setCards(
+      updated.cards.filter((c) => {
+        const dueDate = new Date(c.schedule.due).getTime()
+        const oneHour = Date.now() + 1000 * 60 * 60
+        return dueDate < oneHour
+      })
+    )
   }
 
   useEffect(() => {
