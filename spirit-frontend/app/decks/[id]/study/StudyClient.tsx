@@ -1,4 +1,5 @@
 "use client"
+import { CardNavigationTray } from "@/features/card/components/CardNavigationTray"
 import { CardStudyView } from "@/features/card/components/CardStudyView"
 import { ScheduleContext } from "@/features/card/components/context"
 import { RatingButtonTray } from "@/features/card/components/RatingButtonTray"
@@ -21,7 +22,7 @@ export function StudyClient({ deck }: StudyClientProps) {
     })
   )
 
-  const [current, setCurrent] = useState(0)
+  const current = 0
   const [question, setQuestion] = useState("")
   const [answer, setAnswer] = useState("")
 
