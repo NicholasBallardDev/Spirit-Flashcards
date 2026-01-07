@@ -12,23 +12,25 @@ interface StudyClientProps {
 }
 
 export function StudyClient({ deck }: StudyClientProps) {
-  const [isToggled, setToggled] = useState(false)
-  function toggle() {
-    setToggled(!isToggled)
+  const [trackProgress, setStudyMode] = useState(false)
+
+  function toggleStudyMode() {
+    setStudyMode(!trackProgress)
   }
+
   return (
     <>
       <div className="flex gap-2 my-2">
         <Label htmlFor="track-progress">Track Progress</Label>
         <Switch
           id="track-progress"
-          checked={isToggled}
-          onClick={toggle}
+          checked={trackProgress}
+          onClick={toggleStudyMode}
           className=" data-[state=checked]:bg-green-500 data-[state=unchecked]:bg-gray-300 "
         />
       </div>
       <div className="flex-col justify-center items-center h-[50vh]">
-        {isToggled ? <StudySpaced deck={deck} /> : <StudyAll deck={deck} />}
+        {trackProgress ? <StudySpaced deck={deck} /> : <StudyAll deck={deck} />}
       </div>
     </>
   )
