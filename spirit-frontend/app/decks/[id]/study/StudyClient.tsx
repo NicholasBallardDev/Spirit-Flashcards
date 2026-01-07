@@ -26,7 +26,7 @@ export function StudyClient({ deck }: StudyClientProps) {
           id="track-progress"
           checked={trackProgress}
           onClick={toggleStudyMode}
-          className=" data-[state=checked]:bg-green-500 data-[state=unchecked]:bg-gray-300 "
+          className=" data-[state=checked]:bg-green-500"
         />
       </div>
       <div className="flex-col justify-center items-center h-[50vh]">
