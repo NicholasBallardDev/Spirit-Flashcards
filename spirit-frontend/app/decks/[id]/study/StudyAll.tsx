@@ -49,13 +49,14 @@ export function StudyAll({ deck }: StudyAll) {
         </div>
       ) : (
         <>
-          <div className="flex-col justify-center items-center h-[50vh]">
+          <div className="flex-col justify-center items-center h-[50vh] mb-4">
             <CardStudyView key={current} question={question} answer={answer} />
-            <div className="mt-6"></div>
           </div>
           <CardNavigationTray
             onDecrement={decrementCurrent}
             onIncrement={incrementCurrent}
+            current={current + 1}
+            deckSize={deck.cards.length}
           />
         </>
       )}

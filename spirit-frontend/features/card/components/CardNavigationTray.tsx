@@ -5,9 +5,16 @@ import { ArrowLeftIcon } from "lucide-react"
 interface NavTrayProps {
   onDecrement: () => void
   onIncrement: () => void
+  current: number
+  deckSize: number
 }
 
-export function CardNavigationTray({ onDecrement, onIncrement }: NavTrayProps) {
+export function CardNavigationTray({
+  onDecrement,
+  onIncrement,
+  current,
+  deckSize,
+}: NavTrayProps) {
   return (
     <div className="flex justify-center items-center gap-8 w-full">
       <Button
@@ -17,7 +24,7 @@ export function CardNavigationTray({ onDecrement, onIncrement }: NavTrayProps) {
         <ArrowLeftIcon className="!size-6" />
       </Button>
 
-      <p>Hi</p>
+      <p className="text-[20px]">{`${current}/${deckSize}`}</p>
 
       <Button
         onClick={onIncrement}
