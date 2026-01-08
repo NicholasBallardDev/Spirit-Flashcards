@@ -37,7 +37,6 @@ export function StudySpaced({ deck }: StudySpacedProps) {
       const dueCards = updated.cards.filter((c) => isDue(c))
       setCards(dueCards)
       setCurrent(0)
-      setFlashcard("", "")
       setLoading(false)
     }
     fetchCards()
@@ -53,20 +52,6 @@ export function StudySpaced({ deck }: StudySpacedProps) {
     setCards(dueCards)
   }
 
-  useEffect(() => {
-    if (cards.length === 0) {
-      setFlashcard(
-        "There Are No Cards In This Deck Yet",
-        "There Are No Cards In This Deck Yet"
-      )
-    } else if (current < cards.length) {
-      setFlashcard(cards[current].question, cards[current].answer)
-      console.log(cards[current])
-    } else {
-      setFlashcard("No more cards left", "No more cards left")
-    }
-  }, [cards, current])
-
   return (
     <>
       {isLoading ? (
@@ -77,7 +62,12 @@ export function StudySpaced({ deck }: StudySpacedProps) {
         </div>
       ) : (
         <div className="flex-col justify-center items-center h-[50vh]">
-          <CardStudyView key={current} question={question} answer={answer} />
+          <CardStudyView
+            key={current}
+            question={cards[current]?.question ?? ""}
+            answer={cards[current]?.answer ?? ""}
+          />
+
           <div className="mt-6">
             <ScheduleContext.Provider
               value={{ schedule: cards[current].schedule, onRate }}
