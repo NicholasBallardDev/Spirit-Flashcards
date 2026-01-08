@@ -5,7 +5,7 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu" // Assuming shadcn/ui components are available at this path
+} from "@/components/ui/navigation-menu"
 
 export default function Navbar() {
   return (
