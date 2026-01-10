@@ -1,6 +1,6 @@
 import { getDeck } from "@/server/services/deck.service"
 import { DeckClient } from "./DeckClient"
-import { DeckEdit } from "@/features/deck/components/DeckEdit"
+import { DeckHeader } from "@/features/deck/components/DeckHeader"
 
 export default async function DeckPage({
   params,
@@ -13,7 +13,7 @@ export default async function DeckPage({
   return (
     <div className="p-6">
       <div>
-        <DeckEdit title={deck.name} description={deck.description} />
+        <DeckHeader deck={deck} />
       </div>
       <h2 className="text-xl font-semibold mb-2">Cards</h2>
       <DeckClient initialCards={deck.cards} deckId={deckId} />

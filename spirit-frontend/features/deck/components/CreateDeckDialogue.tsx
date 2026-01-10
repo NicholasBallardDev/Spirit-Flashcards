@@ -1,87 +1,36 @@
-"use client";
+"use client"
 
-import { useState } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogTrigger,
-  DialogFooter,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { createDeck } from "@/server/services/deck.service";
-import { toast, Toaster } from "sonner";
+import { createDeck } from "@/server/services/deck.service"
+import { toast, Toaster } from "sonner"
+import { DeckFormDialog } from "./DeckFormDialogue"
 
 interface CreateDeckDialogProps {
-  trigger: React.ReactNode;
+  trigger: React.ReactNode
 }
 
 export function CreateDeckDialog({ trigger }: CreateDeckDialogProps) {
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [open, setOpen] = useState(false);
-
-  const handleSubmit = async () => {
-    if (!name.trim()) return;
-    createDeck({name: name, description: description, cards: []});
-    setOpen(false);
-    setName("");
-    setDescription("");
+  const handleSubmit = async (values: {
+    name: string
+    description: string
+  }) => {
+    await createDeck({
+      name: values.name,
+      description: values.description,
+      cards: [],
+    })
     toast.success("Deck successfully created")
-  };
+  }
 
   return (
     <>
       <Toaster richColors />
-      <Dialog open={open}  onOpenChange={setOpen}>
-        <DialogTrigger asChild>
-          {trigger}
-        </DialogTrigger>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Create a new deck</DialogTitle>
-            <DialogDescription>
-              Enter a name and optional description for your deck.
-            </DialogDescription>
-          </DialogHeader>
-
-          <div className="grid gap-4 py-4">
-            <div className="flex flex-col gap-2">
-              <Label htmlFor="deck-name">Deck Name</Label>
-              <Input
-                id="deck-name"
-                value={name}
-                onChange={e => setName(e.target.value)}
-                placeholder="e.g. Algebra Basics"
-              />
-            </div>
-            <div className="flex flex-col gap-2">
-              <Label htmlFor="deck-description">Description</Label>
-              <Input
-                id="deck-description"
-                value={description}
-                onChange={e => setDescription(e.target.value)}
-                placeholder="Optional description..."
-              />
-            </div>
-          </div>
-
-          
-
-          <DialogFooter>
-            <Button
-              onClick={handleSubmit}
-              className="bg-blue-600 text-white hover:bg-blue-500"
-            >
-              Create Deck
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <DeckFormDialog
+        trigger={trigger}
+        title="Create a new deck"
+        description="Enter a name and optional description for your deck."
+        submitLabel="Create Deck"
+        onSubmit={handleSubmit}
+      />
     </>
-  );
+  )
 }
