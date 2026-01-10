@@ -1,6 +1,7 @@
 "use client"
 import TextareaAutosize from "react-textarea-autosize"
 import { useState } from "react"
+import { LabelledInput } from "@/features/universal/components/LabelledInput"
 
 interface DeckEditProps {
   title: string
@@ -17,36 +18,21 @@ export function DeckEdit({
   return (
     <div className="relative mb-4">
       <div className="relative w-full">
-        <label
-          htmlFor="title-input"
-          className="absolute -top-2 left-2 text-xs text-gray-500 bg-white px-1"
-        >
-          Title
-        </label>
-        <TextareaAutosize
+        <LabelledInput
           id="title-input"
-          className="w-full border p-2 rounded resize-none pt-4"
-          minRows={1}
+          inputTitle={"Title"}
           value={title}
           onChange={(e) => setTitle(e.target.value)}
+          readOnly
         />
       </div>
-      <div className="relative w-full mt-4">
-        {" "}
-        <label
-          htmlFor="description-input"
-          className="absolute -top-2 left-2 text-xs text-gray-500 bg-white px-1"
-        >
-          Description
-        </label>
-        <TextareaAutosize
-          id="description-input"
-          className="w-full border p-2 rounded resize-none pt-4"
-          minRows={1}
-          value={description ?? ""}
-          onChange={(e) => setDescription(e.target.value)}
-        />
-      </div>
+      <LabelledInput
+        id="description-input"
+        inputTitle={"Description"}
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+        readOnly
+      />
     </div>
   )
 }
