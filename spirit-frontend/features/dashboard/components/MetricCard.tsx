@@ -1,3 +1,5 @@
+import { ChevronRight } from "lucide-react"
+
 interface MetricCardProps {
   number: number
   title: string
@@ -31,8 +33,9 @@ export function MetricCard({
           onClick={onClick}
           className="flex items-center gap-1 text-sm font-semibold text-gray-900 hover:underline"
         >
-          Hello !
+          Explore
         </button>
+        <ChevronRight size={16} />
       </div>
     </div>
   )
