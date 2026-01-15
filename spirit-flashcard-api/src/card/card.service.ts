@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Card } from './card.entity';
-import { Repository } from 'typeorm';
+import { LessThanOrEqual, Repository } from 'typeorm';
 import { CreateCardDTO } from './dto/create-card.dto';
 import { FlashcardDeck } from '@src/flashcard-deck/flashcard-deck.entity';
 import { UpdateCardDTO } from './dto/update-card.dto';
@@ -34,13 +34,25 @@ export class CardService {
   }
 
   async findAllDue() {
-    const now = new Date();
-    return this.cardRepository
-      .createQueryBuilder('card')
-      .innerJoinAndSelect('card.schedule', 'schedule')
-      .leftJoinAndSelect('card.deck', 'deck')
-      .where('schedule.due <= :now', { now })
-      .getMany();
+    return this.cardRepository.find({
+      where: {
+        schedule: {
+          due: LessThanOrEqual(new Date()),
+        },
+      },
+      relations: ['deck', 'schedule'],
+    });
+  }
+
+  async countCardsDue() {
+    return this.cardRepository.count({
+      where: {
+        schedule: {
+          due: LessThanOrEqual(new Date()),
+        },
+      },
+      relations: ['deck', 'schedule'],
+    });
   }
 
   async create(dto: CreateCardDTO) {
