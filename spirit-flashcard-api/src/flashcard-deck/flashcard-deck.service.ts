@@ -27,6 +27,29 @@ export class FlashcardDeckService {
     });
   }
 
+  async getDueCards(id: number) {
+    const now = new Date();
+    const deck = await this.deckRepository
+      .createQueryBuilder('deck')
+      .innerJoinAndSelect('deck.cards', 'card')
+      .innerJoinAndSelect('card.schedule', 'schedule')
+      .where('deck.id = :id', { id })
+      .andWhere('schedule.due <= :now', { now })
+      .getOne();
+
+    if (deck) {
+      return deck;
+    }
+
+    const emptyDeck = await this.deckRepository.findOne({ where: { id } });
+    if (emptyDeck) {
+      emptyDeck.cards = [];
+      return emptyDeck;
+    }
+
+    return null;
+  }
+
   async create(dto: CreateDeckDTO) {
     const deck = this.deckRepository.create({
       name: dto.name,

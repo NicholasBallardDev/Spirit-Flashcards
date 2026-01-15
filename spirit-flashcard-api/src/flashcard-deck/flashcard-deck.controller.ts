@@ -26,6 +26,11 @@ export class FlashcardDeckController {
     return this.deckService.getCards(id);
   }
 
+  @Get(':id/due')
+  async getDueCards(@Param('id', ParseIntPipe) id: number) {
+    return this.deckService.getDueCards(id);
+  }
+
   @Get(':id')
   async findOne(@Param('id', ParseIntPipe) id: number) {
     return this.deckService.findOne(id); // returns deck info only
