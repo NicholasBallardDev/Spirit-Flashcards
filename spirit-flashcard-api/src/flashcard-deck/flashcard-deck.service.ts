@@ -4,12 +4,16 @@ import { Repository } from 'typeorm';
 import { FlashcardDeck } from './flashcard-deck.entity';
 import { CreateDeckDTO } from './dto/create-deck.dto';
 import { UpdateDeckDTO } from './dto/update-deck.dto';
+import { Card } from '@src/card/card.entity';
+import { LessThanOrEqual } from 'typeorm';
 
 @Injectable()
 export class FlashcardDeckService {
   constructor(
     @InjectRepository(FlashcardDeck)
     private deckRepository: Repository<FlashcardDeck>,
+    @InjectRepository(Card)
+    private cardRepository: Repository<Card>,
   ) {}
 
   async findAll() {
@@ -27,27 +31,28 @@ export class FlashcardDeckService {
     });
   }
 
+  async countCards(id: number) {
+    return this.cardRepository.count({ where: { deck: { id } } });
+  }
+
   async getDueCards(id: number) {
-    const now = new Date();
-    const deck = await this.deckRepository
-      .createQueryBuilder('deck')
-      .innerJoinAndSelect('deck.cards', 'card')
-      .innerJoinAndSelect('card.schedule', 'schedule')
-      .where('deck.id = :id', { id })
-      .andWhere('schedule.due <= :now', { now })
-      .getOne();
+    return this.cardRepository.find({
+      where: {
+        deck: { id },
+        schedule: { due: LessThanOrEqual(new Date()) },
+      },
+      relations: ['schedule'],
+    });
+  }
 
-    if (deck) {
-      return deck;
-    }
-
-    const emptyDeck = await this.deckRepository.findOne({ where: { id } });
-    if (emptyDeck) {
-      emptyDeck.cards = [];
-      return emptyDeck;
-    }
-
-    return null;
+  async countDueCards(id: number) {
+    return this.cardRepository.count({
+      where: {
+        deck: { id },
+        schedule: { due: LessThanOrEqual(new Date()) },
+      },
+      relations: ['schedule'],
+    });
   }
 
   async create(dto: CreateDeckDTO) {
