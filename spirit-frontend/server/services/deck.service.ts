@@ -1,55 +1,69 @@
-import type { Card, FlashcardDeck } from "@/Types";
-import { Description } from "@radix-ui/react-dialog";
+import type { Card, FlashcardDeck } from "@/Types"
+import { Description } from "@radix-ui/react-dialog"
 
-const API_URL = 'http://localhost:3000';
+const API_URL = "http://localhost:3000"
 
-export async function getDecks():  Promise<FlashcardDeck[]> {
-  const res = await fetch(`${API_URL}/decks`);
-  return res.json();
+export async function getDecks(): Promise<FlashcardDeck[]> {
+  const res = await fetch(`${API_URL}/decks`)
+  return res.json()
 }
 
-export async function getDeckDetails(id: number):  Promise<FlashcardDeck> {
-  const res = await fetch(`${API_URL}/decks/${id}`);
-  return res.json();
+export async function getDeckDetails(id: number): Promise<FlashcardDeck> {
+  const res = await fetch(`${API_URL}/decks/${id}`)
+  return res.json()
 }
 
-export async function getDeck(id: number):  Promise<FlashcardDeck> {
-  const res = await fetch(`${API_URL}/decks/${id}/cards`);
-  return res.json();
+export async function getDeck(id: number): Promise<FlashcardDeck> {
+  const res = await fetch(`${API_URL}/decks/${id}/cards`)
+  return res.json()
 }
 
-export async function createDeck(deck: Omit<FlashcardDeck, "id">):  Promise<FlashcardDeck> {
+export async function getDueCards(id: number): Promise<Card[]> {
+  const res = await fetch(`${API_URL}/decks/${id}/due`)
+  return res.json()
+}
+
+export async function countDueCards(id: number): Promise<number> {
+  const res = await fetch(`${API_URL}/decks/${id}/due/count`)
+  return res.json()
+}
+
+export async function createDeck(
+  deck: Omit<FlashcardDeck, "id">
+): Promise<FlashcardDeck> {
   const res = await fetch(`${API_URL}/decks`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({name: deck.name, description: deck.description}),
-  });
-  return res.json();
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name: deck.name, description: deck.description }),
+  })
+  return res.json()
 }
 
-export async function updateDeck(id: number, deck: FlashcardDeck):  Promise<FlashcardDeck> {
+export async function updateDeck(
+  id: number,
+  deck: FlashcardDeck
+): Promise<FlashcardDeck> {
   const res = await fetch(`${API_URL}/decks/${id}`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(deck),
-  });
+  })
 
-  if (!res.ok){
-    throw new Error(`Failed to update deck ${id}`);
+  if (!res.ok) {
+    throw new Error(`Failed to update deck ${id}`)
   }
 
-  return res.json() as Promise<FlashcardDeck>;
+  return res.json() as Promise<FlashcardDeck>
 }
 
-export async function deleteDeck(id: number):  Promise<Object> {
-  const res = await fetch(`${API_URL}/decks/${id}`,{
-    method: 'DELETE',
-  });
+export async function deleteDeck(id: number): Promise<Object> {
+  const res = await fetch(`${API_URL}/decks/${id}`, {
+    method: "DELETE",
+  })
 
-  if (!res.ok){
-    throw new Error(`Failed to update deck ${id}`);
+  if (!res.ok) {
+    throw new Error(`Failed to update deck ${id}`)
   }
 
-  return res.json();
+  return res.json()
 }
-

@@ -7,6 +7,21 @@ export async function getCards(): Promise<Card[]> {
   return res.json()
 }
 
+export async function getCardCount(): Promise<number> {
+  const res = await fetch(`${API_URL}/cards/count`)
+  return res.json()
+}
+
+export async function getDueCards(): Promise<Card[]> {
+  const res = await fetch(`${API_URL}/cards/due`)
+  return res.json()
+}
+
+export async function getDueCardCount(): Promise<number> {
+  const res = await fetch(`${API_URL}/cards/due/count`)
+  return res.json()
+}
+
 export async function getCard(id: number): Promise<Card> {
   const res = await fetch(`${API_URL}/cards/${id}`)
   return res.json()
