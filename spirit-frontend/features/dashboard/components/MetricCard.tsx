@@ -31,11 +31,11 @@ export function MetricCard({
       <div className="absolute bottom-6 right-6">
         <button
           onClick={onClick}
-          className="flex items-center gap-1 text-sm font-semibold text-gray-900 hover:underline"
+          className="flex items-center text-sm font-semibold text-gray-900 hover:underline cursor-pointer"
         >
           Explore
+          <ChevronRight className="mt-[2px]" size={16} />
         </button>
-        <ChevronRight size={16} />
       </div>
     </div>
   )
