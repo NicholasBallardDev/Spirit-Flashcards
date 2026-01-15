@@ -51,7 +51,6 @@ export class FlashcardDeckService {
         deck: { id },
         schedule: { due: LessThanOrEqual(new Date()) },
       },
-      relations: ['schedule'],
     });
   }
 

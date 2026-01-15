@@ -19,6 +19,10 @@ export class CardService {
     return this.cardRepository.find({ relations: ['deck', 'schedule'] });
   }
 
+  async countCards() {
+    this.cardRepository.count();
+  }
+
   async findOne(id: number) {
     return this.cardRepository.findOne({
       where: { id },
@@ -51,7 +55,6 @@ export class CardService {
           due: LessThanOrEqual(new Date()),
         },
       },
-      relations: ['deck', 'schedule'],
     });
   }
 

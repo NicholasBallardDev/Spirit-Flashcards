@@ -19,6 +19,11 @@ export class CardController {
     return this.cardService.findAll();
   }
 
+  @Get('count')
+  async countCards() {
+    return this.cardService.countCards();
+  }
+
   @Get('due')
   async findAllDue() {
     return this.cardService.findAllDue();
