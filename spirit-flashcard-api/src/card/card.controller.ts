@@ -19,6 +19,11 @@ export class CardController {
     return this.cardService.findAll();
   }
 
+  @Get('due')
+  async findAllDue() {
+    return this.cardService.findAllDue();
+  }
+
   @Get(':id')
   async findOne(@Param('id') id: number) {
     return this.cardService.findOne(id);

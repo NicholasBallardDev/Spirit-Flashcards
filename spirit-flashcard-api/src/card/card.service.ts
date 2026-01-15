@@ -33,6 +33,16 @@ export class CardService {
     });
   }
 
+  async findAllDue() {
+    const now = new Date();
+    return this.cardRepository
+      .createQueryBuilder('card')
+      .innerJoinAndSelect('card.schedule', 'schedule')
+      .leftJoinAndSelect('card.deck', 'deck')
+      .where('schedule.due <= :now', { now })
+      .getMany();
+  }
+
   async create(dto: CreateCardDTO) {
     const schedule = this.scheduleService.create();
 
