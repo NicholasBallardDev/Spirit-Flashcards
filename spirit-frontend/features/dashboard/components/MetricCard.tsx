@@ -4,15 +4,9 @@ interface MetricCardProps {
   number: number
   title: string
   subtitle: string
-  onClick: () => void
 }
 
-export function MetricCard({
-  number,
-  title,
-  subtitle,
-  onClick,
-}: MetricCardProps) {
+export function MetricCard({ number, title, subtitle }: MetricCardProps) {
   return (
     <div className="flex-1 min-w-0 bg-white pt-10 pb-16 pl-6 pr-14 rounded-xl border border-gray-100 shadow-sm flex flex-col justify-between relative h-full">
       <div className="flex gap-4">
@@ -29,10 +23,7 @@ export function MetricCard({
       </div>
 
       <div className="absolute bottom-6 right-6">
-        <button
-          onClick={onClick}
-          className="flex items-center text-sm font-semibold text-gray-900 hover:underline cursor-pointer"
-        >
+        <button className="flex items-center text-sm font-semibold text-gray-900 hover:underline cursor-pointer">
           Explore
           <ChevronRight className="mt-[2px]" size={16} />
         </button>
