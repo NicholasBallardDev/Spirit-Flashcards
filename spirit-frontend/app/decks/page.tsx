@@ -6,6 +6,7 @@ import { Plus } from "lucide-react"
 import { CreateDeckDialog } from "@/features/deck/components/CreateDeckDialogue"
 import { useEffect, useState } from "react"
 import { FlashcardDeck } from "@/Types"
+import { SearchBar } from "@/features/universal/components/Searchbar"
 
 export default function DecksPage() {
   const [decks, setDecks] = useState<FlashcardDeck[]>([])
@@ -22,7 +23,8 @@ export default function DecksPage() {
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-4 text-center">All Decks</h1>
-      <div className="flex justify-end  mb-4">
+      <div className="flex gap-2 mb-4 w-[30%] ml-auto">
+        <SearchBar />
         <CreateDeckDialog
           trigger={
             <Button className="bg-blue-600 hover:bg-blue-500">
