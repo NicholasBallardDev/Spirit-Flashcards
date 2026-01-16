@@ -23,7 +23,12 @@ export async function getDueCards(id: number): Promise<Card[]> {
   return res.json()
 }
 
-export async function countDueCards(id: number): Promise<number> {
+export async function countDecks(): Promise<number> {
+  const res = await fetch(`${API_URL}/decks/count`)
+  return res.json()
+}
+
+export async function countDueFromDeck(id: number): Promise<number> {
   const res = await fetch(`${API_URL}/decks/${id}/due/count`)
   return res.json()
 }
