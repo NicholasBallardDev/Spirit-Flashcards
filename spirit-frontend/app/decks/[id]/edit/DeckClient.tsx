@@ -1,5 +1,5 @@
 "use client"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { CardEdit } from "@/features/card/components/CardEdit"
 import { AddCardButton } from "@/features/card/components/AddCardButton"
 import type { Card } from "@/Types"
@@ -22,6 +22,7 @@ export function DeckClient({ initialCards, deckId }: DeckClientProps) {
   const [tempId, setTempId] = useState(-1)
   const cardIsSaved = (id: number) => id > 0
 
+  //Add blank card in the UI
   const addCard = () => {
     setNewCards((prev) => [
       ...prev,
@@ -30,6 +31,7 @@ export function DeckClient({ initialCards, deckId }: DeckClientProps) {
     setTempId(tempId - 1)
   }
 
+  //Deletes card edit component from the ui
   const deleteCardEdit = (id: number) => {
     if (cardIsSaved(id)) {
       setCards((prev) => prev.filter((card) => card.id !== id))
@@ -39,19 +41,22 @@ export function DeckClient({ initialCards, deckId }: DeckClientProps) {
     }
   }
 
+  //Adds cards to the backend
   const triggerCardChanges = async () => {
     try {
       //TODO: Use promise.all instead of for loops
+      //Updates card if it already existed
       for (const card of cards) {
         card.question && card.answer ? await updateCard(card.id, card) : null
       }
-
+      //creates new card if its new
       for (const card of newCards) {
         card.question && card.answer ? await createCard(card, deckId) : null
       }
     } catch (err) {
       console.error("Error saving cards:", err)
     }
+    //retrieving deck from the backend so we dont accidentally add blank cards
     const deckData = await getDeck(deckId)
     setCards(deckData.cards)
     setNewCards([])
