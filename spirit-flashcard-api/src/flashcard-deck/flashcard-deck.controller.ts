@@ -21,6 +21,11 @@ export class FlashcardDeckController {
     return this.deckService.findAll();
   }
 
+  @Get('count')
+  async countDecks() {
+    return this.deckService.countDecks();
+  }
+
   @Get(':id/cards')
   async getCards(@Param('id', ParseIntPipe) id: number) {
     return this.deckService.getCards(id);

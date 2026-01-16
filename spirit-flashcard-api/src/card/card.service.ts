@@ -20,7 +20,7 @@ export class CardService {
   }
 
   async countCards() {
-    this.cardRepository.count();
+    return this.cardRepository.count();
   }
 
   async findOne(id: number) {

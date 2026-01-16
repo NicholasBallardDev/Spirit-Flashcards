@@ -20,6 +20,10 @@ export class FlashcardDeckService {
     return this.deckRepository.find();
   }
 
+  async countDecks() {
+    return this.deckRepository.count();
+  }
+
   async findOne(id: number) {
     return this.deckRepository.findOne({ where: { id } });
   }
