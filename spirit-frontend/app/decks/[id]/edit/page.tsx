@@ -1,5 +1,5 @@
 import { getDeck } from "@/server/services/deck.service"
-import { DeckClient } from "./DeckClient"
+import { EditClient } from "./EditClient"
 import { DeckHeader } from "@/features/deck/components/DeckHeader"
 
 export default async function DeckPage({
@@ -16,7 +16,7 @@ export default async function DeckPage({
         <DeckHeader deck={deck} />
       </div>
       <h2 className="text-xl font-semibold mb-2">Cards</h2>
-      <DeckClient initialCards={deck.cards} deckId={deckId} />
+      <EditClient initialCards={deck.cards} deckId={deckId} />
     </div>
   )
 }

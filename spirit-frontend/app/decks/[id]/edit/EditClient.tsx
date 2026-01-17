@@ -11,12 +11,12 @@ import {
 import { toast, Toaster } from "sonner"
 import { getDeck } from "@/server/services/deck.service"
 
-interface DeckClientProps {
+interface EditClientProps {
   initialCards: Card[]
   deckId: number
 }
 
-export function DeckClient({ initialCards, deckId }: DeckClientProps) {
+export function EditClient({ initialCards, deckId }: EditClientProps) {
   const [cards, setCards] = useState<Card[]>(initialCards)
   const [newCards, setNewCards] = useState<Card[]>([])
   const [tempId, setTempId] = useState(-1)
