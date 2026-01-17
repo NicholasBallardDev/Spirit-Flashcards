@@ -7,9 +7,11 @@ import { CreateDeckDialog } from "@/features/deck/components/CreateDeckDialogue"
 import { useEffect, useState } from "react"
 import { FlashcardDeck } from "@/Types"
 import { SearchBar } from "@/features/universal/components/Searchbar"
+import DeckGridDisplay from "@/features/deck/components/DeckGridDisplay"
 
 export default function DecksPage() {
   const [decks, setDecks] = useState<FlashcardDeck[]>([])
+  const [searchPrompt, setSearchPrompt] = useState("")
 
   useEffect(() => {
     const fetchData = async () => {
@@ -20,11 +22,16 @@ export default function DecksPage() {
     fetchData()
   })
 
+  function handleSearchChange(event: React.ChangeEvent<HTMLInputElement>) {
+    setSearchPrompt(event.target.value)
+    setDecks(decks.filter((deck) => deck.name.includes(searchPrompt)))
+  }
+
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-4 text-center">All Decks</h1>
       <div className="flex gap-2 mb-4 w-[30%] ml-auto">
-        <SearchBar />
+        <SearchBar value={searchPrompt} onChange={handleSearchChange} />
         <CreateDeckDialog
           trigger={
             <Button className="bg-blue-600 hover:bg-blue-500">
@@ -34,19 +41,7 @@ export default function DecksPage() {
           }
         ></CreateDeckDialog>
       </div>
-      <div
-        className="
-          grid gap-4 justify-center
-          grid-cols-1        /* mobile: 1 per row */
-          sm:grid-cols-2     /* small screens: max 2 per row */
-          md:grid-cols-2     /* medium screens: max 2 per row */
-          lg:grid-cols-3     /* large screens: max 3 per row */
-        "
-      >
-        {decks.map((deck) => (
-          <DeckCard key={deck.id} deck={deck} />
-        ))}
-      </div>
+      <DeckGridDisplay decks={decks} />
     </div>
   )
 }
