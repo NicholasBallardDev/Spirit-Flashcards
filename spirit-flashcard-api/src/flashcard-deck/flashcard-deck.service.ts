@@ -89,4 +89,8 @@ export class FlashcardDeckService {
 
     return { message: `Delete Successful: Item with Id ${id} was deleted` };
   }
+
+  async getLastId() {
+    return this.deckRepository.maximum('id');
+  }
 }

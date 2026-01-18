@@ -4,6 +4,7 @@ import CreateDeckButton from "@/features/deck/components/CreateDeckButton"
 import DeckGridDisplay from "@/features/deck/components/DeckGridDisplay"
 import { SearchBar } from "@/features/universal/components/Searchbar"
 import { FlashcardDeck } from "@/Types"
+import { useRouter } from "next/navigation"
 import { useState } from "react"
 
 interface DeckClientProps {
@@ -13,14 +14,15 @@ interface DeckClientProps {
 export default function DeckClient({ decks }: DeckClientProps) {
   const [deckList, setDecks] = useState(decks)
   const [searchPrompt, setSearchPrompt] = useState("")
+  const router = useRouter()
 
   function handleSearchChange(event: React.ChangeEvent<HTMLInputElement>) {
     const currentSearch = event.target.value
     setSearchPrompt(currentSearch)
     setDecks(
       decks.filter((deck) =>
-        deck.name.toLowerCase().includes(currentSearch.toLowerCase())
-      )
+        deck.name.toLowerCase().includes(currentSearch.toLowerCase()),
+      ),
     )
   }
   return (
