@@ -1,6 +1,6 @@
 "use client"
 import { CardStudyView } from "@/features/card/components/CardStudyView"
-import { ScheduleContext } from "@/features/card/components/context"
+import { ScheduleContext } from "@/features/card/context/context"
 import { RatingButtonTray } from "@/features/card/components/RatingButtonTray"
 import { getDeck } from "@/server/services/deck.service"
 import { updateSchedule } from "@/server/services/schedule.service"

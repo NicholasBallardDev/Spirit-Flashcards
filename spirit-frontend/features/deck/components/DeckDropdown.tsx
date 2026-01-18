@@ -12,13 +12,14 @@ import Link from "next/link"
 interface DeckDropdownProps {
   trigger: React.ReactNode
   deckId: number
+  onDelete: () => void
 }
 
-export function DeckDropdown({ trigger: child, deckId }: DeckDropdownProps) {
-  async function removeDeck() {
-    deleteDeck(deckId)
-  }
-
+export function DeckDropdown({
+  trigger: child,
+  deckId,
+  onDelete,
+}: DeckDropdownProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>{child}</DropdownMenuTrigger>
@@ -28,7 +29,7 @@ export function DeckDropdown({ trigger: child, deckId }: DeckDropdownProps) {
           <DropdownMenuItem>
             <Link href={`/decks/${deckId}/edit`}>Edit Deck</Link>
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={removeDeck}>Delete Deck</DropdownMenuItem>
+          <DropdownMenuItem onClick={onDelete}>Delete Deck</DropdownMenuItem>
         </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>
