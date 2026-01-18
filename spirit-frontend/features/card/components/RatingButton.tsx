@@ -1,8 +1,13 @@
 import { Rating, Schedule } from "@/Types/schedule"
-import { useScheduleContext } from "./context"
+import { useScheduleContext } from "../context/context"
 import { getPreview, getSchedule } from "@/server/services/schedule.service"
 import { useEffect, useState } from "react"
 import { IPreview, RecordLog } from "ts-fsrs"
+import {
+  differenceInMinutes,
+  differenceInHours,
+  differenceInDays,
+} from "date-fns"
 
 interface RatingButtonProps {
   text: string
@@ -11,7 +16,7 @@ interface RatingButtonProps {
 
 export function RatingButton({ text, rating }: RatingButtonProps) {
   const btn =
-    "px-4 py-2 rounded-full text-white text-sm font-semibold transition focus:outline-none focus:ring-2 focus:ring-white/40 bg-[#1D4ED8] hover:bg-[#2563EB]"
+    "px-4 py-2 floored-full text-white text-sm font-semibold transition focus:outline-none focus:ring-2 focus:ring-white/40 bg-[#1D4ED8] hover:bg-[#2563EB]"
 
   const { schedule, onRate } = useScheduleContext()
   const [previews, setPreviews] = useState<IPreview | null>(null)
@@ -27,35 +32,27 @@ export function RatingButton({ text, rating }: RatingButtonProps) {
   }, [schedule.id])
 
   function formatTimeDiff(previews: IPreview) {
-    const a = previews[rating].card.due
-    const b = previews[rating].card.last_review!
+    const dueDate = previews[rating].card.due
+    const lastReviewDate = previews[rating].card.last_review!
+    const due = new Date(dueDate)
+    const last = new Date(lastReviewDate)
 
-    const diffMs = new Date(a).getTime() - new Date(b).getTime()
+    const diffMinutes = differenceInMinutes(due, last)
+    const diffHours = differenceInHours(due, last)
+    const diffDays = differenceInDays(due, last)
 
-    const minutes = Math.round(diffMs / (1000 * 60))
-    const hours = Math.round(diffMs / (1000 * 60 * 60))
-    const days = Math.round(diffMs / (1000 * 60 * 60 * 24))
+    if (diffMinutes < 60) return `<${diffMinutes}m`
+    if (diffHours < 24) return `${diffHours}h`
 
-    const lessThanHour = Math.abs(diffMs) < 1000 * 60 * 60
-    const lessThanDay = Math.abs(diffMs) < 1000 * 60 * 60 * 24
-
-    if (lessThanHour) {
-      return `<${minutes}m`
-    } else if (lessThanDay) {
-      return `${hours}h`
-    }
-
-    return `${days}d`
+    return `${diffDays}d`
   }
-
-  if (!schedule) return null
 
   return (
     <>
       <div className="flex-row text-center">
         <p>{previews ? formatTimeDiff(previews) : ""}</p>
         <button
-          className={`${btn} basis-36 w-24`}
+          className={`${btn} basis-36 w-24 rounded-full`}
           onClick={() => onRate(rating)}
         >
           {text}
