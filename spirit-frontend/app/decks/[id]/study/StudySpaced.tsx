@@ -1,6 +1,6 @@
 "use client"
 import { CardStudyView } from "@/features/card/components/CardStudyView"
-import { ScheduleContext } from "@/features/card/context/context"
+import { ScheduleContextProvider } from "@/features/card/context/ScheduleContextProvider"
 import { RatingButtonTray } from "@/features/card/components/RatingButtonTray"
 import { getDeck } from "@/server/services/deck.service"
 import { updateSchedule } from "@/server/services/schedule.service"
@@ -15,19 +15,12 @@ interface StudySpacedProps {
 export function StudySpaced({ deck }: StudySpacedProps) {
   const [cards, setCards] = useState<Card[]>([])
   const [current, setCurrent] = useState(0)
-  const [question, setQuestion] = useState("")
-  const [answer, setAnswer] = useState("")
   const [isLoading, setLoading] = useState(false)
 
   function isDue(c: Card): Boolean {
     const dueDate = new Date(c.schedule.due).getTime()
     const oneHour = Date.now() + 1000 * 60 * 60
     return dueDate < oneHour
-  }
-
-  function setFlashcard(question: string, answer: string) {
-    setQuestion(question)
-    setAnswer(answer)
   }
 
   useEffect(() => {
@@ -69,11 +62,12 @@ export function StudySpaced({ deck }: StudySpacedProps) {
           />
 
           <div className="mt-6">
-            <ScheduleContext.Provider
-              value={{ schedule: cards[current].schedule, onRate }}
+            <ScheduleContextProvider
+              schedule={cards[current].schedule}
+              onRate={onRate}
             >
               <RatingButtonTray />
-            </ScheduleContext.Provider>
+            </ScheduleContextProvider>
           </div>
         </div>
       )}
