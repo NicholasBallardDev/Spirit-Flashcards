@@ -33,7 +33,7 @@ export function StudyAll({ deck }: StudyAll) {
     if (cards.length === 0) {
       setFlashcard(
         "There Are No Cards In This Deck Yet",
-        "There Are No Cards In This Deck Yet"
+        "There Are No Cards In This Deck Yet",
       )
     } else if (current < cards.length) {
       setFlashcard(cards[current].question, cards[current].answer)
@@ -44,20 +44,21 @@ export function StudyAll({ deck }: StudyAll) {
   return (
     <>
       {current >= cards.length ? (
-        <div className="flex justify-center items-center h-[50vh] text-2xl font-bold">
+        <div className="flex justify-center items-center h-[75vh] text-2xl font-bold">
           No more cards left
         </div>
       ) : (
         <>
-          <div className="flex-col justify-center items-center h-[50vh] mb-4">
+          <div className="flex-col justify-center items-center h-[70vh] mb-4">
             <CardStudyView key={current} question={question} answer={answer} />
+
+            <CardNavigationTray
+              onDecrement={decrementCurrent}
+              onIncrement={incrementCurrent}
+              current={current + 1}
+              deckSize={deck.cards.length}
+            />
           </div>
-          <CardNavigationTray
-            onDecrement={decrementCurrent}
-            onIncrement={incrementCurrent}
-            current={current + 1}
-            deckSize={deck.cards.length}
-          />
         </>
       )}
     </>

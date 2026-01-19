@@ -29,7 +29,7 @@ export function StudyClient({ deck }: StudyClientProps) {
           className=" data-[state=checked]:bg-green-500"
         />
       </div>
-      <div className="flex-col justify-center items-center h-[50vh]">
+      <div className="flex-col justify-center items-center h-[70vh]">
         {trackProgress ? <StudySpaced deck={deck} /> : <StudyAll deck={deck} />}
       </div>
     </>

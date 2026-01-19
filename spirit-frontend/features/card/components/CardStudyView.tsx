@@ -1,21 +1,22 @@
-"use client";
-import { useState } from "react";
-import { motion } from "framer-motion";
+"use client"
+import { useState } from "react"
+import { motion } from "framer-motion"
 
 interface CardStudyProps {
-  question: string;
-  answer: string;
+  question: string
+  answer: string
 }
 
 export function CardStudyView({ question, answer }: CardStudyProps) {
-  const [isFlipped, setIsFlipped] = useState(false);
+  const [isFlipped, setIsFlipped] = useState(false)
 
-  const handleFlip = () => setIsFlipped(!isFlipped);
+  const handleFlip = () => setIsFlipped(!isFlipped)
 
   return (
     <div
       onClick={handleFlip}
-      className="w-full h-full flex items-center justify-center p-6 border border-gray-300 rounded-lg bg-white shadow-md select-none cursor-pointer hover:shadow-xl hover:shadow-blue-400/30"
+      className="w-full h-full flex items-center justify-center p-6 border border-gray-300 rounded-lg 
+      bg-white shadow-md select-none cursor-pointer hover:shadow-xl hover:shadow-blue-400/30 mb-4"
     >
       <motion.h2
         key={isFlipped ? "answer" : "question"}
@@ -28,5 +29,5 @@ export function CardStudyView({ question, answer }: CardStudyProps) {
         {isFlipped ? answer : question}
       </motion.h2>
     </div>
-  );
+  )
 }

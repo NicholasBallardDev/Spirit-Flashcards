@@ -49,18 +49,18 @@ export function StudySpaced({ deck }: StudySpacedProps) {
       {isLoading ? (
         <></>
       ) : cards.length === 0 ? (
-        <div className="flex justify-center items-center h-[50vh] text-2xl font-bold">
+        <div className="flex justify-center items-center h-[75vh] text-2xl font-bold">
           No more cards left
         </div>
       ) : (
-        <div className="flex-col justify-center items-center h-[50vh]">
+        <div className="flex-col justify-center items-center h-[70vh]">
           <CardStudyView
             key={current}
             question={cards[current]?.question ?? ""}
             answer={cards[current]?.answer ?? ""}
           />
 
-          <div className="mt-6">
+          <div>
             <ScheduleContextProvider
               schedule={cards[current].schedule}
               onRate={onRate}
