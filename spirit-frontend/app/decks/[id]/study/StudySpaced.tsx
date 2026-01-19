@@ -2,7 +2,7 @@
 import { CardStudyView } from "@/features/card/components/CardStudyView"
 import { ScheduleContextProvider } from "@/features/card/context/ScheduleContextProvider"
 import { RatingButtonTray } from "@/features/card/components/RatingButtonTray"
-import { getDeck } from "@/server/services/deck.service"
+import { getDeck, getDueCards } from "@/server/services/deck.service"
 import { updateSchedule } from "@/server/services/schedule.service"
 import { Card, FlashcardDeck } from "@/Types"
 import { useEffect, useState } from "react"
@@ -26,8 +26,7 @@ export function StudySpaced({ deck }: StudySpacedProps) {
   useEffect(() => {
     async function fetchCards() {
       setLoading(true)
-      const updated = await getDeck(deck.id)
-      const dueCards = updated.cards.filter((c) => isDue(c))
+      const dueCards = await getDueCards(deck.id)
       setCards(dueCards)
       setCurrent(0)
       setLoading(false)
