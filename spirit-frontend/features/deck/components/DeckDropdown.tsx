@@ -27,12 +27,14 @@ export function DeckDropdown({ trigger: child, deckId }: DeckDropdownProps) {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>{child}</DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="start">
-        <DropdownMenuLabel>Deck</DropdownMenuLabel>
         <DropdownMenuGroup>
           <DropdownMenuItem>
             <Link href={`/decks/${deckId}/edit`}>Edit Deck</Link>
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={handleDelete}>
+          <DropdownMenuItem
+            onClick={handleDelete}
+            className="text-red-500 font-semibold"
+          >
             Delete Deck
           </DropdownMenuItem>
         </DropdownMenuGroup>
