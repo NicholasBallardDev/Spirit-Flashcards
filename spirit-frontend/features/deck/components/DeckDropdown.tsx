@@ -8,18 +8,21 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { deleteDeck } from "@/server/services/deck.service"
 import Link from "next/link"
+import { useDeckContext } from "../context/deckContext"
 
 interface DeckDropdownProps {
   trigger: React.ReactNode
   deckId: number
-  onDelete: () => void
 }
 
-export function DeckDropdown({
-  trigger: child,
-  deckId,
-  onDelete,
-}: DeckDropdownProps) {
+export function DeckDropdown({ trigger: child, deckId }: DeckDropdownProps) {
+  const { onDelete } = useDeckContext()
+
+  const handleDelete = async () => {
+    await deleteDeck(deckId)
+    await onDelete(deckId)
+  }
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>{child}</DropdownMenuTrigger>
@@ -29,7 +32,9 @@ export function DeckDropdown({
           <DropdownMenuItem>
             <Link href={`/decks/${deckId}/edit`}>Edit Deck</Link>
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={onDelete}>Delete Deck</DropdownMenuItem>
+          <DropdownMenuItem onClick={handleDelete}>
+            Delete Deck
+          </DropdownMenuItem>
         </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>

@@ -2,7 +2,9 @@
 
 import CreateDeckButton from "@/features/deck/components/CreateDeckButton"
 import DeckGridDisplay from "@/features/deck/components/DeckGridDisplay"
+import { DeckProvider } from "@/features/deck/context/deckContext"
 import { SearchBar } from "@/features/universal/components/Searchbar"
+import { getDecks } from "@/server/services/deck.service"
 import { FlashcardDeck } from "@/Types"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
@@ -25,6 +27,13 @@ export default function DeckClient({ decks }: DeckClientProps) {
       ),
     )
   }
+
+  async function onDelete() {
+    const decks = await getDecks()
+    setDecks(decks)
+    router.refresh()
+  }
+
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-4 text-center">All Decks</h1>
@@ -32,7 +41,9 @@ export default function DeckClient({ decks }: DeckClientProps) {
         <SearchBar value={searchPrompt} onChange={handleSearchChange} />
         <CreateDeckButton />
       </div>
-      <DeckGridDisplay decks={deckList} />
+      <DeckProvider onDelete={onDelete}>
+        <DeckGridDisplay decks={deckList} />
+      </DeckProvider>
     </div>
   )
 }
