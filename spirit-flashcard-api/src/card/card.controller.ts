@@ -6,7 +6,10 @@ import {
   Param,
   Post,
   Put,
+  UploadedFiles,
+  UseInterceptors,
 } from '@nestjs/common';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { CardService } from './card.service';
 import { CreateCardDTO } from './dto/create-card.dto';
 import { UpdateCardDTO } from './dto/update-card.dto';
@@ -52,6 +55,24 @@ export class CardController {
   @Put(':id')
   async update(@Param('id') id: number, @Body() dto: UpdateCardDTO) {
     return this.cardService.update(id, dto);
+  }
+
+  @Put(':id/images')
+  @UseInterceptors(
+    FileFieldsInterceptor([
+      { name: 'questionImage', maxCount: 1 },
+      { name: 'answerImage', maxCount: 1 },
+    ]),
+  )
+  async uploadImages(
+    @Param('id') id: number,
+    @UploadedFiles()
+    files: {
+      questionImage?: Express.Multer.File[];
+      answerImage?: Express.Multer.File[];
+    },
+  ) {
+    return this.cardService.uploadImages(id, files);
   }
 
   @Delete(':id')

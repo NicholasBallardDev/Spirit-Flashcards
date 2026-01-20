@@ -21,6 +21,12 @@ export class Card {
   @Column()
   answer: string;
 
+  @Column({ nullable: true })
+  questionImageUrl: string;
+
+  @Column({ nullable: true })
+  answerImageUrl: string;
+
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 

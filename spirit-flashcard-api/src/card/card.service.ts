@@ -1,4 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { Express } from 'express';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Card } from './card.entity';
 import { LessThanOrEqual, Repository } from 'typeorm';
@@ -77,6 +78,29 @@ export class CardService {
       answer: dto.answer,
       deck: dto.deckId ? ({ id: dto.deckId } as FlashcardDeck) : undefined,
     });
+    return this.cardRepository.findOne({
+      where: { id },
+      relations: ['deck', 'schedule'],
+    });
+  }
+
+  async uploadImages(
+    id: number,
+    files: {
+      questionImage?: Express.Multer.File[];
+      answerImage?: Express.Multer.File[];
+    },
+  ) {
+    const updates: Partial<Card> = {};
+    if (files?.questionImage?.[0])
+      updates.questionImageUrl = files.questionImage[0].filename;
+    if (files?.answerImage?.[0])
+      updates.answerImageUrl = files.answerImage[0].filename;
+
+    if (Object.keys(updates).length > 0) {
+      await this.cardRepository.update(id, updates);
+    }
+
     return this.cardRepository.findOne({
       where: { id },
       relations: ['deck', 'schedule'],
