@@ -1,19 +1,11 @@
 "use client"
-import { Trash2 } from "lucide-react"
 import TextareaAutosize from "react-textarea-autosize"
 import type { Card } from "@/Types"
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
 import { useEffect, useState } from "react"
+import { ImageButton } from "@/features/universal/components/ImageButton"
+import { ImageUploader } from "@/features/universal/components/ImageUploader"
+import { DeleteAlert } from "@/features/universal/components/DeleteAlert"
+import { DeleteCardButton } from "./DeleteCardButton"
 
 interface CardProps {
   card: Card
@@ -42,33 +34,9 @@ export function CardEdit({ card, cardNo, onDelete, onChange }: CardProps) {
       <div className="flex justify-between mb-1 mx-1">
         {cardNo}
         {mounted && (
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <button className="group p-2 rounded hover:bg-red-500 transition rounded-full cursor-pointer">
-                <Trash2
-                  size={20}
-                  className="text-gray-700 group-hover:text-white"
-                />
-              </button>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                <AlertDialogDescription>
-                  Once you delete this card, it cannot be recovered.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction
-                  onClick={handleDelete}
-                  className="bg-red-600 text-white hover:bg-red-700 focus:ring-red-500"
-                >
-                  Delete
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
+          <DeleteAlert onDelete={handleDelete}>
+            <DeleteCardButton />
+          </DeleteAlert>
         )}
       </div>
 
@@ -86,6 +54,9 @@ export function CardEdit({ card, cardNo, onDelete, onChange }: CardProps) {
           minRows={1}
         />
       </div>
+      <ImageUploader cardId={1} imageType="questionImage">
+        <ImageButton />
+      </ImageUploader>
     </div>
   )
 }
