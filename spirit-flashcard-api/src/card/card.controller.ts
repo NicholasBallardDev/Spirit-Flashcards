@@ -6,10 +6,11 @@ import {
   Param,
   Post,
   Put,
-  UploadedFiles,
+  UploadedFile,
   UseInterceptors,
+  BadRequestException,
 } from '@nestjs/common';
-import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { CardService } from './card.service';
 import { CreateCardDTO } from './dto/create-card.dto';
 import { UpdateCardDTO } from './dto/update-card.dto';
@@ -57,22 +58,28 @@ export class CardController {
     return this.cardService.update(id, dto);
   }
 
-  @Put(':id/images')
-  @UseInterceptors(
-    FileFieldsInterceptor([
-      { name: 'questionImage', maxCount: 1 },
-      { name: 'answerImage', maxCount: 1 },
-    ]),
-  )
-  async uploadImages(
+  @Put(':id/question-image')
+  @UseInterceptors(FileInterceptor('file'))
+  async uploadQuestionImage(
     @Param('id') id: number,
-    @UploadedFiles()
-    files: {
-      questionImage?: Express.Multer.File[];
-      answerImage?: Express.Multer.File[];
-    },
+    @UploadedFile() file: Express.Multer.File,
   ) {
-    return this.cardService.uploadImages(id, files);
+    if (!file) {
+      throw new BadRequestException('No file uploaded.');
+    }
+    return this.cardService.setQuestionImage(id, file);
+  }
+
+  @Put(':id/answer-image')
+  @UseInterceptors(FileInterceptor('file'))
+  async uploadAnswerImage(
+    @Param('id') id: number,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    if (!file) {
+      throw new BadRequestException('No file uploaded.');
+    }
+    return this.cardService.setAnswerImage(id, file);
   }
 
   @Delete(':id')

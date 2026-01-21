@@ -7,16 +7,15 @@ import { CreateCardDTO } from './dto/create-card.dto';
 import { FlashcardDeck } from '@src/flashcard-deck/flashcard-deck.entity';
 import { UpdateCardDTO } from './dto/update-card.dto';
 import { ScheduleService } from '@src/schedule/schedule.service';
-import { Image } from '@src/images/entities/image.entity';
+import { ImagesService } from '@src/images/images.service';
 
 @Injectable()
 export class CardService {
   constructor(
     @InjectRepository(Card)
     private cardRepository: Repository<Card>,
-    @InjectRepository(Image)
-    private imageRepository: Repository<Image>,
-    private scheduleService: ScheduleService,
+    private readonly imageService: ImagesService,
+    private readonly scheduleService: ScheduleService,
   ) {}
 
   async findAll() {
@@ -89,52 +88,52 @@ export class CardService {
     });
   }
 
-  async uploadImages(
+  private async setImage(
     id: number,
-    files: {
-      questionImage?: Express.Multer.File[];
-      answerImage?: Express.Multer.File[];
-    },
+    imageType: 'questionImage' | 'answerImage',
+    file: Express.Multer.File,
   ) {
     const card = await this.findOne(id);
     if (!card) {
       throw new NotFoundException(`Card with ID "${id}" not found.`);
     }
 
-    const createAndSaveImage = async (file: Express.Multer.File) => {
-      const newImage = this.imageRepository.create({
-        filename: file.filename,
-        // This URL should be configured based on your static file serving setup
-        url: `/uploads/${file.filename}`,
-        mimetype: file.mimetype,
-        size: file.size,
-      });
-      return this.imageRepository.save(newImage);
-    };
-
-    if (files?.questionImage?.[0]) {
-      // Replace the image reference if theres already an image
-      const newImage = await createAndSaveImage(files.questionImage[0]);
-      card.questionImage = newImage;
+    if (card[imageType]) {
+      // If an image already exists, update it
+      await this.imageService.update(card[imageType].id, file);
+    } else {
+      // Otherwise, create a new one and link it
+      card[imageType] = await this.imageService.create(file);
+      await this.cardRepository.save(card);
     }
 
-    if (files?.answerImage?.[0]) {
-      // and the database. For now, we'll just replace the reference.
-      const newImage = await createAndSaveImage(files.answerImage[0]);
-      card.answerImage = newImage;
-    }
+    return this.findOne(id);
+  }
 
-    const updatedCard = await this.cardRepository.save(card);
-    return updatedCard;
+  async setQuestionImage(id: number, file: Express.Multer.File) {
+    return this.setImage(id, 'questionImage', file);
+  }
+
+  async setAnswerImage(id: number, file: Express.Multer.File) {
+    return this.setImage(id, 'answerImage', file);
   }
 
   async delete(id: number) {
-    const result = await this.cardRepository.delete(id);
-    if (result.affected === 0) {
+    const card = await this.findOne(id);
+    if (!card) {
       throw new NotFoundException(`Item with the id of ${id} was not found`);
     }
+
+    const result = await this.cardRepository.delete(id);
+
+    // Delete images when card is gone
+    if (card.questionImage)
+      await this.imageService.delete(card.questionImage.id);
+    if (card.answerImage) await this.imageService.delete(card.answerImage.id);
+
     return {
       message: `Deletion Successful: Item with the id of ${id} was deleted`,
+      res: result,
     };
   }
 }
