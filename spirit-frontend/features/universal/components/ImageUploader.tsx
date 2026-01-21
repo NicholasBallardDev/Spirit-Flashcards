@@ -1,27 +1,35 @@
 "use client"
 
-import { ChangeEvent, useState } from "react"
+import { ChangeEvent, useState, useRef, ReactNode } from "react"
 import axios from "axios"
+import { Card } from "@/Types"
 
 type UploadStatus = "idle" | "uploading" | "success" | "error"
 
 interface ImageUploaderProps {
   cardId: number
   imageType: "questionImage" | "answerImage"
+  children: ReactNode
+  onUploadComplete?: (card: Card) => void
 }
 
-export function ImageUploader({ cardId, imageType }: ImageUploaderProps) {
-  const [file, setFile] = useState<File | null>(null)
+export function ImageUploader({
+  cardId,
+  imageType,
+  children,
+  onUploadComplete,
+}: ImageUploaderProps) {
   const [status, setStatus] = useState<UploadStatus>("idle")
   const [uploadProgress, setUploadProgress] = useState(0)
+  const inputRef = useRef<HTMLInputElement>(null)
 
-  const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setFile(e.target.files[0])
-    }
+  const handleTriggerClick = () => {
+    // Trigger the hidden file input
+    inputRef.current?.click()
   }
 
-  const handleFileUpload = async () => {
+  const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
     if (!file) return
 
     setStatus("uploading")
@@ -34,7 +42,7 @@ export function ImageUploader({ cardId, imageType }: ImageUploaderProps) {
       imageType === "questionImage" ? "question-image" : "answer-image"
 
     try {
-      await axios.put(
+      const response = await axios.put<Card>(
         `http://localhost:3000/cards/${cardId}/${endpointPath}`,
         formData,
         {
@@ -43,29 +51,42 @@ export function ImageUploader({ cardId, imageType }: ImageUploaderProps) {
           },
           onUploadProgress: (progressEvent) => {
             const progress = progressEvent.total
-              ? Math.round(progressEvent.loaded * 100) / progressEvent.total
+              ? Math.round((progressEvent.loaded * 100) / progressEvent.total)
               : 0
             setUploadProgress(progress)
           },
         },
       )
       setStatus("success")
-      setUploadProgress(100)
+      onUploadComplete?.(response.data)
     } catch (error) {
       console.error("Image upload failed:", error)
+      setStatus("error")
       setUploadProgress(0)
+    } finally {
+      // Reset the input value to allow re-uploading the same file
+      if (inputRef.current) {
+        inputRef.current.value = ""
+      }
     }
   }
 
   return (
-    <div>
-      <input type="file" onChange={handleFileChange} />
-      {file && status !== "uploading" && (
-        <button onClick={handleFileUpload}>Upload</button>
-      )}
-      {status === "success" && <p>success</p>}
-      {status === "error" && <p>failure</p>}
-      {status === "uploading" && <p>{uploadProgress}%</p>}
-    </div>
+    <>
+      <div onClick={handleTriggerClick} className="cursor-pointer">
+        {children}
+      </div>
+      <input
+        type="file"
+        ref={inputRef}
+        onChange={handleFileChange}
+        className="hidden"
+        accept="image/*"
+      />
+      {/* UI feedback for upload status */}
+      {status === "uploading" && <p>Uploading: {uploadProgress}%</p>}
+      {status === "success" && <p>Success!</p>}
+      {status === "error" && <p>Upload failed.</p>}
+    </>
   )
 }
