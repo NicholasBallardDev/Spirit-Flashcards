@@ -97,6 +97,7 @@ export class CardService {
     if (files?.answerImage?.[0])
       updates.answerImageUrl = files.answerImage[0].filename;
 
+    //checks if files property has questionImage and answerImage in the database
     if (Object.keys(updates).length > 0) {
       await this.cardRepository.update(id, updates);
     }

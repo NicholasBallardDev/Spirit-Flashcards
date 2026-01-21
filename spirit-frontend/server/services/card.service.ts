@@ -69,3 +69,19 @@ export async function deleteCard(id: number): Promise<Object> {
 
   return res.json()
 }
+
+export async function uploadCardImages(
+  id: number,
+  formData: FormData,
+): Promise<Card> {
+  const res = await fetch(`${API_URL}/cards/${id}/images`, {
+    method: "PUT",
+    body: formData,
+  })
+
+  if (!res.ok) {
+    throw new Error(`Failed to upload images for card ${id}`)
+  }
+
+  return res.json()
+}
