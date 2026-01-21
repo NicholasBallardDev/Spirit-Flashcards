@@ -1,15 +1,19 @@
 "use client"
 
-import React, { ChangeEvent, useRef, useState } from "react"
+import { ChangeEvent, useState } from "react"
 import axios from "axios"
 
 type UploadStatus = "idle" | "uploading" | "success" | "error"
 
-export function ImageUploader() {
+interface ImageUploaderProps {
+  cardId: number
+  imageType: "questionImage" | "answerImage"
+}
+
+export function ImageUploader({ cardId, imageType }: ImageUploaderProps) {
   const [file, setFile] = useState<File | null>(null)
   const [status, setStatus] = useState<UploadStatus>("idle")
   const [uploadProgress, setUploadProgress] = useState(0)
-  // const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -26,22 +30,29 @@ export function ImageUploader() {
     const formData = new FormData()
     formData.append("file", file)
 
+    const endpointPath =
+      imageType === "questionImage" ? "question-image" : "answer-image"
+
     try {
-      await axios.post("https://httpbin.org/post", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
+      await axios.put(
+        `http://localhost:3000/cards/${cardId}/${endpointPath}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          onUploadProgress: (progressEvent) => {
+            const progress = progressEvent.total
+              ? Math.round(progressEvent.loaded * 100) / progressEvent.total
+              : 0
+            setUploadProgress(progress)
+          },
         },
-        onUploadProgress: (progressEvent) => {
-          const progress = progressEvent.total
-            ? Math.round(progressEvent.loaded * 100) / progressEvent.total
-            : 0
-          setUploadProgress(progress)
-        },
-      })
+      )
       setStatus("success")
       setUploadProgress(100)
-    } catch {
-      console.log("error")
+    } catch (error) {
+      console.error("Image upload failed:", error)
       setUploadProgress(0)
     }
   }
