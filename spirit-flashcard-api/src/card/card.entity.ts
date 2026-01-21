@@ -5,8 +5,10 @@ import {
   Column,
   ManyToOne,
   OneToOne,
+  JoinColumn,
 } from 'typeorm';
 import { Schedule } from '../schedule/card-schedule.entity';
+import { Image } from '@src/images/entities/image.entity';
 
 @Entity('cards')
 export class Card {
@@ -21,11 +23,21 @@ export class Card {
   @Column()
   answer: string;
 
-  @Column({ nullable: true })
-  questionImageUrl: string;
+  @OneToOne(() => Image, {
+    cascade: true,
+    nullable: true,
+    onDelete: 'SET NULL',
+  })
+  @JoinColumn()
+  questionImage: Image;
 
-  @Column({ nullable: true })
-  answerImageUrl: string;
+  @OneToOne(() => Image, {
+    cascade: true,
+    nullable: true,
+    onDelete: 'SET NULL',
+  })
+  @JoinColumn()
+  answerImage: Image;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;

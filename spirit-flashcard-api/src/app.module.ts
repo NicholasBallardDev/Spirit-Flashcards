@@ -9,6 +9,8 @@ import { Card } from './card/card.entity';
 import { FlashcardDeck } from './flashcard-deck/flashcard-deck.entity';
 import { ScheduleModule } from './schedule/schedule.module';
 import { Schedule } from './schedule/card-schedule.entity';
+import { ImagesModule } from './images/images.module';
+import { ImagesModule } from './images/images.module';
 
 const DEFAULT_DB_PORT = 5432;
 
@@ -26,7 +28,8 @@ const DEFAULT_DB_PORT = 5432;
     username: process.env.DB_USER,
     password: process.env.DB_PASS,
     database: process.env.DB_NAME,
-  })],
+  }),
+    ImagesModule],
   controllers: [AppController],
   providers: [AppService],
 })

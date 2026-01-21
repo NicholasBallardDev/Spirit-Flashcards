@@ -7,17 +7,22 @@ import { CreateCardDTO } from './dto/create-card.dto';
 import { FlashcardDeck } from '@src/flashcard-deck/flashcard-deck.entity';
 import { UpdateCardDTO } from './dto/update-card.dto';
 import { ScheduleService } from '@src/schedule/schedule.service';
+import { Image } from '@src/images/entities/image.entity';
 
 @Injectable()
 export class CardService {
   constructor(
     @InjectRepository(Card)
     private cardRepository: Repository<Card>,
+    @InjectRepository(Image)
+    private imageRepository: Repository<Image>,
     private scheduleService: ScheduleService,
   ) {}
 
   async findAll() {
-    return this.cardRepository.find({ relations: ['deck', 'schedule'] });
+    return this.cardRepository.find({
+      relations: ['deck', 'schedule', 'questionImage', 'answerImage'],
+    });
   }
 
   async countCards() {
@@ -27,14 +32,14 @@ export class CardService {
   async findOne(id: number) {
     return this.cardRepository.findOne({
       where: { id },
-      relations: ['deck', 'schedule'],
+      relations: ['deck', 'schedule', 'questionImage', 'answerImage'],
     });
   }
 
   async findDeck(deckId: number) {
     return this.cardRepository.find({
       where: { deck: { id: deckId } },
-      relations: ['deck', 'schedule'],
+      relations: ['deck', 'schedule', 'questionImage', 'answerImage'],
     });
   }
 
@@ -45,7 +50,7 @@ export class CardService {
           due: LessThanOrEqual(new Date()),
         },
       },
-      relations: ['deck', 'schedule'],
+      relations: ['deck', 'schedule', 'questionImage', 'answerImage'],
     });
   }
 
@@ -80,7 +85,7 @@ export class CardService {
     });
     return this.cardRepository.findOne({
       where: { id },
-      relations: ['deck', 'schedule'],
+      relations: ['deck', 'schedule', 'questionImage', 'answerImage'],
     });
   }
 
@@ -91,21 +96,36 @@ export class CardService {
       answerImage?: Express.Multer.File[];
     },
   ) {
-    const updates: Partial<Card> = {};
-    if (files?.questionImage?.[0])
-      updates.questionImageUrl = files.questionImage[0].filename;
-    if (files?.answerImage?.[0])
-      updates.answerImageUrl = files.answerImage[0].filename;
-
-    //checks if files property has questionImage and answerImage in the database
-    if (Object.keys(updates).length > 0) {
-      await this.cardRepository.update(id, updates);
+    const card = await this.findOne(id);
+    if (!card) {
+      throw new NotFoundException(`Card with ID "${id}" not found.`);
     }
 
-    return this.cardRepository.findOne({
-      where: { id },
-      relations: ['deck', 'schedule'],
-    });
+    const createAndSaveImage = async (file: Express.Multer.File) => {
+      const newImage = this.imageRepository.create({
+        filename: file.filename,
+        // This URL should be configured based on your static file serving setup
+        url: `/uploads/${file.filename}`,
+        mimetype: file.mimetype,
+        size: file.size,
+      });
+      return this.imageRepository.save(newImage);
+    };
+
+    if (files?.questionImage?.[0]) {
+      // Replace the image reference if theres already an image
+      const newImage = await createAndSaveImage(files.questionImage[0]);
+      card.questionImage = newImage;
+    }
+
+    if (files?.answerImage?.[0]) {
+      // and the database. For now, we'll just replace the reference.
+      const newImage = await createAndSaveImage(files.answerImage[0]);
+      card.answerImage = newImage;
+    }
+
+    const updatedCard = await this.cardRepository.save(card);
+    return updatedCard;
   }
 
   async delete(id: number) {
