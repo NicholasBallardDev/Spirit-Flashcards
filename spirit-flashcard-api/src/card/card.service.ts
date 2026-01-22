@@ -106,7 +106,6 @@ export class CardService {
       card[imageType] = await this.imageService.create(file);
       await this.cardRepository.save(card);
     }
-
     return this.findOne(id);
   }
 

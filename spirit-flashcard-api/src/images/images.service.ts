@@ -15,7 +15,7 @@ export class ImagesService {
 
   async create(file: Express.Multer.File): Promise<Image> {
     const newImage = this.imageRepository.create({
-      filename: file.filename,
+      filename: file.originalname,
       url: `/uploads/${file.filename}`,
       mimetype: file.mimetype,
       size: file.size,
