@@ -54,7 +54,7 @@ export function CardEdit({ card, cardNo, onDelete, onChange }: CardProps) {
           minRows={1}
         />
       </div>
-      <ImageUploader cardId={1} imageType="questionImage">
+      <ImageUploader cardId={card.id} imageType="questionImage">
         <ImageButton />
       </ImageUploader>
     </div>
