@@ -60,9 +60,13 @@ export function ImageUploader({
       setStatus("success")
       onUploadComplete?.(response.data)
     } catch (error) {
-      console.error("Image upload failed:", error)
       setStatus("error")
       setUploadProgress(0)
+      if (axios.isAxiosError(error) && error.response) {
+        console.error("Image upload failed:", error.response.data)
+      } else {
+        console.error("Image upload failed:", error)
+      }
     } finally {
       // Reset the input value to allow re-uploading the same file
       if (inputRef.current) {
