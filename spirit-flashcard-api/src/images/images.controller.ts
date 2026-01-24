@@ -18,11 +18,11 @@ export class ImagesController {
 
   @Post()
   @UseInterceptors(FileInterceptor('file'))
-  create(@UploadedFile() file: Express.Multer.File) {
+  create(@UploadedFile() file: Express.Multer.File, newKey: string) {
     if (!file) {
       throw new BadRequestException('No file uploaded.');
     }
-    return this.imagesService.create(file);
+    return this.imagesService.create(file, newKey);
   }
 
   @Get()
@@ -37,11 +37,15 @@ export class ImagesController {
 
   @Patch(':id')
   @UseInterceptors(FileInterceptor('file'))
-  update(@Param('id') id: string, @UploadedFile() file: Express.Multer.File) {
+  update(
+    @Param('id') id: string,
+    @UploadedFile() file: Express.Multer.File,
+    newKey: string,
+  ) {
     if (!file) {
       throw new BadRequestException('No file uploaded.');
     }
-    return this.imagesService.update(+id, file);
+    return this.imagesService.update(+id, file, newKey);
   }
 
   @Delete(':id')

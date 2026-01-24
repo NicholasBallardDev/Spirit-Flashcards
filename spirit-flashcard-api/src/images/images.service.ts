@@ -13,12 +13,10 @@ export class ImagesService {
     private readonly imageRepository: Repository<Image>,
   ) {}
 
-  async create(file: Express.Multer.File): Promise<Image> {
+  async create(file: Express.Multer.File, key: string): Promise<Image> {
     const newImage = this.imageRepository.create({
       filename: file.originalname,
-      url: `/uploads/${file.filename}`,
-      mimetype: file.mimetype,
-      size: file.size,
+      key: key,
     });
     return this.imageRepository.save(newImage);
   }
@@ -35,15 +33,17 @@ export class ImagesService {
     return image;
   }
 
-  async update(id: number, newFile: Express.Multer.File): Promise<Image> {
+  async update(
+    id: number,
+    newFile: Express.Multer.File,
+    newKey: string,
+  ): Promise<Image> {
     const imageToUpdate = await this.findOne(id);
     const oldFilename = imageToUpdate.filename;
 
     // Update entity properties with new file info
     imageToUpdate.filename = newFile.filename;
-    imageToUpdate.url = `/uploads/${newFile.filename}`;
-    imageToUpdate.mimetype = newFile.mimetype;
-    imageToUpdate.size = newFile.size;
+    imageToUpdate.key = newKey;
 
     const updatedImage = await this.imageRepository.save(imageToUpdate);
 

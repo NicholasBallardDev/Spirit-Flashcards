@@ -1,18 +1,11 @@
-import { IsString, IsNotEmpty, IsNumber, IsUrl } from 'class-validator';
+import { IsString, IsNotEmpty, IsNumber } from 'class-validator';
 
 export class CreateImageDto {
   @IsString()
   @IsNotEmpty()
   filename: string;
 
-  @IsUrl()
+  @IsString() // 'key' is a string, not a URL
   @IsNotEmpty()
-  url: string;
-
-  @IsString()
-  @IsNotEmpty()
-  mimetype: string;
-
-  @IsNumber()
-  size: number;
+  key: string;
 }
