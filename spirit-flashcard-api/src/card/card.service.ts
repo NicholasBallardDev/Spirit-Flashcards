@@ -1,5 +1,4 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Express } from 'express';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Card } from './card.entity';
 import { LessThanOrEqual, Repository } from 'typeorm';
@@ -9,7 +8,10 @@ import { UpdateCardDTO } from './dto/update-card.dto';
 import { ScheduleService } from '@src/schedule/schedule.service';
 import { ImagesService } from '@src/images/images.service';
 import { Bucket$, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import sharp from 'sharp';
 import dotenv from 'dotenv';
+import crypto from 'crypto';
+
 dotenv.config();
 
 const bucketName = process.env.BUCKET_NAME;
@@ -24,6 +26,9 @@ const s3 = new S3Client({
   },
   region: bucketRegion,
 });
+
+const randomImageName = (bytes = 32) =>
+  crypto.randomBytes(bytes).toString('hex');
 
 @Injectable()
 export class CardService {
@@ -110,21 +115,22 @@ export class CardService {
     file: Express.Multer.File,
   ) {
     const card = await this.findOne(id);
+    const key = randomImageName();
     if (!card) {
       throw new NotFoundException(`Card with ID "${id}" not found.`);
     }
 
     if (card[imageType]) {
       // If an image already exists, update it
-      await this.imageService.update(card[imageType].id, file);
+      await this.imageService.update(card[imageType].id, file, key);
     } else {
       // Otherwise, create a new one and link it
-      card[imageType] = await this.imageService.create(file);
+      card[imageType] = await this.imageService.create(file, key);
       await this.cardRepository.save(card);
     }
     const params = {
       Bucket: bucketName,
-      Key: file.originalname,
+      Key: key,
       Body: file.buffer,
       ContentType: file.mimetype,
     };
