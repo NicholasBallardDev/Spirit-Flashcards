@@ -8,6 +8,22 @@ import { FlashcardDeck } from '@src/flashcard-deck/flashcard-deck.entity';
 import { UpdateCardDTO } from './dto/update-card.dto';
 import { ScheduleService } from '@src/schedule/schedule.service';
 import { ImagesService } from '@src/images/images.service';
+import { Bucket$, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import dotenv from 'dotenv';
+dotenv.config();
+
+const bucketName = process.env.BUCKET_NAME;
+const bucketRegion = process.env.BUCKET_REGION as string;
+const accessKey = process.env.ACCESS_KEY as string;
+const secretAccessKey = process.env.SECRET_ACCESS_KEY as string;
+
+const s3 = new S3Client({
+  credentials: {
+    secretAccessKey: secretAccessKey,
+    accessKeyId: accessKey,
+  },
+  region: bucketRegion,
+});
 
 @Injectable()
 export class CardService {
@@ -106,6 +122,16 @@ export class CardService {
       card[imageType] = await this.imageService.create(file);
       await this.cardRepository.save(card);
     }
+    const params = {
+      Bucket: bucketName,
+      Key: file.originalname,
+      Body: file.buffer,
+      ContentType: file.mimetype,
+    };
+
+    const command = new PutObjectCommand(params);
+    await s3.send(command);
+
     return this.findOne(id);
   }
 
