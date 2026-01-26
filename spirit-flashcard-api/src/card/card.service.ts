@@ -115,10 +115,12 @@ export class CardService {
     file: Express.Multer.File,
   ) {
     const card = await this.findOne(id);
-    const key = randomImageName();
+
     if (!card) {
       throw new NotFoundException(`Card with ID "${id}" not found.`);
     }
+
+    const key = randomImageName();
 
     if (card[imageType]) {
       // If an image already exists, update it
@@ -128,6 +130,7 @@ export class CardService {
       card[imageType] = await this.imageService.create(file, key);
       await this.cardRepository.save(card);
     }
+
     const params = {
       Bucket: bucketName,
       Key: key,
@@ -137,7 +140,6 @@ export class CardService {
 
     const command = new PutObjectCommand(params);
     await s3.send(command);
-
     return this.findOne(id);
   }
 

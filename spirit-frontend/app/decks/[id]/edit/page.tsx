@@ -1,6 +1,7 @@
 import { getDeck } from "@/server/services/deck.service"
 import { EditClient } from "./EditClient"
 import { DeckHeader } from "@/features/deck/components/DeckHeader"
+import { BackButton } from "@/features/universal/components/BackButton"
 
 export default async function DeckPage({
   params,
@@ -12,6 +13,7 @@ export default async function DeckPage({
 
   return (
     <div className="p-6">
+      <BackButton />
       <div>
         <DeckHeader deck={deck} />
       </div>
