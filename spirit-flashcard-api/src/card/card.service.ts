@@ -120,6 +120,10 @@ export class CardService {
       throw new NotFoundException(`Card with ID "${id}" not found.`);
     }
 
+    const buffer = await sharp(file.buffer)
+      .resize({ height: 1080, width: 1920, fit: 'contain' })
+      .toBuffer();
+
     const key = randomImageName();
 
     if (card[imageType]) {
@@ -134,7 +138,7 @@ export class CardService {
     const params = {
       Bucket: bucketName,
       Key: key,
-      Body: file.buffer,
+      Body: buffer,
       ContentType: file.mimetype,
     };
 
