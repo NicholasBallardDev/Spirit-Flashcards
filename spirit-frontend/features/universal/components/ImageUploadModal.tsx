@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dialog"
 import { ImageUploader } from "./ImageUploader"
 import { ReactNode } from "react"
+import { UploadDropZone } from "./UploadDropZone"
 
 interface ImageUploadModalProps {
   cardId: number
@@ -42,45 +43,13 @@ export const ImageUploadModal = ({
         {/* Question Upload Dropzone */}
         <h3 className="text-md font-semibold mb-2">Question</h3>
         <ImageUploader cardId={cardId} imageType="questionImage">
-          <div className="mb-2">
-            <div
-              className="border-2 border-dashed border-blue-200 rounded-xl h-40 flex flex-col 
-            items-center justify-center cursor-pointer hover:bg-blue-50/60 transition-colors group"
-            >
-              <div className="bg-white p-2.5 rounded-xl shadow-sm mb-3 group-hover:scale-105 transition-transform">
-                <ImageUp className="h-6 w-6 text-gray-600" />
-              </div>
-              <p className="text-sm text-gray-600 mb-1">
-                <span className="text-blue-600 font-semibold hover:underline">
-                  Click to upload
-                </span>{" "}
-                or drag and drop
-              </p>
-              <p className="text-xs text-gray-400">Max. File Size: 15MB</p>
-            </div>
-          </div>
+          <UploadDropZone />
         </ImageUploader>
 
         {/* Answer Upload Dropzone */}
         <h3 className="text-md font-semibold mb-2">Answer</h3>
         <ImageUploader cardId={cardId} imageType="answerImage">
-          <div className="mb-2">
-            <div
-              className="border-2 border-dashed border-blue-200 rounded-xl h-40 flex flex-col 
-            items-center justify-center cursor-pointer hover:bg-blue-50/60 transition-colors group"
-            >
-              <div className="bg-white p-2.5 rounded-xl shadow-sm mb-3 group-hover:scale-105 transition-transform">
-                <ImageUp className="h-6 w-6 text-gray-600" />
-              </div>
-              <p className="text-sm text-gray-600 mb-1">
-                <span className="text-blue-600 font-semibold hover:underline">
-                  Click to upload
-                </span>{" "}
-                or drag and drop
-              </p>
-              <p className="text-xs text-gray-400">Max. File Size: 15MB</p>
-            </div>
-          </div>
+          <UploadDropZone />
         </ImageUploader>
 
         {/* Footer Actions */}
