@@ -1,9 +1,26 @@
+import { Button } from "@/components/ui/button"
 import { ImagePlus } from "lucide-react"
+import * as React from "react"
+import { cn } from "@/lib/utils"
 
-export function ImageButton() {
+export const ImageButton = React.forwardRef<
+  HTMLButtonElement,
+  React.ComponentPropsWithoutRef<typeof Button>
+>(({ className, ...props }, ref) => {
   return (
-    <div className="w-12 h-12 border rounded-md flex items-center justify-center hover:bg-gray-100 transition-colors">
+    <Button
+      ref={ref}
+      variant="outline"
+      size="icon"
+      className={cn(
+        "hover:bg-gray-100 cursor-pointer transition-colors bg-white",
+        className,
+      )}
+      {...props}
+    >
       <ImagePlus size={24} className="text-gray-500" />
-    </div>
+    </Button>
   )
-}
+})
+
+ImageButton.displayName = "ImageButton"

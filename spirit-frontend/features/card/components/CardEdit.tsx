@@ -6,6 +6,7 @@ import { ImageButton } from "@/features/universal/components/ImageButton"
 import { ImageUploader } from "@/features/universal/components/ImageUploader"
 import { DeleteAlert } from "@/features/universal/components/DeleteAlert"
 import { DeleteCardButton } from "./DeleteCardButton"
+import ImageUploadModal from "@/features/universal/components/ImageUploadModal"
 
 interface CardProps {
   card: Card
@@ -30,7 +31,7 @@ export function CardEdit({ card, cardNo, onDelete, onChange }: CardProps) {
   }
 
   return (
-    <div className="px-6 py-6 min-w-24 w-full border rounded-md cursor-pointer flex-col gap-4 items-start">
+    <div className="px-6 py-6 min-w-24 w-full border rounded-md flex-col gap-4 items-start">
       <div className="flex justify-between mb-1 mx-1">
         {cardNo}
         {mounted && (
@@ -54,9 +55,9 @@ export function CardEdit({ card, cardNo, onDelete, onChange }: CardProps) {
           minRows={1}
         />
       </div>
-      <ImageUploader cardId={card.id} imageType="questionImage">
+      <ImageUploadModal cardId={card.id}>
         <ImageButton />
-      </ImageUploader>
+      </ImageUploadModal>
     </div>
   )
 }
