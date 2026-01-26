@@ -5,6 +5,24 @@ import { Image } from './entities/image.entity';
 import { UpdateImageDto } from './dto/update-image.dto';
 import * as fs from 'fs/promises';
 import * as path from 'path';
+import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+const bucketName = process.env.BUCKET_NAME;
+const bucketRegion = process.env.BUCKET_REGION as string;
+const accessKey = process.env.ACCESS_KEY as string;
+const secretAccessKey = process.env.SECRET_ACCESS_KEY as string;
+
+const s3 = new S3Client({
+  credentials: {
+    secretAccessKey: secretAccessKey,
+    accessKeyId: accessKey,
+  },
+  region: bucketRegion,
+});
 
 @Injectable()
 export class ImagesService {
@@ -27,9 +45,20 @@ export class ImagesService {
 
   async findOne(id: number): Promise<Image> {
     const image = await this.imageRepository.findOne({ where: { id } });
+
     if (!image) {
       throw new NotFoundException(`Image with ID #${id} not found.`);
     }
+
+    const getObjectParams = {
+      Bucket: bucketName,
+      Key: image?.key,
+    };
+
+    const command = new GetObjectCommand(getObjectParams);
+    const url = await getSignedUrl(s3, command, { expiresIn: 3600 });
+    image.url = url;
+
     return image;
   }
 

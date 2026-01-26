@@ -7,7 +7,7 @@ import { FlashcardDeck } from '@src/flashcard-deck/flashcard-deck.entity';
 import { UpdateCardDTO } from './dto/update-card.dto';
 import { ScheduleService } from '@src/schedule/schedule.service';
 import { ImagesService } from '@src/images/images.service';
-import { Bucket$, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import sharp from 'sharp';
 import dotenv from 'dotenv';
 import crypto from 'crypto';

@@ -12,4 +12,6 @@ export class Image {
 
   @Column()
   filename: string;
+
+  url: string;
 }
