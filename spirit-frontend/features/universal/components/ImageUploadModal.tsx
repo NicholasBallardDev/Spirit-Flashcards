@@ -1,4 +1,3 @@
-"use client"
 import { ImageUp } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
@@ -14,16 +13,14 @@ import {
 import { ImageUploader } from "./ImageUploader"
 import { ReactNode } from "react"
 import { UploadDropZone } from "./UploadDropZone"
+import { Card } from "@/Types"
 
 interface ImageUploadModalProps {
-  cardId: number
+  card: Card
   children: ReactNode
 }
 
-export const ImageUploadModal = ({
-  cardId,
-  children,
-}: ImageUploadModalProps) => {
+export const ImageUploadModal = ({ card, children }: ImageUploadModalProps) => {
   return (
     <Dialog>
       {/* The button that opens the modal */}
@@ -42,13 +39,13 @@ export const ImageUploadModal = ({
 
         {/* Question Upload Dropzone */}
         <h3 className="text-md font-semibold mb-2">Question</h3>
-        <ImageUploader cardId={cardId} imageType="questionImage">
+        <ImageUploader cardId={card.id} imageType="questionImage">
           <UploadDropZone />
         </ImageUploader>
 
         {/* Answer Upload Dropzone */}
         <h3 className="text-md font-semibold mb-2">Answer</h3>
-        <ImageUploader cardId={cardId} imageType="answerImage">
+        <ImageUploader cardId={card.id} imageType="answerImage">
           <UploadDropZone />
         </ImageUploader>
 

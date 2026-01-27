@@ -1,4 +1,3 @@
-"use client"
 import TextareaAutosize from "react-textarea-autosize"
 import type { Card } from "@/Types"
 import { useEffect, useState } from "react"
