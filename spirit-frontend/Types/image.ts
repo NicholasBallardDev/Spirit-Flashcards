@@ -2,6 +2,5 @@ export interface Image {
   id: number
   key: string
   filename: string
+  url: string
 }
-
-export type ImageWithUrl = Image & { url: string }

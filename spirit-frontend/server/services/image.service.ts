@@ -1,4 +1,4 @@
-import type { Image, ImageWithUrl } from "@/Types"
+import type { Image } from "@/Types"
 
 const API_URL = "http://localhost:3000"
 
@@ -11,7 +11,7 @@ export async function getImages(): Promise<Image[]> {
   return data
 }
 
-export async function getImage(id: number): Promise<ImageWithUrl> {
+export async function getImage(id: number): Promise<Image> {
   const res = await fetch(`${API_URL}/images/${id}`)
   const data = await res.json()
   if (!res.ok) {
