@@ -1,3 +1,4 @@
+import { Image } from "./image"
 import { Schedule } from "./schedule"
 
 export interface Card {
@@ -5,5 +6,7 @@ export interface Card {
   question: string
   answer: string
   deckId: number
+  questionImage: Image | null
+  answerImage: Image | null
   schedule: Schedule
 }
