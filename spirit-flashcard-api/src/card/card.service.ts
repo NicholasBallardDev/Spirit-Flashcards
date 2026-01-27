@@ -40,9 +40,10 @@ export class CardService {
   ) {}
 
   async findAll() {
-    return this.cardRepository.find({
+    const cards = await this.cardRepository.find({
       relations: ['deck', 'schedule', 'questionImage', 'answerImage'],
     });
+    return Promise.all(cards.map((card) => this.signCard(card)));
   }
 
   async countCards() {
@@ -50,21 +51,24 @@ export class CardService {
   }
 
   async findOne(id: number) {
-    return this.cardRepository.findOne({
+    const card = await this.cardRepository.findOne({
       where: { id },
       relations: ['deck', 'schedule', 'questionImage', 'answerImage'],
     });
+
+    return card ? this.signCard(card) : null;
   }
 
   async findDeck(deckId: number) {
-    return this.cardRepository.find({
+    const cards = await this.cardRepository.find({
       where: { deck: { id: deckId } },
       relations: ['deck', 'schedule', 'questionImage', 'answerImage'],
     });
+    return Promise.all(cards.map((card) => this.signCard(card)));
   }
 
   async findAllDue() {
-    return this.cardRepository.find({
+    const cards = await this.cardRepository.find({
       where: {
         schedule: {
           due: LessThanOrEqual(new Date()),
@@ -72,6 +76,7 @@ export class CardService {
       },
       relations: ['deck', 'schedule', 'questionImage', 'answerImage'],
     });
+    return Promise.all(cards.map((card) => this.signCard(card)));
   }
 
   async countCardsDue() {
@@ -103,10 +108,7 @@ export class CardService {
       answer: dto.answer,
       deck: dto.deckId ? ({ id: dto.deckId } as FlashcardDeck) : undefined,
     });
-    return this.cardRepository.findOne({
-      where: { id },
-      relations: ['deck', 'schedule', 'questionImage', 'answerImage'],
-    });
+    return this.findOne(id);
   }
 
   private async setImage(
@@ -172,5 +174,19 @@ export class CardService {
       message: `Deletion Successful: Item with the id of ${id} was deleted`,
       res: result,
     };
+  }
+
+  private async signCard(card: Card): Promise<Card> {
+    if (card.questionImage) {
+      card.questionImage.url = await this.imageService.generateUrl(
+        card.questionImage,
+      );
+    }
+    if (card.answerImage) {
+      card.answerImage.url = await this.imageService.generateUrl(
+        card.answerImage,
+      );
+    }
+    return card;
   }
 }

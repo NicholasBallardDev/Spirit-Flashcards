@@ -50,16 +50,19 @@ export class ImagesService {
       throw new NotFoundException(`Image with ID #${id} not found.`);
     }
 
+    image.url = await this.generateUrl(image);
+
+    return image;
+  }
+
+  async generateUrl(image: Image): Promise<string> {
     const getObjectParams = {
       Bucket: bucketName,
       Key: image?.key,
     };
 
     const command = new GetObjectCommand(getObjectParams);
-    const url = await getSignedUrl(s3, command, { expiresIn: 3600 });
-    image.url = url;
-
-    return image;
+    return getSignedUrl(s3, command, { expiresIn: 3600 });
   }
 
   async update(

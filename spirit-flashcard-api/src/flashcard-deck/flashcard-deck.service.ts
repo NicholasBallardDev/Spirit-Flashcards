@@ -6,6 +6,7 @@ import { CreateDeckDTO } from './dto/create-deck.dto';
 import { UpdateDeckDTO } from './dto/update-deck.dto';
 import { Card } from '@src/card/card.entity';
 import { LessThanOrEqual } from 'typeorm';
+import { ImagesService } from '@src/images/images.service';
 
 @Injectable()
 export class FlashcardDeckService {
@@ -14,6 +15,7 @@ export class FlashcardDeckService {
     private deckRepository: Repository<FlashcardDeck>,
     @InjectRepository(Card)
     private cardRepository: Repository<Card>,
+    private readonly imagesService: ImagesService,
   ) {}
 
   async findAll() {
@@ -29,10 +31,22 @@ export class FlashcardDeckService {
   }
 
   async getCards(id: number) {
-    return this.deckRepository.findOne({
+    const deck = await this.deckRepository.findOne({
       where: { id },
-      relations: ['cards', 'cards.schedule'],
+      relations: [
+        'cards',
+        'cards.schedule',
+        'cards.questionImage',
+        'cards.answerImage',
+      ],
     });
+
+    if (deck?.cards) {
+      deck.cards = await Promise.all(
+        deck.cards.map((card) => this.signCard(card)),
+      );
+    }
+    return deck;
   }
 
   async countCards(id: number) {
@@ -40,13 +54,14 @@ export class FlashcardDeckService {
   }
 
   async getDueCards(id: number) {
-    return this.cardRepository.find({
+    const cards = await this.cardRepository.find({
       where: {
         deck: { id },
         schedule: { due: LessThanOrEqual(new Date()) },
       },
-      relations: ['schedule'],
+      relations: ['schedule', 'questionImage', 'answerImage'],
     });
+    return Promise.all(cards.map((card) => this.signCard(card)));
   }
 
   async countDueCards(id: number) {
@@ -92,5 +107,19 @@ export class FlashcardDeckService {
 
   async getLastId() {
     return this.deckRepository.maximum('id');
+  }
+
+  private async signCard(card: Card): Promise<Card> {
+    if (card.questionImage) {
+      card.questionImage.url = await this.imagesService.generateUrl(
+        card.questionImage,
+      );
+    }
+    if (card.answerImage) {
+      card.answerImage.url = await this.imagesService.generateUrl(
+        card.answerImage,
+      );
+    }
+    return card;
   }
 }
