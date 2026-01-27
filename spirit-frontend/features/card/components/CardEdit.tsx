@@ -3,7 +3,6 @@ import TextareaAutosize from "react-textarea-autosize"
 import type { Card } from "@/Types"
 import { useEffect, useState } from "react"
 import { ImageButton } from "@/features/universal/components/ImageButton"
-import { ImageUploader } from "@/features/universal/components/ImageUploader"
 import { DeleteAlert } from "@/features/universal/components/DeleteAlert"
 import { DeleteCardButton } from "./DeleteCardButton"
 import ImageUploadModal from "@/features/universal/components/ImageUploadModal"
@@ -55,7 +54,7 @@ export function CardEdit({ card, cardNo, onDelete, onChange }: CardProps) {
           minRows={1}
         />
       </div>
-      <ImageUploadModal cardId={card.id}>
+      <ImageUploadModal card={card}>
         <ImageButton />
       </ImageUploadModal>
     </div>
