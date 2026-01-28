@@ -40,28 +40,30 @@ export const ImageUploadModal = ({ card, children }: ImageUploadModalProps) => {
         {/* Question Upload Dropzone */}
         <h3 className="text-md font-semibold mb-2">Question</h3>
         <ImageUploader cardId={card.id} imageType="questionImage">
-          <UploadDropZone />
+          {card.questionImage ? (
+            <img src={card.questionImage.url} />
+          ) : (
+            <UploadDropZone />
+          )}
         </ImageUploader>
 
         {/* Answer Upload Dropzone */}
         <h3 className="text-md font-semibold mb-2">Answer</h3>
         <ImageUploader cardId={card.id} imageType="answerImage">
-          <UploadDropZone />
+          {card.answerImage ? (
+            <img src={card.answerImage.url} />
+          ) : (
+            <UploadDropZone />
+          )}
         </ImageUploader>
 
         {/* Footer Actions */}
         <DialogFooter className="p-6 bg-gray-50/50 mt-4 sm:justify-end gap-3 border-t border-gray-100">
           <DialogClose asChild>
-            <Button
-              variant="outline"
-              className="px-6 border-gray-200 text-gray-700 bg-white hover:bg-gray-50"
-            >
-              Cancel
+            <Button className="px-6 bg-blue-600 hover:bg-blue-700 text-white shadow-sm">
+              Done
             </Button>
           </DialogClose>
-          <Button className="px-6 bg-blue-600 hover:bg-blue-700 text-white shadow-sm">
-            Upload
-          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
