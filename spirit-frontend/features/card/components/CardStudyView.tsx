@@ -1,13 +1,13 @@
 "use client"
 import { useState } from "react"
 import { motion } from "framer-motion"
+import { Card } from "@/Types"
 
 interface CardStudyProps {
-  question: string
-  answer: string
+  card: Card
 }
 
-export function CardStudyView({ question, answer }: CardStudyProps) {
+export function CardStudyView({ card }: CardStudyProps) {
   const [isFlipped, setIsFlipped] = useState(false)
 
   const handleFlip = () => setIsFlipped(!isFlipped)
@@ -26,7 +26,7 @@ export function CardStudyView({ question, answer }: CardStudyProps) {
         transition={{ duration: 0.4 }}
         className="text-xl font-semibold text-center"
       >
-        {isFlipped ? answer : question}
+        {isFlipped ? card.answer : card.question}
       </motion.h2>
     </div>
   )

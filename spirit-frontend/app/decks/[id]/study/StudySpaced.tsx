@@ -54,11 +54,7 @@ export function StudySpaced({ deck }: StudySpacedProps) {
         </div>
       ) : (
         <div className="flex-col justify-center items-center h-[70vh]">
-          <CardStudyView
-            key={current}
-            question={cards[current]?.question ?? ""}
-            answer={cards[current]?.answer ?? ""}
-          />
+          <CardStudyView key={current} card={cards[current]} />
 
           <div>
             <ScheduleContextProvider

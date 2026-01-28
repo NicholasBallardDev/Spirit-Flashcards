@@ -50,7 +50,7 @@ export function StudyAll({ deck }: StudyAll) {
       ) : (
         <>
           <div className="flex-col justify-center items-center h-[70vh] mb-4">
-            <CardStudyView key={current} question={question} answer={answer} />
+            <CardStudyView key={current} card={cards[current]} />
 
             <CardNavigationTray
               onDecrement={decrementCurrent}
