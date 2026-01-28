@@ -37,7 +37,7 @@ export default function DeckClient({ decks }: DeckClientProps) {
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-4 text-center">All Decks</h1>
-      <div className="flex gap-2 mb-4 w-[30%] ml-auto">
+      <div className="flex gap-2 mb-4 w-full lg:w-[30%] lg:ml-auto">
         <SearchBar value={searchPrompt} onChange={handleSearchChange} />
         <CreateDeckButton />
       </div>
