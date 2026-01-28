@@ -18,16 +18,32 @@ export function CardStudyView({ card }: CardStudyProps) {
       className="w-full h-full flex items-center justify-center p-6 border border-gray-300 rounded-lg 
       bg-white shadow-md select-none cursor-pointer hover:shadow-xl hover:shadow-blue-400/30 mb-4"
     >
-      <motion.h2
+      <motion.div
         key={isFlipped ? "answer" : "question"}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.4 }}
-        className="text-xl font-semibold text-center"
+        className="flex flex-col items-center gap-4"
       >
-        {isFlipped ? card.answer : card.question}
-      </motion.h2>
+        {isFlipped && card.answerImage && (
+          <img
+            src={card.answerImage.url}
+            alt="Answer"
+            className="max-h-60 object-contain rounded-md"
+          />
+        )}
+        {!isFlipped && card.questionImage && (
+          <img
+            src={card.questionImage.url}
+            alt="Question"
+            className="max-h-60 object-contain rounded-md"
+          />
+        )}
+        <h2 className="text-xl font-semibold text-center">
+          {isFlipped ? card.answer : card.question}
+        </h2>
+      </motion.div>
     </div>
   )
 }
