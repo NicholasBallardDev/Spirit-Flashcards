@@ -18,9 +18,14 @@ import { Card } from "@/Types"
 interface ImageUploadModalProps {
   card: Card
   children: ReactNode
+  onCardChange?: (card: Card) => void
 }
 
-export const ImageUploadModal = ({ card, children }: ImageUploadModalProps) => {
+export const ImageUploadModal = ({
+  card,
+  children,
+  onCardChange,
+}: ImageUploadModalProps) => {
   return (
     <Dialog>
       {/* The button that opens the modal */}
@@ -39,9 +44,16 @@ export const ImageUploadModal = ({ card, children }: ImageUploadModalProps) => {
 
         {/* Question Upload Dropzone */}
         <h3 className="text-md font-semibold mb-2">Question</h3>
-        <ImageUploader cardId={card.id} imageType="questionImage">
+        <ImageUploader
+          cardId={card.id}
+          imageType="questionImage"
+          onUploadComplete={onCardChange}
+        >
           {card.questionImage ? (
-            <img src={card.questionImage.url} />
+            <img
+              src={card.questionImage.url}
+              alt={card.questionImage.filename}
+            />
           ) : (
             <UploadDropZone />
           )}
@@ -49,9 +61,13 @@ export const ImageUploadModal = ({ card, children }: ImageUploadModalProps) => {
 
         {/* Answer Upload Dropzone */}
         <h3 className="text-md font-semibold mb-2">Answer</h3>
-        <ImageUploader cardId={card.id} imageType="answerImage">
+        <ImageUploader
+          cardId={card.id}
+          imageType="answerImage"
+          onUploadComplete={onCardChange}
+        >
           {card.answerImage ? (
-            <img src={card.answerImage.url} />
+            <img src={card.answerImage.url} alt={card.answerImage.filename} />
           ) : (
             <UploadDropZone />
           )}

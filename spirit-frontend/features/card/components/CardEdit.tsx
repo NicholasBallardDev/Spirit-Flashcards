@@ -53,7 +53,7 @@ export function CardEdit({ card, cardNo, onDelete, onChange }: CardProps) {
           minRows={1}
         />
       </div>
-      <ImageUploadModal card={card}>
+      <ImageUploadModal card={card} onCardChange={onChange}>
         <ImageButton />
       </ImageUploadModal>
     </div>
