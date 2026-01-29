@@ -24,11 +24,13 @@ export function CardStudyView({ card }: CardStudyProps) {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.4 }}
-        className="flex flex-col items-center gap-4"
+        className="flex flex-col items-center gap-4 w-full"
       >
-        <h2 className="text-xl font-semibold text-center">
-          {isFlipped ? card.answer : card.question}
-        </h2>
+        <div className="w-[80%]">
+          <h2 className="text-xl font-semibold text-center text-pretty break-words">
+            {isFlipped ? card.answer : card.question}
+          </h2>
+        </div>
         {isFlipped && card.answerImage && (
           <img
             src={card.answerImage.url}
