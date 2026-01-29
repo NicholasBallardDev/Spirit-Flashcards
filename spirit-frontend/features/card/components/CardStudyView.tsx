@@ -24,7 +24,7 @@ export function CardStudyView({ card }: CardStudyProps) {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.4 }}
-        className="flex flex-col items-center gap-4 w-full"
+        className="flex flex-col items-center gap-4 w-full overflow-auto max-h-full"
       >
         <div className="w-[80%]">
           <h2 className="text-xl font-semibold text-center text-pretty break-words">
