@@ -26,6 +26,9 @@ export function CardStudyView({ card }: CardStudyProps) {
         transition={{ duration: 0.4 }}
         className="flex flex-col items-center gap-4"
       >
+        <h2 className="text-xl font-semibold text-center">
+          {isFlipped ? card.answer : card.question}
+        </h2>
         {isFlipped && card.answerImage && (
           <img
             src={card.answerImage.url}
@@ -40,9 +43,6 @@ export function CardStudyView({ card }: CardStudyProps) {
             className="max-h-60 object-contain rounded-md"
           />
         )}
-        <h2 className="text-xl font-semibold text-center">
-          {isFlipped ? card.answer : card.question}
-        </h2>
       </motion.div>
     </div>
   )
