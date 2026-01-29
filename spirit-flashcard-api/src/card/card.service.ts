@@ -43,7 +43,7 @@ export class CardService {
     const cards = await this.cardRepository.find({
       relations: ['deck', 'schedule', 'questionImage', 'answerImage'],
     });
-    return Promise.all(cards.map((card) => this.signCard(card)));
+    return Promise.all(cards.map((card) => this.imageService.signCard(card)));
   }
 
   async countCards() {
@@ -56,7 +56,7 @@ export class CardService {
       relations: ['deck', 'schedule', 'questionImage', 'answerImage'],
     });
 
-    return card ? this.signCard(card) : null;
+    return card ? this.imageService.signCard(card) : null;
   }
 
   async findDeck(deckId: number) {
@@ -64,7 +64,7 @@ export class CardService {
       where: { deck: { id: deckId } },
       relations: ['deck', 'schedule', 'questionImage', 'answerImage'],
     });
-    return Promise.all(cards.map((card) => this.signCard(card)));
+    return Promise.all(cards.map((card) => this.imageService.signCard(card)));
   }
 
   async findAllDue() {
@@ -76,7 +76,7 @@ export class CardService {
       },
       relations: ['deck', 'schedule', 'questionImage', 'answerImage'],
     });
-    return Promise.all(cards.map((card) => this.signCard(card)));
+    return Promise.all(cards.map((card) => this.imageService.signCard(card)));
   }
 
   async countCardsDue() {
@@ -174,19 +174,5 @@ export class CardService {
       message: `Deletion Successful: Item with the id of ${id} was deleted`,
       res: result,
     };
-  }
-
-  private async signCard(card: Card): Promise<Card> {
-    if (card.questionImage) {
-      card.questionImage.url = await this.imageService.generateUrl(
-        card.questionImage,
-      );
-    }
-    if (card.answerImage) {
-      card.answerImage.url = await this.imageService.generateUrl(
-        card.answerImage,
-      );
-    }
-    return card;
   }
 }

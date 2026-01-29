@@ -15,7 +15,7 @@ export class FlashcardDeckService {
     private deckRepository: Repository<FlashcardDeck>,
     @InjectRepository(Card)
     private cardRepository: Repository<Card>,
-    private readonly imagesService: ImagesService,
+    private readonly imageService: ImagesService,
   ) {}
 
   async findAll() {
@@ -43,7 +43,7 @@ export class FlashcardDeckService {
 
     if (deck?.cards) {
       deck.cards = await Promise.all(
-        deck.cards.map((card) => this.signCard(card)),
+        deck.cards.map((card) => this.imageService.signCard(card)),
       );
     }
     return deck;
@@ -61,7 +61,7 @@ export class FlashcardDeckService {
       },
       relations: ['schedule', 'questionImage', 'answerImage'],
     });
-    return Promise.all(cards.map((card) => this.signCard(card)));
+    return Promise.all(cards.map((card) => this.imageService.signCard(card)));
   }
 
   async countDueCards(id: number) {
@@ -107,19 +107,5 @@ export class FlashcardDeckService {
 
   async getLastId() {
     return this.deckRepository.maximum('id');
-  }
-
-  private async signCard(card: Card): Promise<Card> {
-    if (card.questionImage) {
-      card.questionImage.url = await this.imagesService.generateUrl(
-        card.questionImage,
-      );
-    }
-    if (card.answerImage) {
-      card.answerImage.url = await this.imagesService.generateUrl(
-        card.answerImage,
-      );
-    }
-    return card;
   }
 }

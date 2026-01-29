@@ -8,6 +8,7 @@ import * as path from 'path';
 import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import dotenv from 'dotenv';
+import { Card } from '@src/card/card.entity';
 
 dotenv.config();
 
@@ -105,5 +106,15 @@ export class ImagesService {
     }
 
     await this.imageRepository.delete(id);
+  }
+
+  async signCard(card: Card): Promise<Card> {
+    if (card.questionImage) {
+      card.questionImage.url = await this.generateUrl(card.questionImage);
+    }
+    if (card.answerImage) {
+      card.answerImage.url = await this.generateUrl(card.answerImage);
+    }
+    return card;
   }
 }
