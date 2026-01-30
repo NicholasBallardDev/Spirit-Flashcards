@@ -1,0 +1,24 @@
+import { AlertDialogAction } from "@/components/ui/alert-dialog"
+import { ComponentPropsWithoutRef } from "react"
+import { cn } from "@/lib/utils"
+
+interface DeleteAlertDialogActionProps extends ComponentPropsWithoutRef<
+  typeof AlertDialogAction
+> {
+  onDelete: () => void
+}
+
+export const DeleteAlertDialogAction = ({
+  onDelete,
+  ...props
+}: DeleteAlertDialogActionProps) => {
+  return (
+    <AlertDialogAction
+      onClick={onDelete}
+      className="bg-red-600 text-white hover:bg-red-700 focus:ring-red-500"
+      {...props}
+    >
+      Delete
+    </AlertDialogAction>
+  )
+}

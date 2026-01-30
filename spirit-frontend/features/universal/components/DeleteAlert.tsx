@@ -10,6 +10,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { ReactNode } from "react"
+import { DeleteAlertDialogAction } from "./DeleteDialogueAction"
 
 interface DeleteAlertProps {
   children: ReactNode
@@ -37,12 +38,9 @@ export function DeleteAlert({
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction
-            onClick={onDelete}
-            className="bg-red-600 text-white hover:bg-red-700 focus:ring-red-500"
-          >
+          <DeleteAlertDialogAction onDelete={onDelete}>
             Delete
-          </AlertDialogAction>
+          </DeleteAlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
