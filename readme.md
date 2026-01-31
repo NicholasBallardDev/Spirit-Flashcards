@@ -7,6 +7,7 @@ Spirit Flashcards is a web application designed to help users learn new concepts
 ## Built With
 
 - [![Next.js][Next.js]][Next.js-url]
+- [![React][React]][React-url]
 - [![NestJS][NestJS]][NestJS-url]
 - [![PostgreSQL][PostgreSQL]][PostgreSQL-url]
 - [![TypeORM][TypeORM]][TypeORM-url]
@@ -15,10 +16,10 @@ Spirit Flashcards is a web application designed to help users learn new concepts
 
 To run Spirit locally follow these steps.
 
-### Prerequisites Downloads
+### Prerequisite Downloads
 
-- Node.js
-- PostgreSQL
+- [![Node.js][Node.js]][Node.js-url]
+- [![PostgreSQL][PostgreSQL]][PostgreSQL-url]
 
 ### Installation
 
@@ -66,7 +67,7 @@ The API will be running at http://localhost:3000.
 
 [Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
 [Next.js-url]: https://nextjs.org/
-[React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
+[React]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
 [React-url]: https://reactjs.org/
 [PostgreSQL]: https://img.shields.io/badge/postgresql-4169e1?style=for-the-badge&logo=postgresql&logoColor=white
 [PostgreSQL-url]: https://www.postgresql.org/
@@ -74,3 +75,5 @@ The API will be running at http://localhost:3000.
 [TypeORM-url]: https://typeorm.io/
 [NestJS]: https://img.shields.io/badge/Nest.js-%23E0234E.svg?logo=nestjs&logoColor=white
 [NestJS-url]: https://docs.nestjs.com/
+[Node.js]: https://img.shields.io/badge/Node.js-6DA55F?logo=node.js&logoColor=white
+[Node.js-url]: https://nodejs.org/
