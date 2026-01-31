@@ -10,7 +10,7 @@ This project uses the following technologies:
 
 ### Frontend
 
-- **[Next.js](https://nextjs.org/)**
+- **[![Next][Next.js]][https://nextjs.org/]**
 
 ### Backend
 
