@@ -4,22 +4,12 @@
 
 Spirit Flashcards is a web application designed to help users learn new concepts through digital flashcards. My main goal in creating Spirit is to create a free alternative to Quizlet, and implement premium features such as spaced repetition and adding images to your card sets free of charge.
 
-## Tools Used
+## Built With
 
-This project uses the following technologies:
-
-### Frontend
-
-- **[![Next][Next.js]][https://nextjs.org/]**
-
-### Backend
-
-- **[NestJS](https://nestjs.com/)**
-
-### Database & ORM
-
-- **[PostgreSQL](https://www.postgresql.org/)**
-- **[TypeORM](https://typeorm.io/)**
+- [![Next.js][Next.js-shield]][Next.js-url]
+- [![NestJS][NestJS-shield]][NestJS-url]
+- [![PostgreSQL][PostgreSQL-shield]][PostgreSQL-url]
+- [![TypeORM][TypeORM-shield]][TypeORM-url]
 
 ## Getting Started
 
