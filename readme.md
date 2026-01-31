@@ -6,10 +6,10 @@ Spirit Flashcards is a web application designed to help users learn new concepts
 
 ## Built With
 
-- [![Next.js][Next.js-shield]][Next.js-url]
-- [![NestJS][NestJS-shield]][NestJS-url]
-- [![PostgreSQL][PostgreSQL-shield]][PostgreSQL-url]
-- [![TypeORM][TypeORM-shield]][TypeORM-url]
+- [![Next.js][Next.js]][Next.js-url]
+- [![NestJS][NestJS]][NestJS-url]
+- [![PostgreSQL][PostgreSQL]][PostgreSQL-url]
+- [![TypeORM][TypeORM]][TypeORM-url]
 
 ## Getting Started
 
@@ -72,3 +72,5 @@ The API will be running at http://localhost:3000.
 [PostgreSQL-url]: https://www.postgresql.org/
 [TypeORM]: https://img.shields.io/badge/TypeORM-FE0803?logo=typeorm&logoColor=fff
 [TypeORM-url]: https://typeorm.io/
+[NestJS]: https://img.shields.io/badge/Nest.js-%23E0234E.svg?logo=nestjs&logoColor=white
+[NestJS-url]: https://docs.nestjs.com/
