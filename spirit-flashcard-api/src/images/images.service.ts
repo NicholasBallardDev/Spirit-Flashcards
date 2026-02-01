@@ -2,9 +2,6 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Image } from './entities/image.entity';
-import { UpdateImageDto } from './dto/update-image.dto';
-import * as fs from 'fs/promises';
-import * as path from 'path';
 import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import dotenv from 'dotenv';
@@ -72,39 +69,15 @@ export class ImagesService {
     newKey: string,
   ): Promise<Image> {
     const imageToUpdate = await this.findOne(id);
-    const oldFilename = imageToUpdate.filename;
-
-    // Update entity properties with new file info
     imageToUpdate.filename = newFile.filename;
     imageToUpdate.key = newKey;
 
     const updatedImage = await this.imageRepository.save(imageToUpdate);
 
-    // After DB is updated, delete the old file from disk
-    try {
-      const filePath = path.join(process.cwd(), 'uploads', oldFilename);
-      await fs.unlink(filePath);
-    } catch (error) {
-      if (error.code !== 'ENOENT') {
-        console.error(`Failed to delete old image file: ${oldFilename}`, error);
-      }
-    }
-
     return updatedImage;
   }
 
   async delete(id: number): Promise<void> {
-    const image = await this.findOne(id);
-
-    try {
-      const filePath = path.join(process.cwd(), 'uploads', image.filename);
-      await fs.unlink(filePath);
-    } catch (error) {
-      if (error.code !== 'ENOENT') {
-        console.error(`Failed to delete image file: ${image.filename}`, error);
-      }
-    }
-
     await this.imageRepository.delete(id);
   }
 
