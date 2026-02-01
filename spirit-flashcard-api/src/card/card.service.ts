@@ -124,16 +124,25 @@ export class CardService {
 
     const buffer = await sharp(file.buffer)
       .resize({ height: 1080, width: 1920, fit: 'contain' })
+      .webp({ quality: 75 })
       .toBuffer();
 
     const key = randomImageName();
+    const webpMimeType = 'image/webp';
+    const webpFile = {
+      ...file,
+      buffer: buffer,
+      size: buffer.length,
+      originalname: `${file.originalname.replace(/\.[^/.]+$/, '')}.webp`,
+      mimetype: webpMimeType,
+    };
 
     if (card[imageType]) {
       // If an image already exists, update it
-      await this.imageService.update(card[imageType].id, file, key);
+      await this.imageService.update(card[imageType].id, webpFile, key);
     } else {
       // Otherwise, create a new one and link it
-      card[imageType] = await this.imageService.create(file, key);
+      card[imageType] = await this.imageService.create(webpFile, key);
       await this.cardRepository.save(card);
     }
 
@@ -141,7 +150,7 @@ export class CardService {
       Bucket: bucketName,
       Key: key,
       Body: buffer,
-      ContentType: file.mimetype,
+      ContentType: webpMimeType,
     };
 
     const command = new PutObjectCommand(params);

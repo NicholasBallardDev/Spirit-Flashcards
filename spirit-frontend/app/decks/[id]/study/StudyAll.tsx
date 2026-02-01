@@ -2,7 +2,7 @@
 import { CardNavigationTray } from "@/features/card/components/CardNavigationTray"
 import { CardStudyView } from "@/features/card/components/CardStudyView"
 import { FlashcardDeck } from "@/Types"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 
 interface StudyAll {
   deck: FlashcardDeck
