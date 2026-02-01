@@ -1,7 +1,5 @@
 "use client"
-
 import { FlashcardDeck } from "@/Types"
-
 import { StudyAll } from "./StudyAll"
 import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
