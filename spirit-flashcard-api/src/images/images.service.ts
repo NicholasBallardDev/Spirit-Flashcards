@@ -1,8 +1,17 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Image } from './entities/image.entity';
-import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import {
+  Bucket$,
+  DeleteObjectCommand,
+  GetObjectCommand,
+  S3Client,
+} from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import dotenv from 'dotenv';
 import { Card } from '@src/card/card.entity';
@@ -68,17 +77,36 @@ export class ImagesService {
     newFile: Express.Multer.File,
     newKey: string,
   ): Promise<Image> {
+    this.deleteFromStorage(id);
     const imageToUpdate = await this.findOne(id);
-    imageToUpdate.filename = newFile.filename;
+    imageToUpdate.filename = newFile.originalname;
     imageToUpdate.key = newKey;
-
     const updatedImage = await this.imageRepository.save(imageToUpdate);
 
     return updatedImage;
   }
 
   async delete(id: number): Promise<void> {
+    this.deleteFromStorage(id);
     await this.imageRepository.delete(id);
+  }
+
+  async deleteFromStorage(id: number): Promise<void> {
+    const image = await this.findOne(id);
+    if (!image) {
+      throw new BadRequestException('Image not found', {
+        cause: new Error(),
+        description: `image with id ${id} does not exist`,
+      });
+    }
+
+    const params = {
+      Bucket: bucketName,
+      Key: image.key,
+    };
+
+    const command = new DeleteObjectCommand(params);
+    await s3.send(command);
   }
 
   async signCard(card: Card): Promise<Card> {
