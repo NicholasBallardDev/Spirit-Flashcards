@@ -25,7 +25,7 @@ export function DeckHeader({ deck }: DeckHeaderProps) {
       initialDescription={description}
       onUpdate={handleUpdate}
       trigger={
-        <div className="cursor-pointer">
+        <div>
           <DeckEdit title={name} description={description} />
         </div>
       }

@@ -1,5 +1,6 @@
 import TextareaAutosize from "react-textarea-autosize"
 import React from "react"
+import { cn } from "@/lib/utils"
 
 interface LabelledInputProps extends Omit<
   React.ComponentProps<typeof TextareaAutosize>,
@@ -12,6 +13,7 @@ interface LabelledInputProps extends Omit<
 export function LabelledInput({
   id,
   inputTitle,
+  className,
   ...props
 }: LabelledInputProps) {
   return (
@@ -24,7 +26,7 @@ export function LabelledInput({
       </label>
       <TextareaAutosize
         id={id}
-        className="w-full border p-2 rounded resize-none pt-4"
+        className={cn("w-full border p-2 rounded resize-none pt-4", className)}
         minRows={1}
         {...props}
       />

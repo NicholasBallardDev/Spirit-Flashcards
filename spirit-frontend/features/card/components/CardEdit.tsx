@@ -5,6 +5,7 @@ import { ImageButton } from "@/features/universal/components/ImageButton"
 import { DeleteAlert } from "@/features/universal/components/DeleteAlert"
 import { DeleteCardButton } from "./DeleteCardButton"
 import ImageUploadModal from "@/features/universal/components/ImageUploadModal"
+import { LabelledInput } from "@/features/universal/components/LabelledInput"
 
 interface CardProps {
   card: Card
@@ -40,17 +41,21 @@ export function CardEdit({ card, cardNo, onDelete, onChange }: CardProps) {
       </div>
 
       <div className="flex gap-4">
-        <TextareaAutosize
+        <LabelledInput
+          inputTitle="Question"
+          id={"text-question"}
           value={question}
           onChange={(e) => onChange?.({ ...card, question: e.target.value })}
-          className="w-1/2 border p-2 rounded resize-none"
           minRows={1}
+          maxRows={3}
         />
-        <TextareaAutosize
+        <LabelledInput
+          inputTitle="Answer"
+          id={"text-answer"}
           value={answer}
           onChange={(e) => onChange?.({ ...card, answer: e.target.value })}
-          className="w-1/2 border p-2 rounded resize-none"
           minRows={1}
+          maxRows={3}
         />
       </div>
       <ImageUploadModal card={card} onCardChange={onChange}>
