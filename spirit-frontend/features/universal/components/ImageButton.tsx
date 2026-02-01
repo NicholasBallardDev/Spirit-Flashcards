@@ -12,6 +12,7 @@ export const ImageButton = React.forwardRef<
       ref={ref}
       variant="outline"
       size="icon"
+      aria-label="Add Image to Card"
       className={cn(
         "hover:bg-gray-100 cursor-pointer transition-colors bg-white",
         className,

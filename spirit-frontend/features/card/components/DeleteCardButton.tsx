@@ -8,6 +8,7 @@ export const DeleteCardButton = React.forwardRef<
   return (
     <button
       ref={ref}
+      aria-label="Delete Card"
       className="group p-2 rounded hover:bg-red-500 transition rounded-full cursor-pointer"
       {...props}
     >
