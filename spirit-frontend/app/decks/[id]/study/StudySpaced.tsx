@@ -17,7 +17,7 @@ export function StudySpaced({ deck }: StudySpacedProps) {
   const [current, setCurrent] = useState(0)
   const [isLoading, setLoading] = useState(false)
 
-  function isDue(c: Card): Boolean {
+  function isDue(c: Card): boolean {
     const dueDate = new Date(c.schedule.due).getTime()
     const oneHour = Date.now() + 1000 * 60 * 60
     return dueDate < oneHour

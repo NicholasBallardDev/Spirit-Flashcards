@@ -18,7 +18,9 @@ export function StudyAll({ deck }: StudyAll) {
   }
 
   function decrementCurrent() {
-    current > 0 ? setCurrent(current - 1) : null
+    if (current > 0) {
+      setCurrent(current - 1)
+    }
   }
   return (
     <>
