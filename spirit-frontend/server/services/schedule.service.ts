@@ -1,4 +1,5 @@
 import { Schedule, State, Rating } from "@/Types/schedule"
+import { IPreview } from "ts-fsrs"
 
 const API_URL = "http://localhost:3000"
 

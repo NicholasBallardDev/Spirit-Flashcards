@@ -44,15 +44,15 @@ export function EditClient({ initialCards, deckId }: EditClientProps) {
   //Adds cards to the backend
   const triggerCardChanges = async () => {
     try {
-      //TODO: Use promise.all instead of for loops
-      //Updates card if it already existed
-      for (const card of cards) {
-        card.question && card.answer ? await updateCard(card.id, card) : null
-      }
-      //creates new card if its new
-      for (const card of newCards) {
-        card.question && card.answer ? await createCard(card, deckId) : null
-      }
+      const updatedCardPromises = cards
+        .filter((card) => card.question && card.answer)
+        .map((card) => updateCard(card.id, card))
+
+      const newCardPromises = newCards
+        .filter((card) => card.question && card.answer)
+        .map((card) => createCard(card, deckId))
+
+      await Promise.all([...updatedCardPromises, ...newCardPromises])
     } catch (err) {
       console.error("Error saving cards:", err)
     }
@@ -67,11 +67,11 @@ export function EditClient({ initialCards, deckId }: EditClientProps) {
   const updateEdit = (updated: Card) => {
     if (updated.id > 0) {
       setCards((prev) =>
-        prev.map((card) => (card.id === updated.id ? updated : card))
+        prev.map((card) => (card.id === updated.id ? updated : card)),
       )
     } else {
       setNewCards((prev) =>
-        prev.map((card) => (card.id === updated.id ? updated : card))
+        prev.map((card) => (card.id === updated.id ? updated : card)),
       )
     }
   }
