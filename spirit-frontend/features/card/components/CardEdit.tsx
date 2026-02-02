@@ -19,8 +19,12 @@ export function CardEdit({ card, cardNo, onDelete, onChange }: CardProps) {
   const answer = card ? card.answer : ""
   const [mounted, setMounted] = useState(false)
 
+  const switchMounted = (isMounted: boolean) => {
+    setMounted(!isMounted)
+  }
+
   useEffect(() => {
-    setMounted(true)
+    switchMounted(mounted)
   }, [])
 
   const handleDelete = () => {

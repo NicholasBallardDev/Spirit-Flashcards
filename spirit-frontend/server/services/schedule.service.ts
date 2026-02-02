@@ -1,5 +1,4 @@
 import { Schedule, State, Rating } from "@/Types/schedule"
-import { IPreview, RecordLog } from "ts-fsrs"
 
 const API_URL = "http://localhost:3000"
 
@@ -25,7 +24,7 @@ export async function getPreview(id: number): Promise<IPreview> {
 
 export async function getSchedulesByDeckAndState(
   deckId: number,
-  state: State
+  state: State,
 ): Promise<Schedule[]> {
   const urlParams = new URLSearchParams({
     state: String(state),
@@ -44,7 +43,7 @@ export async function createSchedule(): Promise<Schedule> {
 
 export async function updateSchedule(
   id: number,
-  rating: Rating
+  rating: Rating,
 ): Promise<Schedule> {
   const urlParams = new URLSearchParams({
     rating: String(rating),

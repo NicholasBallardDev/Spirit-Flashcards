@@ -1,5 +1,4 @@
 import type { Card, FlashcardDeck } from "@/Types"
-import { Description } from "@radix-ui/react-dialog"
 
 const API_URL = "http://localhost:3000"
 
@@ -34,7 +33,7 @@ export async function countDueFromDeck(id: number): Promise<number> {
 }
 
 export async function createDeck(
-  deck: Omit<FlashcardDeck, "id">
+  deck: Omit<FlashcardDeck, "id">,
 ): Promise<FlashcardDeck> {
   const res = await fetch(`${API_URL}/decks`, {
     method: "POST",
@@ -46,7 +45,7 @@ export async function createDeck(
 
 export async function updateDeck(
   id: number,
-  deck: FlashcardDeck
+  deck: FlashcardDeck,
 ): Promise<FlashcardDeck> {
   const res = await fetch(`${API_URL}/decks/${id}`, {
     method: "PUT",
@@ -61,7 +60,7 @@ export async function updateDeck(
   return res.json() as Promise<FlashcardDeck>
 }
 
-export async function deleteDeck(id: number): Promise<Object> {
+export async function deleteDeck(id: number): Promise<object> {
   const res = await fetch(`${API_URL}/decks/${id}`, {
     method: "DELETE",
   })

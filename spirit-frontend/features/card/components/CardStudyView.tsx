@@ -2,6 +2,7 @@
 import { useState } from "react"
 import { motion } from "framer-motion"
 import { Card } from "@/Types"
+import Image from "next/image"
 
 interface CardStudyProps {
   card: Card
@@ -32,14 +33,14 @@ export function CardStudyView({ card }: CardStudyProps) {
           </h2>
         </div>
         {isFlipped && card.answerImage && (
-          <img
+          <Image
             src={card.answerImage.url}
             alt="Answer"
             className="max-h-60 object-contain rounded-md"
           />
         )}
         {!isFlipped && card.questionImage && (
-          <img
+          <Image
             src={card.questionImage.url}
             alt="Question"
             className="max-h-60 object-contain rounded-md"

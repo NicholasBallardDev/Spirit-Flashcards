@@ -1,5 +1,3 @@
-import { ChevronRight } from "lucide-react"
-
 interface MetricCardProps {
   number: number
   title: string

@@ -2,7 +2,6 @@
 import type { FlashcardDeck } from "@/Types"
 import { cn } from "@/lib/utils"
 import Link from "next/link"
-import { Ellipsis } from "lucide-react"
 import { MoreButton } from "./MoreButton"
 import { DeckDropdown } from "./DeckDropdown"
 
@@ -17,7 +16,7 @@ export function DeckCard({ deck, showOptions = true }: DeckCardProps) {
       <Link
         href={`/decks/${deck.id}/edit`}
         className={cn(
-          "flex justify-between px-6 py-10 min-w-24 border rounded-md cursor-pointer hover:bg-gray-50 transition"
+          "flex justify-between px-6 py-10 min-w-24 border rounded-md cursor-pointer hover:bg-gray-50 transition",
         )}
       >
         <div>

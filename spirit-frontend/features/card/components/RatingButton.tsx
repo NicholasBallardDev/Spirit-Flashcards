@@ -1,8 +1,8 @@
-import { Rating, Schedule } from "@/Types/schedule"
+import { Rating } from "@/Types/schedule"
 import { useScheduleContext } from "../context/context"
-import { getPreview, getSchedule } from "@/server/services/schedule.service"
+import { getPreview } from "@/server/services/schedule.service"
 import { useEffect, useState } from "react"
-import { IPreview, RecordLog } from "ts-fsrs"
+import { IPreview } from "ts-fsrs"
 import {
   differenceInMinutes,
   differenceInHours,
@@ -29,7 +29,7 @@ export function RatingButton({ text, rating }: RatingButtonProps) {
       setPreviews(previews)
     }
     loadPreview()
-  }, [schedule.id])
+  })
 
   function formatTimeDiff(previews: IPreview) {
     const dueDate = previews[rating].card.due

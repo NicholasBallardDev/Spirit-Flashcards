@@ -1,9 +1,5 @@
-import { Rating, Schedule } from "@/Types/schedule"
-import { getPreview } from "@/server/services/schedule.service"
-import { useEffect } from "react"
+import { Rating } from "@/Types/schedule"
 import { RatingButton } from "./RatingButton"
-
-interface RatingButtonTrayProps {}
 
 export function RatingButtonTray() {
   const RATINGS = [Rating.Again, Rating.Hard, Rating.Good, Rating.Easy] as const

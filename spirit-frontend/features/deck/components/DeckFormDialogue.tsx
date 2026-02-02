@@ -1,7 +1,7 @@
 // c:\Users\nbnic\OneDrive\Documents\SpiritFlashcards\Spirit-Flashcards\spirit-frontend\features\deck\components\DeckFormDialog.tsx
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import {
   Dialog,
   DialogContent,

@@ -58,7 +58,7 @@ export async function updateCard(id: number, card: Card): Promise<Card> {
   return res.json() as Promise<Card>
 }
 
-export async function deleteCard(id: number): Promise<Object> {
+export async function deleteCard(id: number): Promise<object> {
   const res = await fetch(`${API_URL}/cards/${id}`, {
     method: "DELETE",
   })

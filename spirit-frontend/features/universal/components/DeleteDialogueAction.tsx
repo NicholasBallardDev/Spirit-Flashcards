@@ -1,6 +1,5 @@
 import { AlertDialogAction } from "@/components/ui/alert-dialog"
 import { ComponentPropsWithoutRef } from "react"
-import { cn } from "@/lib/utils"
 
 interface DeleteAlertDialogActionProps extends ComponentPropsWithoutRef<
   typeof AlertDialogAction

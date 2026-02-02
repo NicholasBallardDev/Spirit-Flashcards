@@ -1,4 +1,3 @@
-import { FlashcardDeck } from "@/Types"
 import { createContext, useContext, ReactNode } from "react"
 
 interface DeckContextType {

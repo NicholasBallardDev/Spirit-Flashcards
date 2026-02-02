@@ -1,5 +1,5 @@
-import { ImageUp } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import Image from "next/image"
 import {
   Dialog,
   DialogContent,
@@ -50,7 +50,7 @@ export const ImageUploadModal = ({
           onUploadComplete={onCardChange}
         >
           {card.questionImage ? (
-            <img
+            <Image
               src={card.questionImage.url}
               alt={card.questionImage.filename}
             />
@@ -67,7 +67,7 @@ export const ImageUploadModal = ({
           onUploadComplete={onCardChange}
         >
           {card.answerImage ? (
-            <img src={card.answerImage.url} alt={card.answerImage.filename} />
+            <Image src={card.answerImage.url} alt={card.answerImage.filename} />
           ) : (
             <UploadDropZone />
           )}
