@@ -29,7 +29,7 @@ export function RatingButton({ text, rating }: RatingButtonProps) {
       setPreviews(previews)
     }
     loadPreview()
-  })
+  }, [schedule])
 
   function formatTimeDiff(previews: IPreview) {
     const dueDate = previews[rating].card.due
