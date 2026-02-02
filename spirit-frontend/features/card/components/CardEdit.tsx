@@ -1,11 +1,10 @@
-import TextareaAutosize from "react-textarea-autosize"
 import type { Card } from "@/Types"
-import { useEffect, useState } from "react"
 import { ImageButton } from "@/features/universal/components/ImageButton"
 import { DeleteAlert } from "@/features/universal/components/DeleteAlert"
 import { DeleteCardButton } from "./DeleteCardButton"
 import ImageUploadModal from "@/features/universal/components/ImageUploadModal"
 import { LabelledInput } from "@/features/universal/components/LabelledInput"
+import useIsMounted from "@/features/universal/utils/useIsMounted"
 
 interface CardProps {
   card: Card
@@ -17,15 +16,7 @@ interface CardProps {
 export function CardEdit({ card, cardNo, onDelete, onChange }: CardProps) {
   const question = card ? card.question : ""
   const answer = card ? card.answer : ""
-  const [mounted, setMounted] = useState(false)
-
-  const switchMounted = (isMounted: boolean) => {
-    setMounted(!isMounted)
-  }
-
-  useEffect(() => {
-    switchMounted(mounted)
-  }, [])
+  const isMounted = useIsMounted()
 
   const handleDelete = () => {
     if (card?.id) {
@@ -37,7 +28,7 @@ export function CardEdit({ card, cardNo, onDelete, onChange }: CardProps) {
     <div className="px-6 py-6 min-w-24 w-full border rounded-md flex-col gap-4 items-start">
       <div className="flex justify-between mb-1 mx-1">
         {cardNo}
-        {mounted && (
+        {isMounted() && (
           <DeleteAlert onDelete={handleDelete}>
             <DeleteCardButton />
           </DeleteAlert>
