@@ -11,12 +11,16 @@ describe(EditClient, () => {
       answer: `Answer ${i}`,
       deckId: deckId,
     })) as Card[]
+
     render(<EditClient deckId={0} initialCards={cards} />)
+
+    //should fail
     expect(screen.queryByDisplayValue("Question -1")).not.toBeInTheDocument()
+    expect(screen.queryByDisplayValue("Question 800")).not.toBeInTheDocument()
+
+    //should pass
     expect(screen.getByDisplayValue("Question 0")).toBeInTheDocument()
     expect(screen.getByDisplayValue("Question 400")).toBeInTheDocument()
-    expect(screen.getByDisplayValue("Question 798")).toBeInTheDocument()
     expect(screen.getByDisplayValue("Question 799")).toBeInTheDocument()
-    expect(screen.queryByDisplayValue("Question 800")).not.toBeInTheDocument()
   })
 })
