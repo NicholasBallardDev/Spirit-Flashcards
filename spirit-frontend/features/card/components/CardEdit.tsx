@@ -4,7 +4,7 @@ import { DeleteAlert } from "@/features/universal/components/DeleteAlert"
 import { DeleteCardButton } from "./DeleteCardButton"
 import ImageUploadModal from "@/features/universal/components/ImageUploadModal"
 import { LabelledInput } from "@/features/universal/components/LabelledInput"
-import useIsMounted from "@/features/universal/utils/useIsMounted"
+import { useIsMounted } from "@/features/universal/utils/useIsMounted"
 
 interface CardProps {
   card: Card

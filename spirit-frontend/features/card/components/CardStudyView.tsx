@@ -34,6 +34,8 @@ export function CardStudyView({ card }: CardStudyProps) {
         </div>
         {isFlipped && card.answerImage && (
           <Image
+            width={400}
+            height={300}
             src={card.answerImage.url}
             alt="Answer"
             className="max-h-60 object-contain rounded-md"
@@ -41,6 +43,8 @@ export function CardStudyView({ card }: CardStudyProps) {
         )}
         {!isFlipped && card.questionImage && (
           <Image
+            width={400}
+            height={300}
             src={card.questionImage.url}
             alt="Question"
             className="max-h-60 object-contain rounded-md"
