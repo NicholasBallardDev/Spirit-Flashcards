@@ -38,7 +38,7 @@ export function CardEdit({ card, cardNo, onDelete, onChange }: CardProps) {
       <div className="flex gap-4">
         <LabelledInput
           inputTitle="Question"
-          id={"text-question"}
+          id={`text-question-${cardNo}`}
           value={question}
           onChange={(e) => onChange?.({ ...card, question: e.target.value })}
           minRows={1}
@@ -46,7 +46,7 @@ export function CardEdit({ card, cardNo, onDelete, onChange }: CardProps) {
         />
         <LabelledInput
           inputTitle="Answer"
-          id={"text-answer"}
+          id={`text-answer-${cardNo}`}
           value={answer}
           onChange={(e) => onChange?.({ ...card, answer: e.target.value })}
           minRows={1}
