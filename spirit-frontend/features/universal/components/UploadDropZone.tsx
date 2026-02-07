@@ -22,7 +22,7 @@ export const UploadDropZone = React.forwardRef<
         <span className="text-blue-600 font-semibold hover:underline">
           Click to upload
         </span>{" "}
-        or drag and drop
+        {/* or drag and drop */}
       </p>
       <p className="text-xs text-gray-400">Max. File Size: 15MB</p>
     </div>
