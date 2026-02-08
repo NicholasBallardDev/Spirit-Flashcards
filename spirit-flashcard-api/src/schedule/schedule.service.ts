@@ -5,15 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Schedule } from './card-schedule.entity';
-import {
-  createEmptyCard,
-  generatorParameters,
-  fsrs,
-  Rating,
-  State,
-  RecordLog,
-  IPreview,
-} from 'ts-fsrs';
+import { createEmptyCard, fsrs, Rating, State } from 'ts-fsrs';
 import { Repository } from 'typeorm';
 
 @Injectable()
