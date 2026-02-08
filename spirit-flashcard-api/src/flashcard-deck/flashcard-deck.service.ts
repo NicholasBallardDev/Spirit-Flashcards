@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { FlashcardDeck } from './flashcard-deck.entity';
@@ -19,93 +23,143 @@ export class FlashcardDeckService {
   ) {}
 
   async findAll() {
-    return this.deckRepository.find();
+    try {
+      return await this.deckRepository.find();
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
   }
 
   async countDecks() {
-    return this.deckRepository.count();
+    try {
+      return await this.deckRepository.count();
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
   }
 
   async findOne(id: number) {
-    return this.deckRepository.findOne({ where: { id } });
+    try {
+      return await this.deckRepository.findOne({ where: { id } });
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
   }
 
   async getCards(id: number) {
-    const deck = await this.deckRepository.findOne({
-      where: { id },
-      relations: [
-        'cards',
-        'cards.schedule',
-        'cards.questionImage',
-        'cards.answerImage',
-      ],
-    });
+    try {
+      const deck = await this.deckRepository.findOne({
+        where: { id },
+        relations: [
+          'cards',
+          'cards.schedule',
+          'cards.questionImage',
+          'cards.answerImage',
+        ],
+      });
 
-    if (deck?.cards) {
-      deck.cards = await Promise.all(
-        deck.cards.map((card) => this.imageService.signCard(card)),
-      );
+      if (deck?.cards) {
+        deck.cards = await Promise.all(
+          deck.cards.map((card) => this.imageService.signCard(card)),
+        );
+      }
+      return deck;
+    } catch (error) {
+      throw new InternalServerErrorException(error);
     }
-    return deck;
   }
 
   async countCards(id: number) {
-    return this.cardRepository.count({ where: { deck: { id } } });
+    try {
+      return await this.cardRepository.count({ where: { deck: { id } } });
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
   }
 
   async getDueCards(id: number) {
-    const cards = await this.cardRepository.find({
-      where: {
-        deck: { id },
-        schedule: { due: LessThanOrEqual(new Date()) },
-      },
-      relations: ['schedule', 'questionImage', 'answerImage'],
-    });
-    return Promise.all(cards.map((card) => this.imageService.signCard(card)));
+    try {
+      const cards = await this.cardRepository.find({
+        where: {
+          deck: { id },
+          schedule: { due: LessThanOrEqual(new Date()) },
+        },
+        relations: ['schedule', 'questionImage', 'answerImage'],
+      });
+      return Promise.all(cards.map((card) => this.imageService.signCard(card)));
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
   }
 
   async countDueCards(id: number) {
-    return this.cardRepository.count({
-      where: {
-        deck: { id },
-        schedule: { due: LessThanOrEqual(new Date()) },
-      },
-    });
+    try {
+      return await this.cardRepository.count({
+        where: {
+          deck: { id },
+          schedule: { due: LessThanOrEqual(new Date()) },
+        },
+      });
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
   }
 
   async create(dto: CreateDeckDTO) {
-    const deck = this.deckRepository.create({
-      name: dto.name,
-      description: dto.description,
-    });
-    await this.deckRepository.save(deck);
-    return deck;
+    try {
+      const deck = this.deckRepository.create({
+        name: dto.name,
+        description: dto.description,
+      });
+      await this.deckRepository.save(deck);
+      return deck;
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
   }
 
   async update(id: number, dto: UpdateDeckDTO) {
-    const result = await this.deckRepository.update(id, {
-      name: dto.name,
-      description: dto.description,
-    });
+    try {
+      const result = await this.deckRepository.update(id, {
+        name: dto.name,
+        description: dto.description,
+      });
 
-    if (result.affected === 0) {
-      throw new NotFoundException(`Failure: Item with Id ${id} not found`);
+      if (result.affected === 0) {
+        throw new NotFoundException(`Failure: Item with Id ${id} not found`);
+      }
+
+      return await this.deckRepository.findOne({ where: { id } });
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+      throw new InternalServerErrorException(error);
     }
-
-    return this.deckRepository.findOne({ where: { id } });
   }
 
   async delete(id: number) {
-    const result = await this.deckRepository.delete(id);
+    try {
+      const result = await this.deckRepository.delete(id);
 
-    if (result.affected === 0) {
-      throw new NotFoundException(`Failure: Item with Id ${id} not found`);
+      if (result.affected === 0) {
+        throw new NotFoundException(`Failure: Item with Id ${id} not found`);
+      }
+
+      return { message: `Delete Successful: Item with Id ${id} was deleted` };
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+      throw new InternalServerErrorException(error);
     }
-
-    return { message: `Delete Successful: Item with Id ${id} was deleted` };
   }
 
   async getLastId() {
-    return this.deckRepository.maximum('id');
+    try {
+      return await this.deckRepository.maximum('id');
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
   }
 }
