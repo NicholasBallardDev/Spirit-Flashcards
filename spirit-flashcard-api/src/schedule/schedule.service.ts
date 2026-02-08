@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Schedule } from './card-schedule.entity';
 import {
@@ -19,72 +23,106 @@ export class ScheduleService {
     private scheduleRepository: Repository<Schedule>,
   ) {}
 
-  findOne(id: number) {
-    return this.scheduleRepository.findOne({
-      where: { id },
-      relations: ['card'],
-    });
+  async findOne(id: number) {
+    try {
+      return await this.scheduleRepository.findOne({
+        where: { id },
+        relations: ['card'],
+      });
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
   }
 
-  findAll() {
-    return this.scheduleRepository.find({ relations: ['card'] });
+  async findAll() {
+    try {
+      return await this.scheduleRepository.find({ relations: ['card'] });
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
   }
 
   async getSchedulePreview(id: number) {
-    const card = await this.findOne(id);
-    const f = fsrs();
-    const now = new Date();
+    try {
+      const card = await this.findOne(id);
+      const f = fsrs();
+      const now = new Date();
 
-    if (!card) {
-      throw new NotFoundException('Card not found');
+      if (!card) {
+        throw new NotFoundException('Card not found');
+      }
+
+      return f.repeat(card, now);
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+      throw new InternalServerErrorException(error);
     }
-
-    return f.repeat(card, now);
   }
 
-  getByState(state: State) {
-    return this.scheduleRepository.find({
-      where: { state },
-      relations: ['card'],
-    });
+  async getByState(state: State) {
+    try {
+      return await this.scheduleRepository.find({
+        where: { state },
+        relations: ['card'],
+      });
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
   }
 
-  getByStateAndDeck(state: State, deckId: number) {
-    return this.scheduleRepository.find({
-      where: {
-        state,
-        card: { deck: { id: deckId } },
-      },
-      relations: ['card'],
-    });
+  async getByStateAndDeck(state: State, deckId: number) {
+    try {
+      return await this.scheduleRepository.find({
+        where: {
+          state,
+          card: { deck: { id: deckId } },
+        },
+        relations: ['card'],
+      });
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
   }
 
   create(): Schedule {
-    const card = createEmptyCard();
+    try {
+      const card = createEmptyCard();
 
-    const result = this.scheduleRepository.create({
-      ...card,
-    });
-
-    return result;
-  }
-
-  async update(id: number, rating: Rating) {
-    const card = await this.findOne(id);
-    const f = fsrs();
-    const now = new Date();
-
-    if (card) {
-      const scheduler = f.repeat(card, now);
-      const scheduledCard = scheduler[rating].card;
-      const result = await this.scheduleRepository.update(id, {
-        ...scheduledCard,
-        last_review: now,
+      const result = this.scheduleRepository.create({
+        ...card,
       });
 
       return result;
-    } else {
-      throw new NotFoundException(`Item with the id of ${id} was not found`);
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  async update(id: number, rating: Rating) {
+    try {
+      const card = await this.findOne(id);
+      const f = fsrs();
+      const now = new Date();
+
+      if (card) {
+        const scheduler = f.repeat(card, now);
+        const scheduledCard = scheduler[rating].card;
+        const result = await this.scheduleRepository.update(id, {
+          ...scheduledCard,
+          last_review: now,
+        });
+
+        return result;
+      } else {
+        throw new NotFoundException(`Item with the id of ${id} was not found`);
+      }
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+      throw new InternalServerErrorException(error);
     }
   }
 }
