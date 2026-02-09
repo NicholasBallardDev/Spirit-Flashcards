@@ -15,6 +15,8 @@ import { ReactNode } from "react"
 import { UploadDropZone } from "./UploadDropZone"
 import { Card } from "@/Types"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import RemoveButton from "./RemoveButton"
+import ImageEditView from "./ImageEditView"
 
 interface ImageUploadModalProps {
   card: Card
@@ -51,12 +53,7 @@ export const ImageUploadModal = ({
             onUploadComplete={onCardChange}
           >
             {card.questionImage ? (
-              <Image
-                width={300}
-                height={300}
-                src={card.questionImage.url}
-                alt={card.questionImage.filename}
-              />
+              <ImageEditView image={card.questionImage} />
             ) : (
               <UploadDropZone />
             )}
@@ -70,13 +67,18 @@ export const ImageUploadModal = ({
             onUploadComplete={onCardChange}
           >
             {card.answerImage ? (
-              <Image
-                width={200}
-                height={160}
-                src={card.answerImage.url}
-                alt={card.answerImage.filename}
-                className="w-full h-40 object-cover rounded-xl"
-              />
+              <div className="relative group">
+                <Image
+                  width={200}
+                  height={200}
+                  src={card.answerImage.url}
+                  alt={card.answerImage.filename}
+                  className="w-full h-[200px] object-cover rounded-xl"
+                />
+                <div className="absolute top-2 right-2">
+                  <RemoveButton />
+                </div>
+              </div>
             ) : (
               <UploadDropZone />
             )}
