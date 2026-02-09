@@ -67,18 +67,7 @@ export const ImageUploadModal = ({
             onUploadComplete={onCardChange}
           >
             {card.answerImage ? (
-              <div className="relative group">
-                <Image
-                  width={200}
-                  height={200}
-                  src={card.answerImage.url}
-                  alt={card.answerImage.filename}
-                  className="w-full h-[200px] object-cover rounded-xl"
-                />
-                <div className="absolute top-2 right-2">
-                  <RemoveButton />
-                </div>
-              </div>
+              <ImageEditView image={card.answerImage} />
             ) : (
               <UploadDropZone />
             )}
