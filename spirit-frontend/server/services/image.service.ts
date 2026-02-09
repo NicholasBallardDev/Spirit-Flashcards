@@ -1,8 +1,8 @@
-import type { Image } from "@/Types"
+import type { CardImage } from "@/Types"
 
 const API_URL = "http://localhost:3000"
 
-export async function getImages(): Promise<Image[]> {
+export async function getImages(): Promise<CardImage[]> {
   const res = await fetch(`${API_URL}/images`)
   const data = await res.json()
   if (!res.ok) {
@@ -11,7 +11,7 @@ export async function getImages(): Promise<Image[]> {
   return data
 }
 
-export async function getImage(id: number): Promise<Image> {
+export async function getImage(id: number): Promise<CardImage> {
   const res = await fetch(`${API_URL}/images/${id}`)
   const data = await res.json()
   if (!res.ok) {
@@ -20,7 +20,10 @@ export async function getImage(id: number): Promise<Image> {
   return data
 }
 
-export async function createImage(file: File, newKey: string): Promise<Image> {
+export async function createImage(
+  file: File,
+  newKey: string,
+): Promise<CardImage> {
   const formData = new FormData()
   formData.append("file", file)
   formData.append("newKey", newKey)
@@ -42,7 +45,7 @@ export async function updateImage(
   id: number,
   file: File,
   newKey: string,
-): Promise<Image> {
+): Promise<CardImage> {
   const formData = new FormData()
   formData.append("file", file)
   formData.append("newKey", newKey)

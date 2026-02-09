@@ -1,4 +1,4 @@
-import { Image } from "./image"
+import { CardImage } from "./CardImage"
 import { Schedule } from "./schedule"
 
 export interface Card {
@@ -6,7 +6,7 @@ export interface Card {
   question: string
   answer: string
   deckId: number
-  questionImage: Image | null
-  answerImage: Image | null
+  questionImage: CardImage | null
+  answerImage: CardImage | null
   schedule: Schedule
 }

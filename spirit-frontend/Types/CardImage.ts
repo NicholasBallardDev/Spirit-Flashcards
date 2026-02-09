@@ -1,4 +1,4 @@
-export interface Image {
+export default interface CardImage {
   id: number
   key: string
   filename: string
