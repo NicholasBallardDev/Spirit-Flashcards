@@ -1,8 +1,17 @@
 "use client"
 
-import { ChangeEvent, useState, useRef, ReactNode } from "react"
+import {
+  ChangeEvent,
+  useState,
+  useRef,
+  ReactNode,
+  Children,
+  isValidElement,
+} from "react"
 import axios from "axios"
 import { Card } from "@/Types"
+import { cn } from "@/lib/utils"
+import ImageEditView from "./ImageEditView"
 
 type UploadStatus = "idle" | "uploading" | "success" | "error"
 
@@ -75,10 +84,19 @@ export function ImageUploader({
     }
   }
 
+  const isImageEditView = Children.toArray(children).some(
+    (child) => isValidElement(child) && child.type === ImageEditView,
+  )
+
   return (
     <>
-      <div onClick={handleTriggerClick} className="cursor-pointer">
-        {children}
+      <div className="w-[100%] flex justify-center ">
+        <div
+          onClick={handleTriggerClick}
+          className={cn("cursor-pointer w-full", isImageEditView && "w-fit")}
+        >
+          {children}
+        </div>
       </div>
       <input
         type="file"
@@ -87,6 +105,7 @@ export function ImageUploader({
         className="hidden"
         accept="image/*"
       />
+
       {/* UI feedback for upload status */}
       {status === "uploading" && <p>Uploading: {uploadProgress}%</p>}
       {status === "success" && <p>Success!</p>}
