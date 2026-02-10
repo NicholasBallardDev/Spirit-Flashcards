@@ -29,6 +29,18 @@ export const ImageUploadModal = ({
   children,
   onCardChange,
 }: ImageUploadModalProps) => {
+  const handleImageRemove = (imageType: "questionImage" | "answerImage") => {
+    if (onCardChange) {
+      const updatedCard = { ...card }
+      if (imageType === "questionImage") {
+        updatedCard.questionImage = null
+      } else if (imageType === "answerImage") {
+        updatedCard.answerImage = null
+      }
+      onCardChange(updatedCard)
+    }
+  }
+
   return (
     <Dialog>
       {/* The button that opens the modal */}
@@ -53,7 +65,10 @@ export const ImageUploadModal = ({
             onUploadComplete={onCardChange}
           >
             {card.questionImage ? (
-              <ImageEditView image={card.questionImage} />
+              <ImageEditView
+                image={card.questionImage}
+                onImageRemove={(id) => handleImageRemove("questionImage")}
+              />
             ) : (
               <UploadDropZone />
             )}
@@ -67,7 +82,10 @@ export const ImageUploadModal = ({
             onUploadComplete={onCardChange}
           >
             {card.answerImage ? (
-              <ImageEditView image={card.answerImage} />
+              <ImageEditView
+                image={card.answerImage}
+                onImageRemove={(id) => handleImageRemove("answerImage")}
+              />
             ) : (
               <UploadDropZone />
             )}
