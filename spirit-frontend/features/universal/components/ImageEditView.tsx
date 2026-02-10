@@ -18,7 +18,7 @@ export default function ImageEditView({ image }: ImageEditViewProps) {
           className="w-[200px] h-[200px] object-cover rounded-xl"
         />
         <div className="absolute top-[-10px] right-[-10px]">
-          <RemoveButton />
+          <RemoveButton onClick={() => null} />
         </div>
       </div>
     </>
