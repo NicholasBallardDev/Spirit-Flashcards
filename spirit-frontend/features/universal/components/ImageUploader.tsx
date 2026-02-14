@@ -50,6 +50,7 @@ export function ImageUploader({
     const endpointPath =
       imageType === "questionImage" ? "question-image" : "answer-image"
 
+    //axios request for image upload to card (with progress percentage)
     try {
       const response = await axios.put<Card>(
         `http://localhost:3000/cards/${cardId}/${endpointPath}`,
@@ -66,6 +67,7 @@ export function ImageUploader({
           },
         },
       )
+      //set status and display image when upload is complete
       setStatus("success")
       onUploadComplete?.(response.data)
     } catch (error) {

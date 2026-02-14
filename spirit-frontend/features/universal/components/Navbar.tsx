@@ -11,7 +11,7 @@ export default function Navbar() {
   return (
     <nav className="flex items-center p-4 px-6 shadow-sm gap-6 w-[90%] mx-auto mt-2 mb-4 rounded-lg border border-solid">
       <div className="text-lg font-bold font-[family-name:var(--font-roboto)]">
-        Spirit
+        Spirit Flashcards
       </div>
 
       <NavigationMenu>
