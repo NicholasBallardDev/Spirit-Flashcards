@@ -36,7 +36,9 @@ export function DeleteAlert({
           <AlertDialogDescription>{description}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogCancel className="cursor-pointer">
+            Cancel
+          </AlertDialogCancel>
           <DeleteAlertDialogAction onDelete={onDelete}>
             Delete
           </DeleteAlertDialogAction>

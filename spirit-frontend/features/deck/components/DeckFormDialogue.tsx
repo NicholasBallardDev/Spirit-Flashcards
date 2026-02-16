@@ -80,7 +80,7 @@ export function DeckFormDialog({
         <DialogFooter>
           <Button
             onClick={handleSubmit}
-            className="bg-blue-600 text-white hover:bg-blue-500"
+            className="bg-blue-600 text-white hover:bg-blue-500 cursor-pointer"
           >
             {submitLabel}
           </Button>
