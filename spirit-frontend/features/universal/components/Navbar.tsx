@@ -1,4 +1,5 @@
 import Link from "next/link"
+import Image from "next/image"
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -9,8 +10,14 @@ import {
 
 export default function Navbar() {
   return (
-    <nav className="flex items-center p-4 px-6 shadow-sm gap-6 w-[90%] mx-auto mt-2 mb-4 rounded-lg border border-solid">
-      <div className="text-lg font-bold font-[family-name:var(--font-roboto)]">
+    <nav className="flex items-center p-4 px-6 shadow-sm gap-4 w-[90%] mx-auto mt-2 mb-4 rounded-lg border border-solid">
+      <div className="flex items-center text-lg font-bold font-[family-name:var(--font-roboto)]">
+        <Image
+          src="/spiritlogo.png"
+          alt="Spirit Flashcards Logo"
+          width={60}
+          height={60}
+        />
         Spirit Flashcards
       </div>
 
