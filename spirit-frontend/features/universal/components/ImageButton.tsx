@@ -14,7 +14,7 @@ export const ImageButton = React.forwardRef<
       size="icon"
       aria-label="Add Image to Card"
       className={cn(
-        "hover:bg-gray-100 cursor-pointer transition-colors bg-white",
+        "hover:bg-green-100 cursor-pointer transition-colors bg-white",
         className,
       )}
       {...props}
