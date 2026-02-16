@@ -26,9 +26,16 @@ export function CardEdit({ card, cardNo, onDelete, onChange }: CardProps) {
     <div className="px-6 py-6 min-w-24 w-full border rounded-md flex-col gap-4 items-start">
       <div className="flex justify-between mb-1 mx-1">
         {cardNo}
-        <DeleteAlert onDelete={handleDelete}>
-          <DeleteCardButton />
-        </DeleteAlert>
+
+        <div className="flex gap-2">
+          <ImageUploadModal card={card} onCardChange={onChange}>
+            <ImageButton />
+          </ImageUploadModal>
+
+          <DeleteAlert onDelete={handleDelete}>
+            <DeleteCardButton />
+          </DeleteAlert>
+        </div>
       </div>
 
       <div className="flex gap-4">
@@ -49,9 +56,6 @@ export function CardEdit({ card, cardNo, onDelete, onChange }: CardProps) {
           maxRows={3}
         />
       </div>
-      <ImageUploadModal card={card} onCardChange={onChange}>
-        <ImageButton />
-      </ImageUploadModal>
     </div>
   )
 }

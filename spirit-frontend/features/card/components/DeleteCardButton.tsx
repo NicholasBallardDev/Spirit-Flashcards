@@ -1,19 +1,26 @@
 import { Trash2 } from "lucide-react"
 import React from "react"
+import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
 
 export const DeleteCardButton = React.forwardRef<
   HTMLButtonElement,
-  React.ComponentPropsWithoutRef<"button">
->((props, ref) => {
+  React.ComponentPropsWithoutRef<typeof Button>
+>(({ className, ...props }, ref) => {
   return (
-    <button
+    <Button
       ref={ref}
+      variant="outline"
+      size="icon"
       aria-label="Delete Card"
-      className="group p-2 rounded hover:bg-red-500 transition rounded-full cursor-pointer"
+      className={cn(
+        "hover:bg-red-100 cursor-pointer transition-colors bg-white group",
+        className,
+      )}
       {...props}
     >
-      <Trash2 size={20} className="text-gray-700 group-hover:text-white" />
-    </button>
+      <Trash2 size={24} className="text-gray-500 group-hover:text-red-500" />
+    </Button>
   )
 })
 
