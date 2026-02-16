@@ -4,7 +4,6 @@ import { DeleteAlert } from "@/features/universal/components/DeleteAlert"
 import { DeleteCardButton } from "./DeleteCardButton"
 import ImageUploadModal from "@/features/universal/components/ImageUploadModal"
 import { LabelledInput } from "@/features/universal/components/LabelledInput"
-import { useIsMounted } from "@/features/universal/utils/useIsMounted"
 
 interface CardProps {
   card: Card
@@ -16,7 +15,6 @@ interface CardProps {
 export function CardEdit({ card, cardNo, onDelete, onChange }: CardProps) {
   const question = card ? card.question : ""
   const answer = card ? card.answer : ""
-  const isMounted = useIsMounted()
 
   const handleDelete = () => {
     if (card?.id) {
@@ -28,11 +26,9 @@ export function CardEdit({ card, cardNo, onDelete, onChange }: CardProps) {
     <div className="px-6 py-6 min-w-24 w-full border rounded-md flex-col gap-4 items-start">
       <div className="flex justify-between mb-1 mx-1">
         {cardNo}
-        {isMounted() && (
-          <DeleteAlert onDelete={handleDelete}>
-            <DeleteCardButton />
-          </DeleteAlert>
-        )}
+        <DeleteAlert onDelete={handleDelete}>
+          <DeleteCardButton />
+        </DeleteAlert>
       </div>
 
       <div className="flex gap-4">
