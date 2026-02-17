@@ -1,5 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { FlashcardDeckService } from './flashcard-deck.service';
+import { describe, beforeEach, it, expect } from '@jest/globals';
 
 describe('FlashcardDeckService', () => {
   let service: FlashcardDeckService;
