@@ -11,6 +11,7 @@ import { UpdateDeckDTO } from './dto/update-deck.dto';
 import { Card } from '@src/card/card.entity';
 import { LessThanOrEqual } from 'typeorm';
 import { ImagesService } from '@src/images/images.service';
+// import { GoogleGenAI } from '@google/genai';
 
 @Injectable()
 export class FlashcardDeckService {
@@ -159,6 +160,32 @@ export class FlashcardDeckService {
     try {
       return await this.deckRepository.maximum('id');
     } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  /**
+   * Adds a list of new cards to the end of a deck
+   * @param deckId
+   * @param newCards
+   */
+  async appendCards(deckId: number, newCards: Card[]) {
+    try {
+      const deck = await this.findOne(deckId);
+
+      if (!deck) {
+        throw new NotFoundException(`Deck with id ${deckId} was not found`);
+      }
+
+      const cardsToAdd = newCards.map((card) => {
+        return this.cardRepository.create({ ...card, deck });
+      });
+
+      return await this.cardRepository.save(cardsToAdd);
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
       throw new InternalServerErrorException(error);
     }
   }
