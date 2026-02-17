@@ -11,7 +11,9 @@ import { UpdateDeckDTO } from './dto/update-deck.dto';
 import { Card } from '@src/card/card.entity';
 import { LessThanOrEqual } from 'typeorm';
 import { ImagesService } from '@src/images/images.service';
-// import { GoogleGenAI } from '@google/genai';
+import { GoogleGenAI } from '@google/genai';
+
+const ai = new GoogleGenAI({});
 
 @Injectable()
 export class FlashcardDeckService {
@@ -188,5 +190,13 @@ export class FlashcardDeckService {
       }
       throw new InternalServerErrorException(error);
     }
+  }
+
+  async generateAICards() {
+    const response = await ai.models.generateContent({
+      model: 'gemini-3-flash-preview',
+      contents: 'what are the 3 states of matter?',
+    });
+    return response.text;
   }
 }
