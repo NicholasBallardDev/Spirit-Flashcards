@@ -1,11 +1,5 @@
 import { Card } from '@src/card/card.entity';
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  ManyToOne,
-  OneToMany,
-} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 
 @Entity('decks')
 export class FlashcardDeck {
@@ -13,10 +7,10 @@ export class FlashcardDeck {
   id: number;
 
   @Column()
-  name: String;
+  name: string;
 
   @Column()
-  description: String;
+  description: string;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_DATE' })
   createdAt: Date;
