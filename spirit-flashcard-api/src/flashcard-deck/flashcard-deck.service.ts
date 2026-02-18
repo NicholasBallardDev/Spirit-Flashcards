@@ -12,8 +12,27 @@ import { Card } from '@src/card/card.entity';
 import { LessThanOrEqual } from 'typeorm';
 import { ImagesService } from '@src/images/images.service';
 import { GoogleGenAI } from '@google/genai';
+import sharp from 'sharp';
+import dotenv from 'dotenv';
+import { S3Client } from '@aws-sdk/client-s3';
+import crypto from 'crypto';
 
 const ai = new GoogleGenAI({});
+
+dotenv.config();
+
+const bucketName = process.env.BUCKET_NAME;
+const bucketRegion = process.env.BUCKET_REGION as string;
+const accessKey = process.env.ACCESS_KEY as string;
+const secretAccessKey = process.env.SECRET_ACCESS_KEY as string;
+
+const s3 = new S3Client({
+  credentials: {
+    secretAccessKey: secretAccessKey,
+    accessKeyId: accessKey,
+  },
+  region: bucketRegion,
+});
 
 @Injectable()
 export class FlashcardDeckService {
@@ -192,11 +211,43 @@ export class FlashcardDeckService {
     }
   }
 
-  async generateAICards() {
+  async generateAICardsFromText(text: string) {
     const response = await ai.models.generateContent({
-      model: 'gemini-3-flash-preview',
-      contents: 'what are the 3 states of matter?',
+      model: 'gemini-2.5-flash',
+      contents: text,
     });
     return response.text;
+  }
+
+  async generateAICardsFromFile(file: Express.Multer.File) {
+    const base64Data = file.buffer.toString('base64');
+    const response = await ai.models.generateContent({
+      model: 'gemini-2.5-flash',
+      contents: [
+        {
+          role: 'user',
+          parts: [
+            {
+              inlineData: {
+                data: base64Data,
+                mimeType: file.mimetype,
+              },
+            },
+            {
+              text: 'Generate flashcards from the attached file. Return strictly a JSON array of objects with "question" and "answer" keys.',
+            },
+          ],
+        },
+      ],
+    });
+
+    return response.text;
+  }
+
+  async generateAICardsFromLink(url: string) {
+    // TODO: Implement URL scraping logic to get text content
+    throw new InternalServerErrorException(
+      'Link input for AI cards is not yet implemented',
+    );
   }
 }

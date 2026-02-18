@@ -7,7 +7,10 @@ import {
   ParseIntPipe,
   Post,
   Put,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { FlashcardDeckService } from './flashcard-deck.service';
 import { CreateDeckDTO } from './dto/create-deck.dto';
 import { UpdateDeckDTO } from './dto/update-deck.dto';
@@ -48,7 +51,9 @@ export class FlashcardDeckController {
 
   @Get('ai')
   async getAI() {
-    return this.deckService.generateAICards();
+    return this.deckService.generateAICardsFromText(
+      'what are the 3 states of matter?',
+    );
   }
 
   @Get(':id')
@@ -72,5 +77,10 @@ export class FlashcardDeckController {
   @Delete(':id')
   async delete(@Param('id', ParseIntPipe) id: number) {
     return this.deckService.delete(id);
+  }
+  @Post('ai/file')
+  @UseInterceptors(FileInterceptor('file'))
+  async generateAICardsFromFile(@UploadedFile() file: Express.Multer.File) {
+    return this.deckService.generateAICardsFromFile(file);
   }
 }
