@@ -12,6 +12,8 @@ import { Card } from '@src/card/card.entity';
 import { LessThanOrEqual } from 'typeorm';
 import { ImagesService } from '@src/images/images.service';
 import { GoogleGenAI } from '@google/genai';
+import * as fs from 'fs';
+import * as path from 'path';
 
 const ai = new GoogleGenAI({});
 
@@ -192,16 +194,37 @@ export class FlashcardDeckService {
     }
   }
 
+  private getPrompt(): string {
+    const promptPath = path.join(
+      __dirname,
+      'prompts',
+      'flashcard-generation.md',
+    );
+    try {
+      return fs.readFileSync(promptPath, 'utf8');
+    } catch (error) {
+      console.error('Failed to read prompt file:', error);
+      return 'Generate flashcards from the provided content. Return strictly a JSON array of objects with "question" and "answer" keys.';
+    }
+  }
+
   async generateAICardsFromText(text: string) {
+    const prompt = this.getPrompt();
     const response = await ai.models.generateContent({
       model: 'gemini-2.5-flash',
-      contents: text,
+      contents: [
+        {
+          role: 'user',
+          parts: [{ text: text }, { text: prompt }],
+        },
+      ],
     });
     return response.text;
   }
 
   async generateAICardsFromFile(file: Express.Multer.File) {
     const base64Data = file.buffer.toString('base64');
+    const prompt = this.getPrompt();
     const response = await ai.models.generateContent({
       model: 'gemini-2.5-flash',
       contents: [
@@ -215,7 +238,7 @@ export class FlashcardDeckService {
               },
             },
             {
-              text: 'Generate flashcards from the attached file. Return strictly a JSON array of objects with "question" and "answer" keys.',
+              text: prompt,
             },
           ],
         },
