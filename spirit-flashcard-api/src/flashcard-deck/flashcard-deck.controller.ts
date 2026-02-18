@@ -61,6 +61,11 @@ export class FlashcardDeckController {
     return this.deckService.findOne(id); // returns deck info only
   }
 
+  @Post('ai/link')
+  async getAILink(@Body('url') url: string) {
+    return this.deckService.generateAICardsFromLink(url);
+  }
+
   @Post()
   async create(@Body() dto: CreateDeckDTO) {
     return this.deckService.create(dto);

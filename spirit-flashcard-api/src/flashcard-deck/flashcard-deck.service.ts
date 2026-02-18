@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
@@ -14,8 +15,18 @@ import { ImagesService } from '@src/images/images.service';
 import { GoogleGenAI } from '@google/genai';
 import * as fs from 'fs';
 import * as path from 'path';
+import { URL } from 'url';
 
 const ai = new GoogleGenAI({});
+
+const stringIsAValidUrl = (s: string) => {
+  try {
+    new URL(s);
+    return true;
+  } catch (err) {
+    return false;
+  }
+};
 
 @Injectable()
 export class FlashcardDeckService {
@@ -249,9 +260,30 @@ export class FlashcardDeckService {
   }
 
   async generateAICardsFromLink(url: string) {
-    // TODO: Implement URL scraping logic to get text content
-    throw new InternalServerErrorException(
-      'Link input for AI cards is not yet implemented',
-    );
+    try {
+      if (!stringIsAValidUrl(url)) {
+        throw new BadRequestException('Invalid URL');
+      }
+
+      const prompt = this.getPrompt();
+      const response = await ai.models.generateContent({
+        model: 'gemini-3-flash-preview',
+        contents: [
+          {
+            role: 'user',
+            parts: [
+              { text: `Please make flashcards for this website: ${url}` },
+              { text: prompt },
+            ],
+          },
+        ],
+        config: {
+          tools: [{ urlContext: {} }],
+        },
+      });
+      return response.text;
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
   }
 }
