@@ -78,6 +78,7 @@ export class FlashcardDeckController {
   async delete(@Param('id', ParseIntPipe) id: number) {
     return this.deckService.delete(id);
   }
+
   @Post('ai/file')
   @UseInterceptors(FileInterceptor('file'))
   async generateAICardsFromFile(@UploadedFile() file: Express.Multer.File) {
