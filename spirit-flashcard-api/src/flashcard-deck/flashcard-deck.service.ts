@@ -12,27 +12,8 @@ import { Card } from '@src/card/card.entity';
 import { LessThanOrEqual } from 'typeorm';
 import { ImagesService } from '@src/images/images.service';
 import { GoogleGenAI } from '@google/genai';
-import sharp from 'sharp';
-import dotenv from 'dotenv';
-import { S3Client } from '@aws-sdk/client-s3';
-import crypto from 'crypto';
 
 const ai = new GoogleGenAI({});
-
-dotenv.config();
-
-const bucketName = process.env.BUCKET_NAME;
-const bucketRegion = process.env.BUCKET_REGION as string;
-const accessKey = process.env.ACCESS_KEY as string;
-const secretAccessKey = process.env.SECRET_ACCESS_KEY as string;
-
-const s3 = new S3Client({
-  credentials: {
-    secretAccessKey: secretAccessKey,
-    accessKeyId: accessKey,
-  },
-  region: bucketRegion,
-});
 
 @Injectable()
 export class FlashcardDeckService {
