@@ -14,7 +14,7 @@ export function DeckCard({ deck, showOptions = true }: DeckCardProps) {
   return (
     <div className="relative">
       <Link
-        href={`/decks/${deck.id}/edit`}
+        href={`/decks/${deck.id}`}
         className={cn(
           "flex justify-between px-6 py-10 min-w-24 border rounded-md cursor-pointer hover:bg-gray-50 transition",
         )}
