@@ -49,7 +49,7 @@ export class FlashcardDeckController {
     return this.deckService.getLastId();
   }
 
-  @Get('ai')
+  @Get('ai/text')
   async getAI() {
     return this.deckService.generateAICardsFromText(
       'what are the 3 states of matter?',
@@ -59,11 +59,6 @@ export class FlashcardDeckController {
   @Get(':id')
   async findOne(@Param('id', ParseIntPipe) id: number) {
     return this.deckService.findOne(id); // returns deck info only
-  }
-
-  @Post('ai/link')
-  async getAILink(@Body('url') url: string) {
-    return this.deckService.generateAICardsFromLink(url);
   }
 
   @Post()
@@ -82,6 +77,11 @@ export class FlashcardDeckController {
   @Delete(':id')
   async delete(@Param('id', ParseIntPipe) id: number) {
     return this.deckService.delete(id);
+  }
+
+  @Post('ai/link')
+  async generateAICardsFromLink(@Body('url') url: string) {
+    return this.deckService.generateAICardsFromLink(url);
   }
 
   @Post('ai/file')

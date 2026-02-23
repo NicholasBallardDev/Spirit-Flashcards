@@ -259,7 +259,7 @@ export class FlashcardDeckService {
     return response.text;
   }
 
-  async generateAICardsFromLink(url: string) {
+  async generateAICardsFromLink(url: string): Promise<object> {
     try {
       if (!stringIsAValidUrl(url)) {
         throw new BadRequestException('Invalid URL');
@@ -281,7 +281,7 @@ export class FlashcardDeckService {
           tools: [{ urlContext: {} }],
         },
       });
-      return response.text;
+      return response.text ? JSON.parse(response.text) : JSON.parse('[]');
     } catch (error) {
       throw new InternalServerErrorException(error);
     }

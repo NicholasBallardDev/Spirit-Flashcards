@@ -71,3 +71,17 @@ export async function deleteDeck(id: number): Promise<object> {
 
   return res.json()
 }
+
+export async function generateAICardsFromLink(url: string): Promise<object> {
+  const res = await fetch(`${API_URL}/decks/ai/link`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ url }),
+  })
+
+  if (!res.ok) {
+    throw new Error(`Failed to get AI cards`)
+  }
+
+  return res.json()
+}
