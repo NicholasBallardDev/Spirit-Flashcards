@@ -4,6 +4,10 @@
 
 Spirit Flashcards is a web application designed to help users learn new concepts through digital flashcards. My main goal in creating Spirit is to create a free alternative to Quizlet, and implement premium features such as spaced repetition and adding images to your card sets free of charge.
 
+## Demo
+
+[![Spirit Flashcards Demo](https://img.youtube.com/vi/X84NTinWIbE/0.jpg)](https://www.youtube.com/watch?v=X84NTinWIbE)
+
 ## Built With
 
 - [![Next.js][Next.js]][Next.js-url]
